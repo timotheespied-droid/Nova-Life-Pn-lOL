@@ -1,5 +1,7 @@
 // ============================================================
 // CONFIGURATION SUPABASE
+// Remplis ces deux valeurs avec celles de TON projet Supabase :
+// Dashboard Supabase > Project Settings > API
 // ============================================================
 const SUPABASE_URL = "https://digrwwjvtpppbnarijhf.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_X-d8QuPAl7-4AT30BXpa4w_JY-IGf73";

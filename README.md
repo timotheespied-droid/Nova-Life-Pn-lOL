@@ -25,7 +25,9 @@ Dans **Authentication → Providers → Email**, désactive "Confirm email" pour
 
 Les comptes de connexion (email + mot de passe) et les fiches "agent" (matricule, nom, grade) sont deux choses séparées côté Supabase — il faut les relier une fois à la main pour le tout premier compte :
 
-1. **Authentication → Users → Add user** : crée un utilisateur avec un e-mail et un mot de passe (ex : `direction@pn-novalife.fr`). Copie son **UID**.
+Le site permet aux policiers de se connecter avec leur **prénom + nom RP** plutôt qu'un e-mail. En coulisses, Supabase a quand même besoin d'un e-mail technique : le site le génère automatiquement selon le format `prenom.nom@pn-novalife.local` (accents et espaces retirés, tout en minuscules). C'est cet e-mail-là qu'il faut utiliser quand tu crées le compte dans Supabase — l'agent, lui, ne tape que son prénom et son nom sur le site.
+
+1. **Authentication → Users → Add user** : crée un utilisateur avec l'e-mail au format `prenom.nom@pn-novalife.local` (ex : pour "Jean Dupont" → `jean.dupont@pn-novalife.local`) et un mot de passe. Copie son **UID**.
 2. **SQL Editor**, exécute (en remplaçant les valeurs) :
 
 ```sql
@@ -41,7 +43,7 @@ values (
 
 3. Connecte-toi sur le site avec cet e-mail/mot de passe : tu as maintenant accès à l'onglet **Administration**.
 
-Pour tous les policiers suivants, plus besoin de SQL Editor : un Commissaire (+) peut créer le compte dans **Authentication → Add user** puis ajouter l'agent directement depuis l'onglet **Administration** du site (en collant l'UID).
+Pour tous les policiers suivants, plus besoin de SQL Editor : un Commissaire (+) crée le compte dans **Authentication → Add user** avec l'e-mail au format `prenom.nom@pn-novalife.local` (le formulaire "Ajouter l'agent" dans l'onglet **Administration** du site affiche cet e-mail à générer dès que tu tapes le prénom/nom), puis ajoute l'agent depuis ce même formulaire en collant son UID.
 
 ## 3. Déployer sur GitHub
 
