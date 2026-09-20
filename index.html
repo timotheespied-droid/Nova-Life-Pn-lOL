@@ -4,7 +4,233 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Police Nationale — Nova Life</title>
-<link rel="stylesheet" href="css/style.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root{
+  --navy-950:#0b1220;
+  --navy-900:#101a2e;
+  --navy-800:#16233d;
+  --navy-700:#1f3153;
+  --brass:#b68a3d;
+  --brass-light:#d9b876;
+  --paper:#f4f1e9;
+  --paper-dim:#e7e2d3;
+  --ink:#1b1f27;
+  --ink-soft:#5b6270;
+  --red:#9c2b2b;
+  --green:#2f6b4f;
+  --radius:3px;
+  font-size:16px;
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:var(--navy-950);
+  color:var(--paper);
+  font-family:'Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,.brand{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  letter-spacing:.2px;
+}
+
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+a{color:inherit;}
+
+/* ---------- Login ---------- */
+.login-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(1100px 600px at 15% 10%, rgba(182,138,61,.10), transparent 60%),
+    var(--navy-950);
+  padding:24px;
+}
+.login-card{
+  width:100%;
+  max-width:400px;
+  background:var(--navy-900);
+  border:1px solid var(--navy-700);
+  border-radius:var(--radius);
+  padding:40px 36px 34px;
+}
+.login-crest{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:26px;
+}
+.login-crest .bar{width:4px;height:38px;background:var(--brass);border-radius:2px;}
+.login-crest h1{font-size:1.15rem;margin:0;line-height:1.25;}
+.login-crest span{display:block;font-size:.78rem;color:var(--brass-light);font-weight:500;font-family:'Inter';}
+
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:.82rem;color:var(--paper-dim);margin-bottom:6px;}
+.field input{
+  width:100%;
+  background:var(--navy-800);
+  border:1px solid var(--navy-700);
+  color:var(--paper);
+  padding:10px 12px;
+  border-radius:var(--radius);
+  font-size:.95rem;
+  font-family:'Inter';
+}
+.field input:focus{outline:2px solid var(--brass);outline-offset:1px;}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:none;
+  cursor:pointer;
+  padding:10px 18px;
+  border-radius:var(--radius);
+  font-size:.9rem;
+  font-weight:600;
+  font-family:'Inter';
+  transition:filter .12s ease, transform .12s ease;
+}
+.btn:active{transform:translateY(1px);}
+.btn-brass{background:var(--brass);color:var(--navy-950);}
+.btn-brass:hover{filter:brightness(1.08);}
+.btn-outline{background:transparent;border:1px solid var(--navy-700);color:var(--paper);}
+.btn-outline:hover{border-color:var(--brass);}
+.btn-danger{background:var(--red);color:var(--paper);}
+.btn-full{width:100%;}
+
+.login-error{
+  background:rgba(156,43,43,.15);
+  border:1px solid var(--red);
+  color:#f2c9c9;
+  padding:9px 12px;
+  border-radius:var(--radius);
+  font-size:.82rem;
+  margin-bottom:14px;
+  display:none;
+}
+
+.login-foot{margin-top:22px;font-size:.76rem;color:var(--ink-soft);text-align:center;}
+
+/* ---------- App shell ---------- */
+.app-shell{display:none;min-height:100vh;background:var(--paper);color:var(--ink);}
+.app-shell.active{display:flex;}
+.login-screen.hidden{display:none;}
+
+.sidebar{
+  width:232px;
+  flex-shrink:0;
+  background:var(--navy-950);
+  color:var(--paper);
+  display:flex;
+  flex-direction:column;
+  padding:22px 16px;
+}
+.sidebar .brand{font-size:1rem;line-height:1.3;margin-bottom:4px;}
+.sidebar .brand span{display:block;font-size:.72rem;color:var(--brass-light);font-family:'Inter';font-weight:500;}
+.sidebar hr{border:none;border-top:1px solid var(--navy-700);margin:18px 0;}
+
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 10px;
+  border-radius:var(--radius);
+  font-size:.88rem;
+  color:var(--paper-dim);
+  cursor:pointer;
+  margin-bottom:2px;
+  border-left:2px solid transparent;
+}
+.nav-item:hover{background:var(--navy-900);color:var(--paper);}
+.nav-item.active{background:var(--navy-900);color:var(--paper);border-left-color:var(--brass);}
+.nav-item.locked{opacity:.35;cursor:not-allowed;}
+.nav-item.locked:hover{background:none;color:var(--paper-dim);}
+
+.sidebar-user{margin-top:auto;padding-top:16px;border-top:1px solid var(--navy-700);}
+.sidebar-user .who{font-size:.85rem;font-weight:600;}
+.sidebar-user .grade{font-size:.75rem;color:var(--brass-light);margin-bottom:10px;}
+
+.main{flex:1;min-width:0;padding:32px 40px;overflow-y:auto;height:100vh;}
+.view{display:none;}
+.view.active{display:block;max-width:980px;}
+
+.page-head{margin-bottom:26px;}
+.page-head h2{font-size:1.5rem;margin:0 0 4px;}
+.page-head p{margin:0;color:var(--ink-soft);font-size:.9rem;}
+
+.card{
+  background:#fff;
+  border:1px solid var(--paper-dim);
+  border-radius:var(--radius);
+  padding:22px 24px;
+  margin-bottom:18px;
+}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.field-inline label{display:block;font-size:.78rem;color:var(--ink-soft);margin-bottom:5px;}
+.field-inline input,.field-inline select,.field-inline textarea{
+  width:100%;padding:9px 11px;border:1px solid var(--paper-dim);border-radius:var(--radius);
+  font-family:'Inter';font-size:.92rem;background:var(--paper);color:var(--ink);
+}
+.field-inline textarea{resize:vertical;min-height:64px;}
+
+table{width:100%;border-collapse:collapse;font-size:.88rem;}
+th{text-align:left;font-weight:600;color:var(--ink-soft);font-size:.76rem;text-transform:none;padding:8px 10px;border-bottom:1px solid var(--paper-dim);}
+td{padding:9px 10px;border-bottom:1px solid var(--paper-dim);}
+tr:last-child td{border-bottom:none;}
+tr.row-click{cursor:pointer;}
+tr.row-click:hover{background:var(--paper-dim);}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:600;}
+.badge-s{background:rgba(156,43,43,.12);color:var(--red);}
+.badge-ok{background:rgba(47,107,79,.12);color:var(--green);}
+
+.infraction-row{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--paper-dim);
+}
+.infraction-row:last-child{border-bottom:none;}
+.infraction-row input{margin-top:3px;}
+.infraction-row .titre{font-weight:600;font-size:.9rem;}
+.infraction-row .meta{font-size:.78rem;color:var(--ink-soft);margin-top:2px;}
+
+.total-box{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--navy-950);color:var(--paper);
+  padding:16px 20px;border-radius:var(--radius);margin-top:16px;
+}
+.total-box .amount{font-family:'Fraunces';font-size:1.5rem;color:var(--brass-light);}
+
+.empty-state{color:var(--ink-soft);font-size:.88rem;padding:20px 0;}
+
+.toast{
+  position:fixed;bottom:22px;right:22px;
+  background:var(--navy-950);color:var(--paper);
+  padding:12px 18px;border-radius:var(--radius);
+  font-size:.85rem;border-left:3px solid var(--brass);
+  display:none;z-index:50;
+}
+
+@media (max-width:820px){
+  .app-shell.active{flex-direction:column;}
+  .sidebar{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center;}
+  .sidebar-user{display:none;}
+  .main{padding:20px;}
+  .grid-2{grid-template-columns:1fr;}
+}
+
+</style>
 </head>
 <body>
 
@@ -179,7 +405,514 @@
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="js/config.js"></script>
-<script src="js/app.js"></script>
+<script>
+// ============================================================
+// CONFIGURATION SUPABASE
+// Remplis ces deux valeurs avec celles de TON projet Supabase :
+// Dashboard Supabase > Project Settings > API
+// ============================================================
+const SUPABASE_URL = "https://digrwwjvtpppbnarijhf.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_X-d8QuPAl7-4AT30BXpa4w_JY-IGf73";
+
+// Seuils de grade utilisés côté interface (doivent correspondre au schema.sql)
+const NIVEAU_DIRECTION = 8;     // Commissaire et +
+const NIVEAU_COMMANDEMENT = 5;  // Capitaine et +
+
+
+// ============================================================
+// APP - Police Nationale Nova Life
+// ============================================================
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let moi = null;        // { id, matricule, nom, prenom, grade: {nom, niveau} }
+let infractionsCache = [];
+let citoyenCourant = null; // citoyen affiché dans le panneau détail
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => (t.style.display = 'none'), 3200);
+}
+
+function euros(n) {
+  return new Intl.NumberFormat('fr-FR').format(n) + ' €';
+}
+
+// ---------------- AUTH ----------------
+
+// Transforme un prénom + nom RP en un identifiant technique unique
+// (Supabase a besoin d'un "email" en interne, mais l'utilisateur ne voit jamais ça).
+function identifiantDepuisNom(prenom, nom) {
+  const nettoyer = s => (s || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // enlève les accents
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, ''); // enlève espaces, tirets, apostrophes...
+  return `${nettoyer(prenom)}.${nettoyer(nom)}@pn-novalife.local`;
+}
+
+$('#login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const prenom = $('#login-prenom').value.trim();
+  const nom = $('#login-nom').value.trim();
+  const password = $('#login-password').value;
+  const errBox = $('#login-error');
+  errBox.style.display = 'none';
+
+  const email = identifiantDepuisNom(prenom, nom);
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) {
+    errBox.textContent = "Identifiants incorrects ou compte inconnu.";
+    errBox.style.display = 'block';
+    return;
+  }
+  await bootAfterLogin();
+});
+
+$('#logout-btn').addEventListener('click', async () => {
+  await sb.auth.signOut();
+  location.reload();
+});
+
+async function bootAfterLogin() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return showLogin();
+
+  const { data: agent, error } = await sb
+    .from('agents')
+    .select('id, matricule, nom, prenom, actif, grade:grade_id (nom, niveau)')
+    .eq('id', user.id)
+    .single();
+
+  if (error || !agent || !agent.actif) {
+    $('#login-error').textContent = "Ce compte n'est pas (ou plus) un compte policier actif. Contacte la Direction.";
+    $('#login-error').style.display = 'block';
+    await sb.auth.signOut();
+    return showLogin();
+  }
+
+  moi = agent;
+  showApp();
+}
+
+function showLogin() {
+  $('#login-screen').classList.remove('hidden');
+  $('#app-shell').classList.remove('active');
+}
+
+function showApp() {
+  $('#login-screen').classList.add('hidden');
+  $('#app-shell').classList.add('active');
+
+  $('#sidebar-name').textContent = `${moi.prenom} ${moi.nom}`;
+  $('#sidebar-grade').textContent = `${moi.grade.nom} · ${moi.matricule}`;
+
+  const niveau = moi.grade.niveau;
+  if (niveau < NIVEAU_COMMANDEMENT) {
+    $$('.locked-commandement').forEach(el => el.classList.add('locked'));
+  }
+  if (niveau < NIVEAU_DIRECTION) {
+    $$('.locked-direction').forEach(el => el.classList.add('locked'));
+  }
+
+  loadInfractions();
+  goToView('citoyens');
+}
+
+// ---------------- NAVIGATION ----------------
+
+$$('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    if (item.classList.contains('locked')) {
+      toast("Accès réservé à un grade supérieur.");
+      return;
+    }
+    goToView(item.dataset.view);
+  });
+});
+
+function goToView(name) {
+  $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === name));
+  $$('.view').forEach(v => v.classList.toggle('active', v.id === `view-${name}`));
+  if (name === 'citoyens') refreshCitoyensList();
+  if (name === 'interpellation') resetInterpellationForm();
+  if (name === 'fiches-s') loadFichesS();
+  if (name === 'admin') { loadAgents(); loadInfractionsAdmin(); }
+}
+
+// ---------------- INFRACTIONS (référentiel) ----------------
+
+async function loadInfractions() {
+  const { data, error } = await sb.from('infractions').select('*').order('categorie').order('id');
+  if (error) return toast("Impossible de charger le référentiel des infractions.");
+  infractionsCache = data;
+}
+
+// ---------------- CITOYENS ----------------
+
+$('#citoyen-search').addEventListener('input', debounce(refreshCitoyensList, 250));
+
+$('#new-citoyen-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    nom: $('#nc-nom').value.trim(),
+    prenom: $('#nc-prenom').value.trim(),
+    date_naissance: $('#nc-naissance').value || null,
+    adresse: $('#nc-adresse').value.trim() || null,
+    telephone: $('#nc-telephone').value.trim() || null,
+    created_by: moi.id,
+  };
+  if (!payload.nom || !payload.prenom) return toast("Nom et prénom requis.");
+
+  const { data, error } = await sb.from('citoyens').insert(payload).select().single();
+  if (error) return toast("Erreur lors de la création de l'identité.");
+  toast(`Identité créée : ${data.prenom} ${data.nom}`);
+  $('#new-citoyen-form').reset();
+  $('#new-citoyen-panel').style.display = 'none';
+  refreshCitoyensList();
+  openCitoyen(data.id);
+});
+
+$('#toggle-new-citoyen').addEventListener('click', () => {
+  const panel = $('#new-citoyen-panel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+});
+
+async function refreshCitoyensList() {
+  const q = $('#citoyen-search').value.trim();
+  let query = sb.from('citoyens').select('*').order('nom').limit(50);
+  if (q) query = query.or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`);
+  const { data, error } = await query;
+  const tbody = $('#citoyens-tbody');
+  tbody.innerHTML = '';
+  if (error) return toast("Erreur de chargement des citoyens.");
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="4" class="empty-state">Aucun résultat.</td></tr>`;
+    return;
+  }
+  data.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.className = 'row-click';
+    tr.innerHTML = `
+      <td>${c.prenom} ${c.nom}</td>
+      <td>${c.date_naissance ?? '—'}</td>
+      <td>${c.telephone ?? '—'}</td>
+      <td>${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''}</td>
+    `;
+    tr.addEventListener('click', () => openCitoyen(c.id));
+    tbody.appendChild(tr);
+  });
+}
+
+async function openCitoyen(id) {
+  const { data: c, error } = await sb.from('citoyens').select('*').eq('id', id).single();
+  if (error) return toast("Impossible de charger cette fiche.");
+  citoyenCourant = c;
+
+  const box = $('#citoyen-detail');
+  box.style.display = 'block';
+  box.innerHTML = `
+    <h3>${c.prenom} ${c.nom} ${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''}</h3>
+    <p class="meta" style="color:var(--ink-soft);font-size:.85rem;margin-top:-6px;">
+      Né(e) le ${c.date_naissance ?? '—'} · ${c.telephone ?? 'tél. inconnu'} · ${c.adresse ?? 'adresse inconnue'}
+    </p>
+    <div style="display:flex;gap:8px;margin:14px 0;">
+      <button class="btn btn-outline" id="btn-nouvelle-interpellation-depuis-fiche">+ Interpellation</button>
+      <button class="btn btn-outline locked-commandement" id="btn-toggle-fiche-s">${c.fiche_s ? 'Lever le fiché S' : 'Marquer fiché S'}</button>
+    </div>
+    <h4 style="margin-bottom:8px;">Casier judiciaire</h4>
+    <div id="casier-list"><p class="empty-state">Chargement…</p></div>
+  `;
+  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) {
+    $('#btn-toggle-fiche-s').classList.add('locked');
+  }
+
+  $('#btn-nouvelle-interpellation-depuis-fiche').addEventListener('click', () => {
+    goToView('interpellation');
+    selectCitoyenForInterpellation(c);
+  });
+  $('#btn-toggle-fiche-s').addEventListener('click', () => toggleFicheS(c));
+
+  loadCasier(c.id);
+}
+
+async function toggleFicheS(c) {
+  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) return toast("Réservé au Commandement et +.");
+  let motif = null;
+  if (!c.fiche_s) {
+    motif = prompt("Motif du fiché S (visible uniquement des policiers) :") || 'Non précisé';
+  }
+  const { error } = await sb.from('citoyens')
+    .update({ fiche_s: !c.fiche_s, fiche_s_motif: motif, updated_at: new Date().toISOString() })
+    .eq('id', c.id);
+  if (error) return toast("Erreur lors de la mise à jour.");
+  toast(c.fiche_s ? "Fiché S levé." : "Fiché S enregistré.");
+  openCitoyen(c.id);
+  refreshCitoyensList();
+}
+
+async function loadCasier(citoyenId) {
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, agent:agent_id (nom, prenom, matricule)')
+    .eq('citoyen_id', citoyenId)
+    .order('created_at', { ascending: false });
+
+  const box = $('#casier-list');
+  if (error) { box.innerHTML = '<p class="empty-state">Erreur de chargement.</p>'; return; }
+  if (!data.length) { box.innerHTML = '<p class="empty-state">Casier vierge.</p>'; return; }
+
+  box.innerHTML = data.map(i => {
+    const titres = i.infraction_ids
+      .map(id => infractionsCache.find(f => f.id === id)?.titre)
+      .filter(Boolean)
+      .join(', ');
+    const date = new Date(i.created_at).toLocaleDateString('fr-FR');
+    return `
+      <div style="border-bottom:1px solid var(--paper-dim);padding:10px 0;">
+        <div style="display:flex;justify-content:space-between;">
+          <strong style="font-size:.88rem;">${date} — ${euros(i.montant_total)}</strong>
+          <span style="font-size:.78rem;color:var(--ink-soft);">${i.statut === 'annulee' ? 'ANNULÉE' : ''}</span>
+        </div>
+        <div style="font-size:.85rem;margin-top:2px;">${titres}</div>
+        <div style="font-size:.78rem;color:var(--ink-soft);margin-top:2px;">
+          Agent ${i.agent.prenom} ${i.agent.nom} (${i.agent.matricule})${i.lieu ? ' · ' + i.lieu : ''}${i.garde_a_vue ? ' · Garde à vue' : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function debounce(fn, ms) {
+  let t;
+  return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+}
+
+// ---------------- NOUVELLE INTERPELLATION ----------------
+
+let interpellationCitoyen = null;
+
+function resetInterpellationForm() {
+  $('#interp-citoyen-choisi').innerHTML = '';
+  $('#interp-citoyen-search').value = '';
+  $('#interp-citoyen-results').innerHTML = '';
+  $('#interp-lieu').value = '';
+  $('#interp-notes').value = '';
+  renderInfractionChecklist();
+  updateInterpellationTotal();
+  interpellationCitoyen = citoyenCourant; // pré-remplit si on vient d'une fiche
+  if (interpellationCitoyen) showChosenCitoyen();
+}
+
+$('#interp-citoyen-search').addEventListener('input', debounce(async () => {
+  const q = $('#interp-citoyen-search').value.trim();
+  const box = $('#interp-citoyen-results');
+  if (!q) { box.innerHTML = ''; return; }
+  const { data } = await sb.from('citoyens').select('*')
+    .or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`).limit(8);
+  box.innerHTML = (data || []).map(c =>
+    `<div class="nav-item" data-id="${c.id}" style="color:var(--ink);">${c.prenom} ${c.nom}</div>`
+  ).join('') || '<div class="empty-state">Aucun résultat — utilise "Citoyens" pour créer l\'identité.</div>';
+  $$('.nav-item', box).forEach(el => el.addEventListener('click', () => {
+    selectCitoyenForInterpellation(data.find(c => c.id === el.dataset.id));
+  }));
+}, 250));
+
+function selectCitoyenForInterpellation(c) {
+  interpellationCitoyen = c;
+  $('#interp-citoyen-results').innerHTML = '';
+  $('#interp-citoyen-search').value = '';
+  showChosenCitoyen();
+}
+
+function showChosenCitoyen() {
+  const c = interpellationCitoyen;
+  $('#interp-citoyen-choisi').innerHTML = c
+    ? `<div class="badge badge-ok">${c.prenom} ${c.nom}</div>`
+    : '';
+}
+
+function renderInfractionChecklist() {
+  const box = $('#infraction-checklist');
+  const cats = { comportement: 'Titre I — Attitudes envers les forces de l\'ordre', route: 'Titre II — Code de la route' };
+  box.innerHTML = Object.entries(cats).map(([key, label]) => `
+    <h4 style="margin:14px 0 6px;font-size:.85rem;color:var(--ink-soft);">${label}</h4>
+    ${infractionsCache.filter(f => f.categorie === key).map(f => `
+      <label class="infraction-row">
+        <input type="checkbox" data-id="${f.id}" class="infraction-check">
+        <span>
+          <div class="titre">${f.titre}</div>
+          <div class="meta">
+            ${f.amende_min === f.amende_max ? euros(f.amende_min) : euros(f.amende_min) + ' – ' + euros(f.amende_max)}
+            ${f.points ? ' · ' + f.points + ' pts' : ''}
+            ${f.garde_a_vue ? ' · Garde à vue possible' : ''}
+            ${f.peine ? ' · ' + f.peine : ''}
+          </div>
+        </span>
+      </label>
+    `).join('')}
+  `).join('');
+  $$('.infraction-check', box).forEach(cb => cb.addEventListener('change', updateInterpellationTotal));
+}
+
+function updateInterpellationTotal() {
+  const checked = $$('.infraction-check:checked').map(cb => infractionsCache.find(f => f.id == cb.dataset.id));
+  const total = checked.reduce((sum, f) => sum + f.amende_max, 0);
+  const peines = checked.map(f => f.peine).filter(Boolean);
+  const gav = checked.some(f => f.garde_a_vue);
+  $('#interp-total').textContent = euros(total);
+  $('#interp-peines').textContent = peines.length ? peines.join(' ; ') : 'Aucune sanction complémentaire.';
+  $('#interp-gav').textContent = gav ? 'Oui' : 'Non';
+}
+
+$('#interpellation-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!interpellationCitoyen) return toast("Sélectionne d'abord un citoyen.");
+  const checked = $$('.infraction-check:checked').map(cb => Number(cb.dataset.id));
+  if (!checked.length) return toast("Sélectionne au moins une infraction.");
+
+  const infs = checked.map(id => infractionsCache.find(f => f.id === id));
+  const montant_total = infs.reduce((s, f) => s + f.amende_max, 0);
+  const peine_appliquee = infs.map(f => f.peine).filter(Boolean).join(' ; ') || null;
+  const garde_a_vue = infs.some(f => f.garde_a_vue);
+
+  const { error } = await sb.from('interpellations').insert({
+    citoyen_id: interpellationCitoyen.id,
+    agent_id: moi.id,
+    infraction_ids: checked,
+    montant_total,
+    peine_appliquee,
+    garde_a_vue,
+    lieu: $('#interp-lieu').value.trim() || null,
+    notes: $('#interp-notes').value.trim() || null,
+  });
+  if (error) return toast("Erreur lors de l'enregistrement.");
+  toast(`Interpellation enregistrée — ${euros(montant_total)}`);
+  resetInterpellationForm();
+});
+
+// ---------------- FICHÉS S ----------------
+
+async function loadFichesS() {
+  const { data, error } = await sb.from('citoyens').select('*').eq('fiche_s', true).order('nom');
+  const box = $('#fiches-s-list');
+  if (error) return (box.innerHTML = '<p class="empty-state">Erreur de chargement.</p>');
+  if (!data.length) return (box.innerHTML = '<p class="empty-state">Aucun fiché S actuellement.</p>');
+  box.innerHTML = data.map(c => `
+    <div class="card" style="cursor:pointer;" data-id="${c.id}">
+      <strong>${c.prenom} ${c.nom}</strong>
+      <div style="font-size:.85rem;color:var(--ink-soft);margin-top:4px;">${c.fiche_s_motif ?? 'Motif non précisé'}</div>
+    </div>
+  `).join('');
+  $$('.card', box).forEach(el => el.addEventListener('click', () => {
+    goToView('citoyens');
+    openCitoyen(el.dataset.id);
+  }));
+}
+
+// ---------------- ADMIN : agents ----------------
+
+async function loadAgents() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data: grades } = await sb.from('grades').select('*').order('niveau');
+  const sel = $('#new-agent-grade');
+  sel.innerHTML = grades.map(g => `<option value="${g.id}">${g.nom}</option>`).join('');
+
+  const { data, error } = await sb.from('agents').select('*, grade:grade_id (nom, niveau)').order('nom');
+  const tbody = $('#agents-tbody');
+  if (error) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Erreur.</td></tr>'; return; }
+  tbody.innerHTML = data.map(a => `
+    <tr>
+      <td>${a.prenom} ${a.nom}</td>
+      <td class="mono">${a.matricule}</td>
+      <td>
+        <select data-agent="${a.id}" class="agent-grade-select">
+          ${grades.map(g => `<option value="${g.id}" ${g.id === a.grade_id ? 'selected' : ''}>${g.nom}</option>`).join('')}
+        </select>
+      </td>
+      <td>${a.actif ? '<span class="badge badge-ok">Actif</span>' : '<span class="badge badge-s">Inactif</span>'}</td>
+      <td><button class="btn btn-outline agent-toggle-actif" data-agent="${a.id}" data-actif="${a.actif}">${a.actif ? 'Désactiver' : 'Réactiver'}</button></td>
+    </tr>
+  `).join('');
+
+  $$('.agent-grade-select', tbody).forEach(sel => sel.addEventListener('change', async () => {
+    const { error } = await sb.from('agents').update({ grade_id: Number(sel.value) }).eq('id', sel.dataset.agent);
+    toast(error ? "Erreur." : "Grade mis à jour.");
+  }));
+  $$('.agent-toggle-actif', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const actif = btn.dataset.actif === 'true';
+    const { error } = await sb.from('agents').update({ actif: !actif }).eq('id', btn.dataset.agent);
+    if (error) return toast("Erreur.");
+    loadAgents();
+  }));
+}
+
+function updateNewAgentEmailPreview() {
+  const prenom = $('#new-agent-prenom').value.trim();
+  const nom = $('#new-agent-nom').value.trim();
+  const preview = $('#new-agent-email-preview');
+  if (!preview) return;
+  preview.textContent = (prenom && nom)
+    ? `Crée d'abord ce compte dans Supabase (Authentication → Add user) avec l'email : ${identifiantDepuisNom(prenom, nom)}`
+    : '';
+}
+$('#new-agent-nom')?.addEventListener('input', updateNewAgentEmailPreview);
+$('#new-agent-prenom')?.addEventListener('input', updateNewAgentEmailPreview);
+
+$('#new-agent-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    id: $('#new-agent-uid').value.trim(),
+    matricule: $('#new-agent-matricule').value.trim(),
+    nom: $('#new-agent-nom').value.trim(),
+    prenom: $('#new-agent-prenom').value.trim(),
+    grade_id: Number($('#new-agent-grade').value),
+  };
+  if (!payload.id || !payload.matricule || !payload.nom || !payload.prenom) {
+    return toast("Tous les champs sont requis (dont l'UID Supabase, voir README).");
+  }
+  const { error } = await sb.from('agents').insert(payload);
+  if (error) return toast("Erreur : vérifie que l'UID existe bien dans Authentication.");
+  toast("Agent ajouté.");
+  $('#new-agent-form').reset();
+  loadAgents();
+});
+
+// ---------------- ADMIN : infractions ----------------
+
+async function loadInfractionsAdmin() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const tbody = $('#infractions-tbody');
+  tbody.innerHTML = infractionsCache.map(f => `
+    <tr>
+      <td style="max-width:220px;">${f.titre}</td>
+      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="amende_min" value="${f.amende_min}" style="width:80px;"></td>
+      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="amende_max" value="${f.amende_max}" style="width:80px;"></td>
+      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="points" value="${f.points}" style="width:60px;"></td>
+    </tr>
+  `).join('');
+  $$('.inf-edit', tbody).forEach(inp => inp.addEventListener('change', async () => {
+    const { error } = await sb.from('infractions')
+      .update({ [inp.dataset.field]: Number(inp.value) })
+      .eq('id', inp.dataset.id);
+    if (error) return toast("Erreur (droits insuffisants ?).");
+    toast("Infraction mise à jour.");
+    loadInfractions();
+  }));
+}
+
+// ---------------- BOOT ----------------
+
+(async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) await bootAfterLogin();
+  else showLogin();
+})();
+
+</script>
 </body>
 </html>
