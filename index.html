@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Police Nationale — Nova Life</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ ÉCRAN DE CONNEXION ============ -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-crest">
+      <div class="bar"></div>
+      <div>
+        <h1>Police Nationale</h1>
+        <span>Portail interne — Nova Life</span>
+      </div>
+    </div>
+
+    <div class="login-error" id="login-error"></div>
+
+    <form id="login-form">
+      <div class="field">
+        <label for="login-email">Identifiant (e-mail)</label>
+        <input type="email" id="login-email" required autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="login-password">Mot de passe</label>
+        <input type="password" id="login-password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-brass btn-full">Se connecter</button>
+    </form>
+
+    <p class="login-foot">Accès strictement réservé aux agents de la Police Nationale.<br>Perte d'accès : contacte la Direction.</p>
+  </div>
+</div>
+
+<!-- ============ APPLICATION ============ -->
+<div class="app-shell" id="app-shell">
+  <aside class="sidebar">
+    <div class="brand">Police Nationale<span>Nova Life</span></div>
+    <hr>
+    <div class="nav-item active" data-view="citoyens">Citoyens</div>
+    <div class="nav-item" data-view="interpellation">Nouvelle interpellation</div>
+    <div class="nav-item locked-commandement" data-view="fiches-s">Fichés S</div>
+    <div class="nav-item locked-direction" data-view="admin">Administration</div>
+    <div class="sidebar-user">
+      <div class="who" id="sidebar-name">—</div>
+      <div class="grade" id="sidebar-grade">—</div>
+      <button class="btn btn-outline btn-full" id="logout-btn">Déconnexion</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ---------- VUE CITOYENS ---------- -->
+    <section class="view active" id="view-citoyens">
+      <div class="page-head">
+        <h2>Citoyens</h2>
+        <p>Recherche une identité existante ou crée une nouvelle fiche.</p>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;gap:10px;margin-bottom:14px;">
+          <input type="text" id="citoyen-search" placeholder="Rechercher par nom ou prénom…" class="field-inline" style="flex:1;padding:9px 11px;border:1px solid var(--paper-dim);border-radius:3px;">
+          <button class="btn btn-outline" id="toggle-new-citoyen">+ Nouvelle identité</button>
+        </div>
+
+        <form id="new-citoyen-form" id="new-citoyen-panel" style="display:none;border:1px solid var(--paper-dim);border-radius:3px;padding:16px;margin-bottom:16px;">
+          <div class="grid-2">
+            <div class="field-inline"><label>Nom</label><input id="nc-nom" required></div>
+            <div class="field-inline"><label>Prénom</label><input id="nc-prenom" required></div>
+            <div class="field-inline"><label>Date de naissance</label><input type="date" id="nc-naissance"></div>
+            <div class="field-inline"><label>Téléphone</label><input id="nc-telephone"></div>
+          </div>
+          <div class="field-inline" style="margin-top:12px;"><label>Adresse</label><input id="nc-adresse"></div>
+          <button type="submit" class="btn btn-brass" style="margin-top:14px;">Créer l'identité</button>
+        </form>
+
+        <table>
+          <thead><tr><th>Nom</th><th>Naissance</th><th>Téléphone</th><th></th></tr></thead>
+          <tbody id="citoyens-tbody"><tr><td colspan="4" class="empty-state">Chargement…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card" id="citoyen-detail" style="display:none;"></div>
+    </section>
+
+    <!-- ---------- VUE INTERPELLATION ---------- -->
+    <section class="view" id="view-interpellation">
+      <div class="page-head">
+        <h2>Nouvelle interpellation</h2>
+        <p>Sélectionne le citoyen, coche les infractions constatées : l'amende et les sanctions se calculent automatiquement.</p>
+      </div>
+
+      <div class="card">
+        <div class="field-inline" style="margin-bottom:6px;"><label>Citoyen</label></div>
+        <input type="text" id="interp-citoyen-search" placeholder="Rechercher un citoyen…" class="field-inline" style="padding:9px 11px;border:1px solid var(--paper-dim);border-radius:3px;width:100%;">
+        <div id="interp-citoyen-results" style="margin-top:6px;"></div>
+        <div id="interp-citoyen-choisi" style="margin-top:8px;"></div>
+      </div>
+
+      <form id="interpellation-form">
+        <div class="card">
+          <div class="field-inline" style="margin-bottom:10px;"><label>Infractions constatées</label></div>
+          <div id="infraction-checklist"></div>
+        </div>
+
+        <div class="card">
+          <div class="grid-2">
+            <div class="field-inline"><label>Lieu</label><input id="interp-lieu" placeholder="Ex : Legion Square"></div>
+            <div class="field-inline"><label>Notes (facultatif)</label><input id="interp-notes"></div>
+          </div>
+        </div>
+
+        <div class="total-box">
+          <div>
+            <div style="font-size:.8rem;color:var(--brass-light);">Sanctions complémentaires : <span id="interp-peines">—</span></div>
+            <div style="font-size:.8rem;color:var(--brass-light);">Garde à vue : <span id="interp-gav">Non</span></div>
+          </div>
+          <div class="amount" id="interp-total">0 €</div>
+        </div>
+
+        <button type="submit" class="btn btn-brass" style="margin-top:16px;">Enregistrer l'interpellation</button>
+      </form>
+    </section>
+
+    <!-- ---------- VUE FICHÉS S ---------- -->
+    <section class="view" id="view-fiches-s">
+      <div class="page-head">
+        <h2>Fichés S</h2>
+        <p>Liste des individus signalés comme sensibles. Accès Commandement et +.</p>
+      </div>
+      <div id="fiches-s-list"></div>
+    </section>
+
+    <!-- ---------- VUE ADMIN ---------- -->
+    <section class="view" id="view-admin">
+      <div class="page-head">
+        <h2>Administration</h2>
+        <p>Gestion des comptes policiers et du référentiel légal. Accès Direction uniquement.</p>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0;">Agents</h3>
+        <form id="new-agent-form" class="grid-2" style="margin-bottom:16px;">
+          <div class="field-inline"><label>UID Supabase (Authentication)</label><input id="new-agent-uid" placeholder="uuid de l'utilisateur" required></div>
+          <div class="field-inline"><label>Matricule</label><input id="new-agent-matricule" required></div>
+          <div class="field-inline"><label>Nom</label><input id="new-agent-nom" required></div>
+          <div class="field-inline"><label>Prénom</label><input id="new-agent-prenom" required></div>
+          <div class="field-inline"><label>Grade</label><select id="new-agent-grade"></select></div>
+          <div style="align-self:end;"><button type="submit" class="btn btn-brass btn-full">Ajouter l'agent</button></div>
+        </form>
+        <table>
+          <thead><tr><th>Nom</th><th>Matricule</th><th>Grade</th><th>Statut</th><th></th></tr></thead>
+          <tbody id="agents-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0;">Référentiel des infractions</h3>
+        <table>
+          <thead><tr><th>Infraction</th><th>Amende min</th><th>Amende max</th><th>Points</th></tr></thead>
+          <tbody id="infractions-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
