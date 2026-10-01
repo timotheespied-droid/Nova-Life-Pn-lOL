@@ -5,22 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Police Nationale — Nova Life</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
 
 :root{
-  --navy-950:#0b1220;
-  --navy-900:#101a2e;
-  --navy-800:#16233d;
-  --navy-700:#1f3153;
+  --navy-950:#0a111f;
+  --navy-900:#0f1a2e;
+  --navy-850:#131f38;
+  --navy-800:#182746;
+  --navy-700:#22355c;
+  --navy-600:#324a78;
   --brass:#b68a3d;
-  --brass-light:#d9b876;
-  --paper:#f4f1e9;
+  --brass-light:#e0bd7a;
+  --brass-dim:rgba(182,138,61,.16);
+  --paper:#f6f3ec;
   --paper-dim:#e7e2d3;
+  --paper-line:#ded7c3;
   --ink:#1b1f27;
-  --ink-soft:#5b6270;
-  --red:#9c2b2b;
+  --ink-soft:#666d7a;
+  --ink-faint:#9aa0ab;
+  --red:#a5342f;
+  --red-bg:rgba(165,52,47,.1);
   --green:#2f6b4f;
-  --radius:3px;
+  --green-bg:rgba(47,107,79,.1);
+  --radius-sm:4px;
+  --radius:8px;
+  --radius-lg:14px;
+  --shadow-sm:0 1px 2px rgba(15,20,35,.06);
+  --shadow-md:0 6px 20px -6px rgba(15,20,35,.18);
+  --shadow-card:0 1px 3px rgba(15,20,35,.05), 0 1px 2px rgba(15,20,35,.04);
   font-size:16px;
 }
 
@@ -32,17 +44,30 @@ body{
   color:var(--paper);
   font-family:'Inter',system-ui,sans-serif;
   -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
 }
 
 h1,h2,h3,.brand{
   font-family:'Fraunces',serif;
   font-weight:600;
-  letter-spacing:.2px;
+  letter-spacing:.1px;
 }
 
-.mono{font-family:'IBM Plex Mono',monospace;}
-
+.mono{font-family:'IBM Plex Mono',monospace;letter-spacing:.2px;}
 a{color:inherit;}
+svg{display:block;flex-shrink:0;}
+.icon{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.icon-sm{width:14px;height:14px;}
+.icon-lg{width:26px;height:26px;}
+
+::selection{background:var(--brass-dim);color:var(--ink);}
+
+/* scrollbars */
+::-webkit-scrollbar{width:9px;height:9px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:6px;}
+.main::-webkit-scrollbar-thumb{background:rgba(20,25,40,.15);}
+.main::-webkit-scrollbar-thumb:hover{background:rgba(20,25,40,.25);}
 
 /* ---------- Login ---------- */
 .login-screen{
@@ -51,76 +76,100 @@ a{color:inherit;}
   align-items:center;
   justify-content:center;
   background:
-    radial-gradient(1100px 600px at 15% 10%, rgba(182,138,61,.10), transparent 60%),
+    radial-gradient(900px 500px at 12% 8%, rgba(182,138,61,.14), transparent 55%),
+    radial-gradient(700px 500px at 90% 95%, rgba(34,53,92,.5), transparent 55%),
     var(--navy-950);
   padding:24px;
 }
 .login-card{
   width:100%;
-  max-width:400px;
+  max-width:412px;
   background:var(--navy-900);
   border:1px solid var(--navy-700);
-  border-radius:var(--radius);
-  padding:40px 36px 34px;
+  border-radius:var(--radius-lg);
+  padding:38px 34px 30px;
+  box-shadow:var(--shadow-md);
+  animation:rise .5s cubic-bezier(.2,.8,.2,1);
 }
+@keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
 .login-crest{
   display:flex;
   align-items:center;
   gap:14px;
-  margin-bottom:26px;
+  margin-bottom:28px;
 }
-.login-crest .bar{width:4px;height:38px;background:var(--brass);border-radius:2px;}
-.login-crest h1{font-size:1.15rem;margin:0;line-height:1.25;}
-.login-crest span{display:block;font-size:.78rem;color:var(--brass-light);font-weight:500;font-family:'Inter';}
+.login-crest .badge-icon{
+  width:46px;height:46px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(155deg,var(--navy-800),var(--navy-850));
+  border:1px solid var(--navy-700);
+  border-radius:var(--radius);
+  color:var(--brass-light);
+}
+.login-crest h1{font-size:1.2rem;margin:0;line-height:1.25;}
+.login-crest span{display:block;font-size:.78rem;color:var(--brass-light);font-weight:500;font-family:'Inter';margin-top:1px;}
 
-.field{margin-bottom:16px;}
-.field label{display:block;font-size:.82rem;color:var(--paper-dim);margin-bottom:6px;}
+.auth-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--navy-950);padding:4px;border-radius:var(--radius);border:1px solid var(--navy-700);}
+.auth-tabs .btn{flex:1;padding:8px 10px;font-size:.85rem;}
+.auth-tabs .btn.btn-outline{background:transparent;border:none;color:var(--ink-faint);}
+.auth-tabs .btn.btn-brass{box-shadow:var(--shadow-sm);}
+
+.field{margin-bottom:15px;}
+.field label{display:block;font-size:.8rem;color:var(--paper-dim);margin-bottom:6px;font-weight:500;}
 .field input{
   width:100%;
-  background:var(--navy-800);
+  background:var(--navy-850);
   border:1px solid var(--navy-700);
   color:var(--paper);
-  padding:10px 12px;
-  border-radius:var(--radius);
+  padding:10px 13px;
+  border-radius:var(--radius-sm);
   font-size:.95rem;
   font-family:'Inter';
+  transition:border-color .15s ease, background .15s ease;
 }
-.field input:focus{outline:2px solid var(--brass);outline-offset:1px;}
+.field input:hover{border-color:var(--navy-600,#324a78);}
+.field input:focus{outline:none;border-color:var(--brass);background:var(--navy-800);}
 
 .btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:8px;
+  gap:7px;
   border:none;
   cursor:pointer;
   padding:10px 18px;
-  border-radius:var(--radius);
-  font-size:.9rem;
+  border-radius:var(--radius-sm);
+  font-size:.88rem;
   font-weight:600;
   font-family:'Inter';
-  transition:filter .12s ease, transform .12s ease;
+  transition:filter .12s ease, transform .08s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+  white-space:nowrap;
 }
-.btn:active{transform:translateY(1px);}
-.btn-brass{background:var(--brass);color:var(--navy-950);}
-.btn-brass:hover{filter:brightness(1.08);}
+.btn:active{transform:translateY(1px) scale(.99);}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none;}
+.btn-brass{background:linear-gradient(180deg,var(--brass-light),var(--brass));color:var(--navy-950);box-shadow:0 1px 0 rgba(255,255,255,.25) inset;}
+.btn-brass:hover:not(:disabled){filter:brightness(1.06);}
 .btn-outline{background:transparent;border:1px solid var(--navy-700);color:var(--paper);}
-.btn-outline:hover{border-color:var(--brass);}
-.btn-danger{background:var(--red);color:var(--paper);}
+.btn-outline:hover{border-color:var(--brass);color:var(--brass-light);}
+.btn-danger{background:var(--red);color:#fff;}
 .btn-full{width:100%;}
 
-.login-error{
-  background:rgba(156,43,43,.15);
-  border:1px solid var(--red);
-  color:#f2c9c9;
-  padding:9px 12px;
-  border-radius:var(--radius);
+.login-error, .login-success{
+  padding:10px 13px;
+  border-radius:var(--radius-sm);
   font-size:.82rem;
-  margin-bottom:14px;
+  margin-bottom:16px;
   display:none;
+  align-items:flex-start;
+  gap:8px;
+  line-height:1.4;
+  animation:rise .25s ease;
 }
+.login-error{background:var(--red-bg);border:1px solid var(--red);color:#f3c7c4;}
+.login-success{background:var(--green-bg);border:1px solid var(--green);color:#bfe6d2;}
 
-.login-foot{margin-top:22px;font-size:.76rem;color:var(--ink-soft);text-align:center;}
+.login-foot{margin-top:24px;font-size:.76rem;color:var(--ink-faint);text-align:center;line-height:1.6;}
 
 /* ---------- App shell ---------- */
 .app-shell{display:none;min-height:100vh;background:var(--paper);color:var(--ink);}
@@ -128,106 +177,197 @@ a{color:inherit;}
 .login-screen.hidden{display:none;}
 
 .sidebar{
-  width:232px;
+  width:236px;
   flex-shrink:0;
   background:var(--navy-950);
   color:var(--paper);
   display:flex;
   flex-direction:column;
-  padding:22px 16px;
+  padding:20px 14px;
+  position:relative;
+  z-index:20;
 }
-.sidebar .brand{font-size:1rem;line-height:1.3;margin-bottom:4px;}
-.sidebar .brand span{display:block;font-size:.72rem;color:var(--brass-light);font-family:'Inter';font-weight:500;}
-.sidebar hr{border:none;border-top:1px solid var(--navy-700);margin:18px 0;}
+.sidebar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.sidebar .brand-row{display:flex;align-items:center;gap:10px;}
+.sidebar .brand-row .badge-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--navy-850);border:1px solid var(--navy-700);border-radius:6px;color:var(--brass-light);flex-shrink:0;}
+.sidebar .brand{font-size:.94rem;line-height:1.2;}
+.sidebar .brand span{display:block;font-size:.68rem;color:var(--brass-light);font-family:'Inter';font-weight:500;}
+.sidebar hr{border:none;border-top:1px solid var(--navy-800);margin:16px 0;}
+.sidebar-close{display:none;background:none;border:none;color:var(--ink-faint);cursor:pointer;padding:4px;}
 
 .nav-item{
   display:flex;
   align-items:center;
-  gap:10px;
-  padding:9px 10px;
-  border-radius:var(--radius);
-  font-size:.88rem;
+  gap:11px;
+  padding:9px 11px;
+  border-radius:var(--radius-sm);
+  font-size:.87rem;
+  font-weight:500;
   color:var(--paper-dim);
   cursor:pointer;
   margin-bottom:2px;
   border-left:2px solid transparent;
+  transition:background .12s ease, color .12s ease;
 }
+.nav-item .icon{color:var(--ink-faint);transition:color .12s ease;}
 .nav-item:hover{background:var(--navy-900);color:var(--paper);}
+.nav-item:hover .icon{color:var(--brass-light);}
 .nav-item.active{background:var(--navy-900);color:var(--paper);border-left-color:var(--brass);}
+.nav-item.active .icon{color:var(--brass-light);}
 .nav-item.locked{opacity:.35;cursor:not-allowed;}
 .nav-item.locked:hover{background:none;color:var(--paper-dim);}
+.nav-item.locked:hover .icon{color:var(--ink-faint);}
+.nav-item .lock-icon{margin-left:auto;color:var(--ink-faint);}
 
-.sidebar-user{margin-top:auto;padding-top:16px;border-top:1px solid var(--navy-700);}
-.sidebar-user .who{font-size:.85rem;font-weight:600;}
-.sidebar-user .grade{font-size:.75rem;color:var(--brass-light);margin-bottom:10px;}
+.sidebar-user{margin-top:auto;padding-top:14px;border-top:1px solid var(--navy-800);}
+.sidebar-user .who-row{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.sidebar-user .avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(155deg,var(--brass-light),var(--brass));
+  color:var(--navy-950);display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces';font-weight:700;font-size:.85rem;flex-shrink:0;
+}
+.sidebar-user .who{font-size:.84rem;font-weight:600;line-height:1.25;}
+.sidebar-user .grade{font-size:.72rem;color:var(--brass-light);}
 
-.main{flex:1;min-width:0;padding:32px 40px;overflow-y:auto;height:100vh;}
+.mobile-topbar{display:none;}
+
+.main{flex:1;min-width:0;padding:34px 42px 60px;overflow-y:auto;height:100vh;}
 .view{display:none;}
-.view.active{display:block;max-width:980px;}
+.view.active{display:block;max-width:1000px;animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 
-.page-head{margin-bottom:26px;}
-.page-head h2{font-size:1.5rem;margin:0 0 4px;}
+.page-head{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+.page-head h2{font-size:1.55rem;margin:0 0 4px;letter-spacing:-.2px;}
 .page-head p{margin:0;color:var(--ink-soft);font-size:.9rem;}
+.page-head-icon{
+  width:42px;height:42px;flex-shrink:0;border-radius:var(--radius);
+  background:#fff;border:1px solid var(--paper-line);
+  display:flex;align-items:center;justify-content:center;color:var(--brass);
+  box-shadow:var(--shadow-card);
+}
 
 .card{
   background:#fff;
-  border:1px solid var(--paper-dim);
+  border:1px solid var(--paper-line);
   border-radius:var(--radius);
   padding:22px 24px;
   margin-bottom:18px;
+  box-shadow:var(--shadow-card);
+  transition:box-shadow .15s ease;
 }
 
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.card-head h3{margin:0;font-size:1rem;}
+
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.field-inline label{display:block;font-size:.78rem;color:var(--ink-soft);margin-bottom:5px;}
+.field-inline label{display:block;font-size:.78rem;color:var(--ink-soft);margin-bottom:5px;font-weight:500;}
 .field-inline input,.field-inline select,.field-inline textarea{
-  width:100%;padding:9px 11px;border:1px solid var(--paper-dim);border-radius:var(--radius);
+  width:100%;padding:9px 12px;border:1px solid var(--paper-line);border-radius:var(--radius-sm);
   font-family:'Inter';font-size:.92rem;background:var(--paper);color:var(--ink);
+  transition:border-color .15s ease, background .15s ease;
+}
+.field-inline input:hover,.field-inline select:hover{border-color:#c9c1a8;}
+.field-inline input:focus,.field-inline select:focus,.field-inline textarea:focus{
+  outline:none;border-color:var(--brass);background:#fff;
 }
 .field-inline textarea{resize:vertical;min-height:64px;}
 
-table{width:100%;border-collapse:collapse;font-size:.88rem;}
-th{text-align:left;font-weight:600;color:var(--ink-soft);font-size:.76rem;text-transform:none;padding:8px 10px;border-bottom:1px solid var(--paper-dim);}
-td{padding:9px 10px;border-bottom:1px solid var(--paper-dim);}
-tr:last-child td{border-bottom:none;}
-tr.row-click{cursor:pointer;}
-tr.row-click:hover{background:var(--paper-dim);}
+.search-input-wrap{position:relative;flex:1;}
+.search-input-wrap .icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-faint);pointer-events:none;}
+.search-input-wrap input{padding-left:36px !important;}
 
-.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:600;}
-.badge-s{background:rgba(156,43,43,.12);color:var(--red);}
-.badge-ok{background:rgba(47,107,79,.12);color:var(--green);}
+table{width:100%;border-collapse:collapse;font-size:.87rem;}
+th{text-align:left;font-weight:600;color:var(--ink-soft);font-size:.73rem;text-transform:uppercase;letter-spacing:.04em;padding:0 10px 10px;border-bottom:1px solid var(--paper-line);}
+td{padding:12px 10px;border-bottom:1px solid var(--paper-dim);}
+tr:last-child td{border-bottom:none;}
+tr.row-click{cursor:pointer;transition:background .1s ease;}
+tr.row-click:hover{background:var(--paper);}
+tbody tr:hover td:first-child{color:var(--brass);}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:.71rem;font-weight:700;letter-spacing:.02em;}
+.badge-s{background:var(--red-bg);color:var(--red);}
+.badge-ok{background:var(--green-bg);color:var(--green);}
 
 .infraction-row{
-  display:flex;align-items:flex-start;gap:10px;
-  padding:10px 0;border-bottom:1px solid var(--paper-dim);
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 4px;border-bottom:1px solid var(--paper-dim);
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  transition:background .12s ease;
 }
+.infraction-row:hover{background:var(--paper);}
 .infraction-row:last-child{border-bottom:none;}
-.infraction-row input{margin-top:3px;}
+.infraction-row input{margin-top:3px;width:16px;height:16px;accent-color:var(--brass);cursor:pointer;}
 .infraction-row .titre{font-weight:600;font-size:.9rem;}
-.infraction-row .meta{font-size:.78rem;color:var(--ink-soft);margin-top:2px;}
+.infraction-row .meta{font-size:.78rem;color:var(--ink-soft);margin-top:3px;}
 
 .total-box{
   display:flex;justify-content:space-between;align-items:center;
-  background:var(--navy-950);color:var(--paper);
-  padding:16px 20px;border-radius:var(--radius);margin-top:16px;
+  background:linear-gradient(155deg,var(--navy-900),var(--navy-950));
+  color:var(--paper);
+  padding:18px 22px;border-radius:var(--radius);margin-top:16px;
+  box-shadow:var(--shadow-card);
 }
-.total-box .amount{font-family:'Fraunces';font-size:1.5rem;color:var(--brass-light);}
+.total-box .amount{font-family:'Fraunces';font-size:1.7rem;color:var(--brass-light);font-weight:700;}
 
-.empty-state{color:var(--ink-soft);font-size:.88rem;padding:20px 0;}
+.empty-state{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;color:var(--ink-faint);font-size:.87rem;padding:34px 10px;text-align:center;
+}
+.empty-state .icon{width:26px;height:26px;color:var(--paper-line);}
+
+.spinner{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid var(--paper-line);border-top-color:var(--brass);
+  animation:spin .7s linear infinite;display:inline-block;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-row{display:flex;align-items:center;justify-content:center;gap:8px;padding:30px 0;color:var(--ink-faint);font-size:.85rem;}
 
 .toast{
   position:fixed;bottom:22px;right:22px;
   background:var(--navy-950);color:var(--paper);
-  padding:12px 18px;border-radius:var(--radius);
+  padding:12px 18px;border-radius:var(--radius-sm);
   font-size:.85rem;border-left:3px solid var(--brass);
-  display:none;z-index:50;
+  display:none;z-index:100;box-shadow:var(--shadow-md);
+  animation:toastin .25s cubic-bezier(.2,.8,.2,1);
+  max-width:320px;
 }
+@keyframes toastin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-@media (max-width:820px){
-  .app-shell.active{flex-direction:column;}
-  .sidebar{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center;}
-  .sidebar-user{display:none;}
-  .main{padding:20px;}
+.overlay{
+  display:none;position:fixed;inset:0;background:rgba(10,17,31,.55);z-index:15;
+}
+.overlay.active{display:block;}
+
+/* citizen detail actions row */
+.detail-actions{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap;}
+
+@media (max-width:900px){
+  .app-shell.active{position:relative;}
+  .mobile-topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--navy-950);color:var(--paper);padding:14px 18px;
+    position:sticky;top:0;z-index:10;border-bottom:1px solid var(--navy-800);
+  }
+  .mobile-topbar .brand-row{display:flex;align-items:center;gap:9px;}
+  .mobile-topbar .badge-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--navy-850);border-radius:6px;color:var(--brass-light);}
+  .mobile-topbar button{background:none;border:none;color:var(--paper);cursor:pointer;padding:6px;}
+  .app-shell{flex-direction:column;}
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;z-index:25;
+    transform:translateX(-100%);transition:transform .25s ease;
+    width:78vw;max-width:280px;box-shadow:var(--shadow-md);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-close{display:block;}
+  .sidebar-user{display:block;}
+  .main{padding:20px 16px 50px;height:calc(100vh - 53px);}
   .grid-2{grid-template-columns:1fr;}
+  .page-head{flex-direction:row;align-items:center;}
+  .page-head h2{font-size:1.25rem;}
+  .card{padding:18px;}
 }
 
 </style>
@@ -238,7 +378,9 @@ tr.row-click:hover{background:var(--paper-dim);}
 <div class="login-screen" id="login-screen">
   <div class="login-card">
     <div class="login-crest">
-      <div class="bar"></div>
+      <div class="badge-icon">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+      </div>
       <div>
         <h1>Police Nationale</h1>
         <span>Portail interne — Nova Life</span>
@@ -246,6 +388,12 @@ tr.row-click:hover{background:var(--paper-dim);}
     </div>
 
     <div class="login-error" id="login-error"></div>
+    <div class="login-success" id="login-success"></div>
+
+    <div class="auth-tabs">
+      <button type="button" class="btn" id="tab-login">Connexion</button>
+      <button type="button" class="btn" id="tab-signup">Créer un compte</button>
+    </div>
 
     <form id="login-form">
       <div class="field">
@@ -260,26 +408,109 @@ tr.row-click:hover{background:var(--paper-dim);}
         <label for="login-password">Mot de passe</label>
         <input type="password" id="login-password" required autocomplete="current-password">
       </div>
-      <button type="submit" class="btn btn-brass btn-full">Se connecter</button>
+      <button type="submit" class="btn btn-brass btn-full" id="login-submit-btn">Se connecter</button>
     </form>
 
-    <p class="login-foot">Accès strictement réservé aux agents de la Police Nationale.<br>Perte d'accès : contacte la Direction.</p>
+    <form id="signup-form" style="display:none;">
+      <div class="auth-tabs" style="margin-bottom:16px;">
+        <button type="button" class="btn" id="signup-type-citoyen">Citoyen</button>
+        <button type="button" class="btn" id="signup-type-police">Policier</button>
+      </div>
+      <div class="field">
+        <label for="signup-prenom">Prénom RP</label>
+        <input type="text" id="signup-prenom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="signup-nom">Nom RP</label>
+        <input type="text" id="signup-nom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="signup-password">Mot de passe (6 caractères min.)</label>
+        <input type="password" id="signup-password" required autocomplete="new-password" minlength="6">
+      </div>
+      <div class="field" id="signup-code-field">
+        <label for="signup-code">Code d'accès policier</label>
+        <input type="text" id="signup-code" autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn-brass btn-full" id="signup-submit-btn">Créer mon compte</button>
+    </form>
+
+    <p class="login-foot">Citoyens : consultez votre identité et vos amendes.<br>Policiers : accès réservé, code d'accès requis.</p>
   </div>
 </div>
 
 <!-- ============ APPLICATION ============ -->
 <div class="app-shell" id="app-shell">
-  <aside class="sidebar">
-    <div class="brand">Police Nationale<span>Nova Life</span></div>
+
+  <div class="overlay" id="sidebar-overlay"></div>
+
+  <header class="mobile-topbar">
+    <button id="mobile-menu-btn" aria-label="Menu">
+      <svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="brand-row">
+      <div class="badge-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+      <div class="brand" style="font-size:.9rem;">Police Nationale</div>
+    </div>
+    <div style="width:24px;"></div>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="brand-row">
+        <div class="badge-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+        <div class="brand">Police Nationale<span>Nova Life</span></div>
+      </div>
+      <button class="sidebar-close" id="sidebar-close-btn" aria-label="Fermer">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
     <hr>
-    <div class="nav-item active" data-view="citoyens">Citoyens</div>
-    <div class="nav-item" data-view="interpellation">Nouvelle interpellation</div>
-    <div class="nav-item locked-commandement" data-view="fiches-s">Fichés S</div>
-    <div class="nav-item locked-direction" data-view="admin">Administration</div>
+
+    <div class="nav-item role-police active" data-view="citoyens">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Citoyens</span>
+    </div>
+    <div class="nav-item role-police" data-view="interpellation">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11v6"/><path d="M9 14h6"/></svg>
+      <span>Nouvelle interpellation</span>
+    </div>
+    <div class="nav-item role-police" data-view="amendes">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5-1.3 2-3 2.5-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg>
+      <span>Amendes en cours</span>
+    </div>
+    <div class="nav-item role-police locked-commandement" data-view="fiches-s">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <span>Fichés S</span>
+      <svg class="icon icon-sm lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="nav-item role-police locked-direction" data-view="admin">
+      <svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      <span>Administration</span>
+      <svg class="icon icon-sm lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+
+    <div class="nav-item role-citoyen active" data-view="mon-identite" style="display:none;">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+      <span>Mon identité</span>
+    </div>
+    <div class="nav-item role-citoyen" data-view="mon-casier" style="display:none;">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+      <span>Mon casier</span>
+    </div>
+
     <div class="sidebar-user">
-      <div class="who" id="sidebar-name">—</div>
-      <div class="grade" id="sidebar-grade">—</div>
-      <button class="btn btn-outline btn-full" id="logout-btn">Déconnexion</button>
+      <div class="who-row">
+        <div class="avatar" id="sidebar-avatar">—</div>
+        <div>
+          <div class="who" id="sidebar-name">—</div>
+          <div class="grade" id="sidebar-grade">—</div>
+        </div>
+      </div>
+      <button class="btn btn-outline btn-full" id="logout-btn">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Déconnexion
+      </button>
     </div>
   </aside>
 
@@ -288,17 +519,26 @@ tr.row-click:hover{background:var(--paper-dim);}
     <!-- ---------- VUE CITOYENS ---------- -->
     <section class="view active" id="view-citoyens">
       <div class="page-head">
-        <h2>Citoyens</h2>
-        <p>Recherche une identité existante ou crée une nouvelle fiche.</p>
+        <div>
+          <h2>Citoyens</h2>
+          <p>Recherche une identité existante ou crée une nouvelle fiche.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
       </div>
 
       <div class="card">
-        <div style="display:flex;gap:10px;margin-bottom:14px;">
-          <input type="text" id="citoyen-search" placeholder="Rechercher par nom ou prénom…" class="field-inline" style="flex:1;padding:9px 11px;border:1px solid var(--paper-dim);border-radius:3px;">
-          <button class="btn btn-outline" id="toggle-new-citoyen">+ Nouvelle identité</button>
+        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+          <div class="search-input-wrap">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="citoyen-search" placeholder="Rechercher par nom ou prénom…" class="field-inline">
+          </div>
+          <button class="btn btn-outline" id="toggle-new-citoyen">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouvelle identité
+          </button>
         </div>
 
-        <form id="new-citoyen-form" id="new-citoyen-panel" style="display:none;border:1px solid var(--paper-dim);border-radius:3px;padding:16px;margin-bottom:16px;">
+        <form id="new-citoyen-form" style="display:none;border:1px solid var(--paper-line);border-radius:8px;padding:16px;margin-bottom:16px;background:var(--paper);">
           <div class="grid-2">
             <div class="field-inline"><label>Nom</label><input id="nc-nom" required></div>
             <div class="field-inline"><label>Prénom</label><input id="nc-prenom" required></div>
@@ -311,7 +551,7 @@ tr.row-click:hover{background:var(--paper-dim);}
 
         <table>
           <thead><tr><th>Nom</th><th>Naissance</th><th>Téléphone</th><th></th></tr></thead>
-          <tbody id="citoyens-tbody"><tr><td colspan="4" class="empty-state">Chargement…</td></tr></tbody>
+          <tbody id="citoyens-tbody"><tr><td colspan="4"><div class="loading-row"><span class="spinner"></span>Chargement…</div></td></tr></tbody>
         </table>
       </div>
 
@@ -321,13 +561,19 @@ tr.row-click:hover{background:var(--paper-dim);}
     <!-- ---------- VUE INTERPELLATION ---------- -->
     <section class="view" id="view-interpellation">
       <div class="page-head">
-        <h2>Nouvelle interpellation</h2>
-        <p>Sélectionne le citoyen, coche les infractions constatées : l'amende et les sanctions se calculent automatiquement.</p>
+        <div>
+          <h2>Nouvelle interpellation</h2>
+          <p>Sélectionne le citoyen, coche les infractions constatées : l'amende et les sanctions se calculent automatiquement.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11v6"/><path d="M9 14h6"/></svg></div>
       </div>
 
       <div class="card">
         <div class="field-inline" style="margin-bottom:6px;"><label>Citoyen</label></div>
-        <input type="text" id="interp-citoyen-search" placeholder="Rechercher un citoyen…" class="field-inline" style="padding:9px 11px;border:1px solid var(--paper-dim);border-radius:3px;width:100%;">
+        <div class="search-input-wrap">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="interp-citoyen-search" placeholder="Rechercher un citoyen…" class="field-inline">
+        </div>
         <div id="interp-citoyen-results" style="margin-top:6px;"></div>
         <div id="interp-citoyen-choisi" style="margin-top:8px;"></div>
       </div>
@@ -360,8 +606,11 @@ tr.row-click:hover{background:var(--paper-dim);}
     <!-- ---------- VUE FICHÉS S ---------- -->
     <section class="view" id="view-fiches-s">
       <div class="page-head">
-        <h2>Fichés S</h2>
-        <p>Liste des individus signalés comme sensibles. Accès Commandement et +.</p>
+        <div>
+          <h2>Fichés S</h2>
+          <p>Liste des individus signalés comme sensibles. Accès Commandement et +.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
       </div>
       <div id="fiches-s-list"></div>
     </section>
@@ -369,21 +618,16 @@ tr.row-click:hover{background:var(--paper-dim);}
     <!-- ---------- VUE ADMIN ---------- -->
     <section class="view" id="view-admin">
       <div class="page-head">
-        <h2>Administration</h2>
-        <p>Gestion des comptes policiers et du référentiel légal. Accès Direction uniquement.</p>
+        <div>
+          <h2>Administration</h2>
+          <p>Gestion des comptes policiers et du référentiel légal. Accès Direction uniquement.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
       </div>
 
       <div class="card">
-        <h3 style="margin-top:0;">Agents</h3>
-        <form id="new-agent-form" class="grid-2" style="margin-bottom:16px;">
-          <div class="field-inline"><label>UID Supabase (Authentication)</label><input id="new-agent-uid" placeholder="uuid de l'utilisateur" required></div>
-          <div class="field-inline"><label>Matricule</label><input id="new-agent-matricule" required></div>
-          <div class="field-inline"><label>Nom</label><input id="new-agent-nom" required></div>
-          <div class="field-inline"><label>Prénom</label><input id="new-agent-prenom" required></div>
-          <div class="field-inline"><label>Grade</label><select id="new-agent-grade"></select></div>
-          <div style="align-self:end;"><button type="submit" class="btn btn-brass btn-full">Ajouter l'agent</button></div>
-        </form>
-        <p id="new-agent-email-preview" style="font-size:.8rem;color:var(--ink-soft);margin-top:-6px;margin-bottom:16px;"></p>
+        <div class="card-head"><h3>Agents</h3></div>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;">Les nouveaux policiers s'inscrivent eux-mêmes via "Créer un compte" avec un code d'accès. Tu peux ici ajuster leur grade ou les désactiver.</p>
         <table>
           <thead><tr><th>Nom</th><th>Matricule</th><th>Grade</th><th>Statut</th><th></th></tr></thead>
           <tbody id="agents-tbody"></tbody>
@@ -391,12 +635,69 @@ tr.row-click:hover{background:var(--paper-dim);}
       </div>
 
       <div class="card">
-        <h3 style="margin-top:0;">Référentiel des infractions</h3>
+        <div class="card-head"><h3>Codes d'accès</h3></div>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;">Donne un de ces codes à un nouveau policier : il l'utilisera dans "Créer un compte" pour obtenir automatiquement le grade associé.</p>
+        <form id="new-code-form" class="grid-2" style="margin:14px 0;">
+          <div class="field-inline"><label>Code (ex : GPX-2026)</label><input id="new-code-valeur" required></div>
+          <div class="field-inline"><label>Grade attribué</label><select id="new-code-grade"></select></div>
+          <div class="field-inline"><label>Nombre d'utilisations autorisées</label><input type="number" id="new-code-max" value="1" min="1"></div>
+          <div style="align-self:end;"><button type="submit" class="btn btn-brass btn-full">Créer le code</button></div>
+        </form>
+        <table>
+          <thead><tr><th>Code</th><th>Grade</th><th>Utilisations</th><th>Statut</th><th></th></tr></thead>
+          <tbody id="codes-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Référentiel des infractions</h3></div>
         <table>
           <thead><tr><th>Infraction</th><th>Amende min</th><th>Amende max</th><th>Points</th></tr></thead>
           <tbody id="infractions-tbody"></tbody>
         </table>
       </div>
+    </section>
+
+    <!-- ---------- VUE AMENDES EN COURS ---------- -->
+    <section class="view" id="view-amendes">
+      <div class="page-head">
+        <div>
+          <h2>Amendes en cours</h2>
+          <p>Amendes non réglées, tous citoyens confondus. Valide un paiement au guichet en un clic.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5-1.3 2-3 2.5-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Citoyen</th><th>Montant</th><th>Motif</th><th>Date</th><th></th></tr></thead>
+          <tbody id="amendes-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- VUE CITOYEN : MON IDENTITÉ ---------- -->
+    <section class="view" id="view-mon-identite">
+      <div class="page-head">
+        <div>
+          <h2>Mon identité</h2>
+          <p>Les informations enregistrées à ton sujet par la Police Nationale.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg></div>
+      </div>
+      <div class="card" id="mon-identite-card"></div>
+    </section>
+
+    <!-- ---------- VUE CITOYEN : MON CASIER ---------- -->
+    <section class="view" id="view-mon-casier">
+      <div class="page-head">
+        <div>
+          <h2>Mon casier</h2>
+          <p>L'historique de tes interpellations et l'état de tes amendes.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg></div>
+      </div>
+      <div class="card" id="mon-casier-total"></div>
+      <div class="card" id="mon-casier-list"></div>
     </section>
 
   </main>
@@ -408,25 +709,24 @@ tr.row-click:hover{background:var(--paper-dim);}
 <script>
 // ============================================================
 // CONFIGURATION SUPABASE
-// Remplis ces deux valeurs avec celles de TON projet Supabase :
-// Dashboard Supabase > Project Settings > API
 // ============================================================
-const SUPABASE_URL = "https://digrwwjvtpppbnarijhf.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_X-d8QuPAl7-4AT30BXpa4w_JY-IGf73";
+const SUPABASE_URL = "https://xcgndyrjujbvmneqwyaz.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_rVKgSiKXpZebMybNTQSNIg_3zowx8II";
 
 // Seuils de grade utilisés côté interface (doivent correspondre au schema.sql)
 const NIVEAU_DIRECTION = 8;     // Commissaire et +
 const NIVEAU_COMMANDEMENT = 5;  // Capitaine et +
-
 
 // ============================================================
 // APP - Police Nationale Nova Life
 // ============================================================
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let moi = null;        // { id, matricule, nom, prenom, grade: {nom, niveau} }
+let moi = null;        // { id, matricule, nom, prenom, grade: {nom, niveau} } — si policier
+let monCitoyen = null;  // fiche citoyen liée — si compte citoyen
+let monRole = null;     // 'police' | 'citoyen'
 let infractionsCache = [];
-let citoyenCourant = null; // citoyen affiché dans le panneau détail
+let citoyenCourant = null; // citoyen affiché dans le panneau détail (côté police)
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -443,6 +743,16 @@ function euros(n) {
   return new Intl.NumberFormat('fr-FR').format(n) + ' €';
 }
 
+function emptyState(text, colspan) {
+  const icon = '<svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+  const inner = `<div class="empty-state">${icon}<span>${text}</span></div>`;
+  return colspan ? `<tr><td colspan="${colspan}">${inner}</td></tr>` : inner;
+}
+function loadingState(text, colspan) {
+  const inner = `<div class="loading-row"><span class="spinner"></span>${text}</div>`;
+  return colspan ? `<tr><td colspan="${colspan}">${inner}</td></tr>` : inner;
+}
+
 // ---------------- AUTH ----------------
 
 // Transforme un prénom + nom RP en un identifiant technique unique
@@ -452,8 +762,37 @@ function identifiantDepuisNom(prenom, nom) {
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // enlève les accents
     .toLowerCase()
     .replace(/[^a-z0-9]/g, ''); // enlève espaces, tirets, apostrophes...
-  return `${nettoyer(prenom)}.${nettoyer(nom)}@pn-novalife.local`;
+  return `${nettoyer(prenom)}.${nettoyer(nom)}@gmail.com`;
 }
+
+$('#tab-login').addEventListener('click', () => setAuthTab('login'));
+$('#tab-signup').addEventListener('click', () => setAuthTab('signup'));
+
+function setAuthTab(which) {
+  $('#login-form').style.display = which === 'login' ? 'block' : 'none';
+  $('#signup-form').style.display = which === 'signup' ? 'block' : 'none';
+  $('#tab-login').classList.toggle('btn-brass', which === 'login');
+  $('#tab-login').classList.toggle('btn-outline', which !== 'login');
+  $('#tab-signup').classList.toggle('btn-brass', which === 'signup');
+  $('#tab-signup').classList.toggle('btn-outline', which !== 'signup');
+  $('#login-error').style.display = 'none';
+  $('#login-success').style.display = 'none';
+}
+setAuthTab('login');
+
+let signupType = 'citoyen';
+function setSignupType(type) {
+  signupType = type;
+  $('#signup-type-citoyen').classList.toggle('btn-brass', type === 'citoyen');
+  $('#signup-type-citoyen').classList.toggle('btn-outline', type !== 'citoyen');
+  $('#signup-type-police').classList.toggle('btn-brass', type === 'police');
+  $('#signup-type-police').classList.toggle('btn-outline', type !== 'police');
+  $('#signup-code-field').style.display = type === 'police' ? 'block' : 'none';
+  $('#signup-code').required = type === 'police';
+}
+$('#signup-type-citoyen').addEventListener('click', () => setSignupType('citoyen'));
+$('#signup-type-police').addEventListener('click', () => setSignupType('police'));
+setSignupType('citoyen');
 
 $('#login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -461,16 +800,80 @@ $('#login-form').addEventListener('submit', async (e) => {
   const nom = $('#login-nom').value.trim();
   const password = $('#login-password').value;
   const errBox = $('#login-error');
+  const btn = $('#login-submit-btn');
   errBox.style.display = 'none';
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Connexion…';
 
   const email = identifiantDepuisNom(prenom, nom);
   const { error } = await sb.auth.signInWithPassword({ email, password });
   if (error) {
     errBox.textContent = "Identifiants incorrects ou compte inconnu.";
     errBox.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Se connecter';
     return;
   }
   await bootAfterLogin();
+  btn.disabled = false;
+  btn.textContent = 'Se connecter';
+});
+
+$('#signup-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const prenom = $('#signup-prenom').value.trim();
+  const nom = $('#signup-nom').value.trim();
+  const password = $('#signup-password').value;
+  const code = $('#signup-code').value.trim();
+  const errBox = $('#login-error');
+  const okBox = $('#login-success');
+  const btn = $('#signup-submit-btn');
+  errBox.style.display = 'none';
+  okBox.style.display = 'none';
+
+  if (!prenom || !nom || !password) return;
+  if (signupType === 'police' && !code) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Création…';
+  const resetBtn = () => { btn.disabled = false; btn.textContent = 'Créer mon compte'; };
+
+  const email = identifiantDepuisNom(prenom, nom);
+  const { error: signUpError } = await sb.auth.signUp({ email, password });
+  if (signUpError) {
+    errBox.textContent = signUpError.message.includes('already registered')
+      ? "Ce prénom/nom est déjà utilisé. Connecte-toi plutôt, ou contacte la Direction."
+      : "Erreur lors de la création du compte : " + signUpError.message;
+    errBox.style.display = 'block';
+    resetBtn();
+    return;
+  }
+
+  // À ce stade signUp a aussi ouvert une session (confirmation email désactivée),
+  // on peut donc appeler la fonction qui relie ce compte à une fiche policier ou citoyen.
+  const rpcName = signupType === 'police' ? 'inscrire_agent' : 'inscrire_citoyen';
+  const rpcParams = signupType === 'police'
+    ? { p_nom: nom, p_prenom: prenom, p_code: code }
+    : { p_nom: nom, p_prenom: prenom };
+
+  const { data: resultat, error: rpcError } = await sb.rpc(rpcName, rpcParams);
+
+  if (rpcError || !resultat || resultat.startsWith('ERREUR')) {
+    errBox.textContent = rpcError ? rpcError.message : resultat.replace('ERREUR: ', '');
+    errBox.style.display = 'block';
+    resetBtn();
+    await sb.auth.signOut();
+    return;
+  }
+
+  const matricule = resultat.includes(':') ? resultat.split(':')[1] : null;
+  okBox.textContent = matricule
+    ? `Compte créé ! Ton matricule est ${matricule}. Connexion en cours…`
+    : `Compte créé ! Connexion en cours…`;
+  okBox.style.display = 'block';
+  $('#signup-form').reset();
+  setTimeout(bootAfterLogin, 900);
 });
 
 $('#logout-btn').addEventListener('click', async () => {
@@ -482,21 +885,36 @@ async function bootAfterLogin() {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return showLogin();
 
-  const { data: agent, error } = await sb
+  const { data: agent } = await sb
     .from('agents')
     .select('id, matricule, nom, prenom, actif, grade:grade_id (nom, niveau)')
     .eq('id', user.id)
-    .single();
+    .maybeSingle();
 
-  if (error || !agent || !agent.actif) {
-    $('#login-error').textContent = "Ce compte n'est pas (ou plus) un compte policier actif. Contacte la Direction.";
-    $('#login-error').style.display = 'block';
-    await sb.auth.signOut();
-    return showLogin();
+  if (agent && agent.actif) {
+    moi = agent;
+    monRole = 'police';
+    return showAppPolice();
   }
 
-  moi = agent;
-  showApp();
+  const { data: citoyen } = await sb
+    .from('citoyens')
+    .select('*')
+    .eq('auth_id', user.id)
+    .maybeSingle();
+
+  if (citoyen) {
+    monCitoyen = citoyen;
+    monRole = 'citoyen';
+    return showAppCitoyen();
+  }
+
+  $('#login-error').textContent = agent
+    ? "Ce compte n'est pas (ou plus) un compte policier actif. Contacte la Direction."
+    : "Ce compte n'est relié à aucune fiche. Contacte la Direction.";
+  $('#login-error').style.display = 'block';
+  await sb.auth.signOut();
+  return showLogin();
 }
 
 function showLogin() {
@@ -504,12 +922,15 @@ function showLogin() {
   $('#app-shell').classList.remove('active');
 }
 
-function showApp() {
+function showAppPolice() {
   $('#login-screen').classList.add('hidden');
   $('#app-shell').classList.add('active');
+  $$('.role-police').forEach(el => el.style.display = '');
+  $$('.role-citoyen').forEach(el => el.style.display = 'none');
 
   $('#sidebar-name').textContent = `${moi.prenom} ${moi.nom}`;
   $('#sidebar-grade').textContent = `${moi.grade.nom} · ${moi.matricule}`;
+  $('#sidebar-avatar').textContent = (moi.prenom[0] || '?').toUpperCase() + (moi.nom[0] || '').toUpperCase();
 
   const niveau = moi.grade.niveau;
   if (niveau < NIVEAU_COMMANDEMENT) {
@@ -523,6 +944,32 @@ function showApp() {
   goToView('citoyens');
 }
 
+function showAppCitoyen() {
+  $('#login-screen').classList.add('hidden');
+  $('#app-shell').classList.add('active');
+  $$('.role-citoyen').forEach(el => el.style.display = '');
+  $$('.role-police').forEach(el => el.style.display = 'none');
+
+  $('#sidebar-name').textContent = `${monCitoyen.prenom} ${monCitoyen.nom}`;
+  $('#sidebar-grade').textContent = 'Compte citoyen';
+  $('#sidebar-avatar').textContent = (monCitoyen.prenom[0] || '?').toUpperCase() + (monCitoyen.nom[0] || '').toUpperCase();
+
+  goToView('mon-identite');
+}
+
+// ---------------- MENU MOBILE ----------------
+
+function closeMobileMenu() {
+  $('#sidebar').classList.remove('open');
+  $('#sidebar-overlay').classList.remove('active');
+}
+$('#mobile-menu-btn')?.addEventListener('click', () => {
+  $('#sidebar').classList.add('open');
+  $('#sidebar-overlay').classList.add('active');
+});
+$('#sidebar-close-btn')?.addEventListener('click', closeMobileMenu);
+$('#sidebar-overlay')?.addEventListener('click', closeMobileMenu);
+
 // ---------------- NAVIGATION ----------------
 
 $$('.nav-item').forEach(item => {
@@ -532,6 +979,7 @@ $$('.nav-item').forEach(item => {
       return;
     }
     goToView(item.dataset.view);
+    closeMobileMenu();
   });
 });
 
@@ -541,7 +989,10 @@ function goToView(name) {
   if (name === 'citoyens') refreshCitoyensList();
   if (name === 'interpellation') resetInterpellationForm();
   if (name === 'fiches-s') loadFichesS();
-  if (name === 'admin') { loadAgents(); loadInfractionsAdmin(); }
+  if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); }
+  if (name === 'amendes') loadAmendes();
+  if (name === 'mon-identite') loadMonIdentite();
+  if (name === 'mon-casier') loadMonCasier();
 }
 
 // ---------------- INFRACTIONS (référentiel) ----------------
@@ -572,13 +1023,13 @@ $('#new-citoyen-form').addEventListener('submit', async (e) => {
   if (error) return toast("Erreur lors de la création de l'identité.");
   toast(`Identité créée : ${data.prenom} ${data.nom}`);
   $('#new-citoyen-form').reset();
-  $('#new-citoyen-panel').style.display = 'none';
+  $('#new-citoyen-form').style.display = 'none';
   refreshCitoyensList();
   openCitoyen(data.id);
 });
 
 $('#toggle-new-citoyen').addEventListener('click', () => {
-  const panel = $('#new-citoyen-panel');
+  const panel = $('#new-citoyen-form');
   panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
 });
 
@@ -591,7 +1042,7 @@ async function refreshCitoyensList() {
   tbody.innerHTML = '';
   if (error) return toast("Erreur de chargement des citoyens.");
   if (!data.length) {
-    tbody.innerHTML = `<tr><td colspan="4" class="empty-state">Aucun résultat.</td></tr>`;
+    tbody.innerHTML = emptyState("Aucun résultat.", 4);
     return;
   }
   data.forEach(c => {
@@ -612,32 +1063,102 @@ async function openCitoyen(id) {
   const { data: c, error } = await sb.from('citoyens').select('*').eq('id', id).single();
   if (error) return toast("Impossible de charger cette fiche.");
   citoyenCourant = c;
+  renderCitoyenDetail(c, false);
+  loadCasier(c.id);
+}
 
+function renderCitoyenDetail(c, editMode) {
   const box = $('#citoyen-detail');
   box.style.display = 'block';
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
+  const estCommandement = moi.grade.niveau >= NIVEAU_COMMANDEMENT;
+
+  if (editMode) {
+    box.innerHTML = `
+      <h3 style="margin-top:0;">Modifier la fiche</h3>
+      <form id="edit-citoyen-form">
+        <div class="grid-2">
+          <div class="field-inline"><label>Nom</label><input id="ec-nom" value="${c.nom}" required></div>
+          <div class="field-inline"><label>Prénom</label><input id="ec-prenom" value="${c.prenom}" required></div>
+          <div class="field-inline"><label>Date de naissance</label><input type="date" id="ec-naissance" value="${c.date_naissance ?? ''}"></div>
+          <div class="field-inline"><label>Téléphone</label><input id="ec-telephone" value="${c.telephone ?? ''}"></div>
+        </div>
+        <div class="field-inline" style="margin-top:12px;"><label>Adresse</label><input id="ec-adresse" value="${c.adresse ?? ''}"></div>
+        <div style="display:flex;gap:8px;margin-top:16px;">
+          <button type="submit" class="btn btn-brass">Enregistrer</button>
+          <button type="button" class="btn btn-outline" id="btn-annuler-edition">Annuler</button>
+        </div>
+      </form>
+    `;
+    $('#edit-citoyen-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        nom: $('#ec-nom').value.trim(),
+        prenom: $('#ec-prenom').value.trim(),
+        date_naissance: $('#ec-naissance').value || null,
+        telephone: $('#ec-telephone').value.trim() || null,
+        adresse: $('#ec-adresse').value.trim() || null,
+        updated_at: new Date().toISOString(),
+      };
+      const { error } = await sb.from('citoyens').update(payload).eq('id', c.id);
+      if (error) return toast("Erreur lors de la modification.");
+      toast("Fiche mise à jour.");
+      refreshCitoyensList();
+      openCitoyen(c.id);
+    });
+    $('#btn-annuler-edition').addEventListener('click', () => renderCitoyenDetail(c, false));
+    return;
+  }
+
   box.innerHTML = `
     <h3>${c.prenom} ${c.nom} ${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''}</h3>
     <p class="meta" style="color:var(--ink-soft);font-size:.85rem;margin-top:-6px;">
       Né(e) le ${c.date_naissance ?? '—'} · ${c.telephone ?? 'tél. inconnu'} · ${c.adresse ?? 'adresse inconnue'}
     </p>
-    <div style="display:flex;gap:8px;margin:14px 0;">
+    <div class="detail-actions">
       <button class="btn btn-outline" id="btn-nouvelle-interpellation-depuis-fiche">+ Interpellation</button>
       <button class="btn btn-outline locked-commandement" id="btn-toggle-fiche-s">${c.fiche_s ? 'Lever le fiché S' : 'Marquer fiché S'}</button>
+      <button class="btn btn-outline locked-direction" id="btn-modifier-citoyen">Modifier</button>
+      <button class="btn btn-danger locked-direction" id="btn-supprimer-citoyen">Supprimer</button>
     </div>
     <h4 style="margin-bottom:8px;">Casier judiciaire</h4>
-    <div id="casier-list"><p class="empty-state">Chargement…</p></div>
+    <div id="casier-list">${loadingState("Chargement…")}</div>
   `;
-  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) {
-    $('#btn-toggle-fiche-s').classList.add('locked');
+  if (!estCommandement) $('#btn-toggle-fiche-s').classList.add('locked');
+  if (!estDirection) {
+    $('#btn-modifier-citoyen').classList.add('locked');
+    $('#btn-supprimer-citoyen').classList.add('locked');
   }
 
   $('#btn-nouvelle-interpellation-depuis-fiche').addEventListener('click', () => {
     goToView('interpellation');
     selectCitoyenForInterpellation(c);
   });
-  $('#btn-toggle-fiche-s').addEventListener('click', () => toggleFicheS(c));
+  $('#btn-toggle-fiche-s').addEventListener('click', () => {
+    if (!estCommandement) return toast("Réservé au Commandement et +.");
+    toggleFicheS(c);
+  });
+  $('#btn-modifier-citoyen').addEventListener('click', () => {
+    if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+    renderCitoyenDetail(c, true);
+  });
+  $('#btn-supprimer-citoyen').addEventListener('click', () => {
+    if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+    supprimerCitoyen(c);
+  });
+}
 
-  loadCasier(c.id);
+async function supprimerCitoyen(c) {
+  const confirme = confirm(
+    `Supprimer définitivement la fiche de ${c.prenom} ${c.nom} ?\n\nSon casier judiciaire complet (toutes ses interpellations) sera aussi supprimé. Cette action est irréversible.`
+  );
+  if (!confirme) return;
+  const { error } = await sb.from('citoyens').delete().eq('id', c.id);
+  if (error) return toast("Erreur lors de la suppression (droits insuffisants ?).");
+  toast("Fiche supprimée.");
+  $('#citoyen-detail').style.display = 'none';
+  citoyenCourant = null;
+  refreshCitoyensList();
 }
 
 async function toggleFicheS(c) {
@@ -663,8 +1184,8 @@ async function loadCasier(citoyenId) {
     .order('created_at', { ascending: false });
 
   const box = $('#casier-list');
-  if (error) { box.innerHTML = '<p class="empty-state">Erreur de chargement.</p>'; return; }
-  if (!data.length) { box.innerHTML = '<p class="empty-state">Casier vierge.</p>'; return; }
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Casier vierge.'); return; }
 
   box.innerHTML = data.map(i => {
     const titres = i.infraction_ids
@@ -716,7 +1237,7 @@ $('#interp-citoyen-search').addEventListener('input', debounce(async () => {
     .or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`).limit(8);
   box.innerHTML = (data || []).map(c =>
     `<div class="nav-item" data-id="${c.id}" style="color:var(--ink);">${c.prenom} ${c.nom}</div>`
-  ).join('') || '<div class="empty-state">Aucun résultat — utilise "Citoyens" pour créer l\'identité.</div>';
+  ).join('') || emptyState('Aucun résultat — utilise "Citoyens" pour créer l\'identité.');
   $$('.nav-item', box).forEach(el => el.addEventListener('click', () => {
     selectCitoyenForInterpellation(data.find(c => c.id === el.dataset.id));
   }));
@@ -800,8 +1321,8 @@ $('#interpellation-form').addEventListener('submit', async (e) => {
 async function loadFichesS() {
   const { data, error } = await sb.from('citoyens').select('*').eq('fiche_s', true).order('nom');
   const box = $('#fiches-s-list');
-  if (error) return (box.innerHTML = '<p class="empty-state">Erreur de chargement.</p>');
-  if (!data.length) return (box.innerHTML = '<p class="empty-state">Aucun fiché S actuellement.</p>');
+  if (error) return (box.innerHTML = emptyState('Erreur de chargement.'));
+  if (!data.length) return (box.innerHTML = emptyState('Aucun fiché S actuellement.'));
   box.innerHTML = data.map(c => `
     <div class="card" style="cursor:pointer;" data-id="${c.id}">
       <strong>${c.prenom} ${c.nom}</strong>
@@ -819,12 +1340,10 @@ async function loadFichesS() {
 async function loadAgents() {
   if (moi.grade.niveau < NIVEAU_DIRECTION) return;
   const { data: grades } = await sb.from('grades').select('*').order('niveau');
-  const sel = $('#new-agent-grade');
-  sel.innerHTML = grades.map(g => `<option value="${g.id}">${g.nom}</option>`).join('');
 
   const { data, error } = await sb.from('agents').select('*, grade:grade_id (nom, niveau)').order('nom');
   const tbody = $('#agents-tbody');
-  if (error) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Erreur.</td></tr>'; return; }
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
   tbody.innerHTML = data.map(a => `
     <tr>
       <td>${a.prenom} ${a.nom}</td>
@@ -851,35 +1370,49 @@ async function loadAgents() {
   }));
 }
 
-function updateNewAgentEmailPreview() {
-  const prenom = $('#new-agent-prenom').value.trim();
-  const nom = $('#new-agent-nom').value.trim();
-  const preview = $('#new-agent-email-preview');
-  if (!preview) return;
-  preview.textContent = (prenom && nom)
-    ? `Crée d'abord ce compte dans Supabase (Authentication → Add user) avec l'email : ${identifiantDepuisNom(prenom, nom)}`
-    : '';
-}
-$('#new-agent-nom')?.addEventListener('input', updateNewAgentEmailPreview);
-$('#new-agent-prenom')?.addEventListener('input', updateNewAgentEmailPreview);
+// ---------------- ADMIN : codes d'accès ----------------
 
-$('#new-agent-form').addEventListener('submit', async (e) => {
+async function loadCodes() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data: grades } = await sb.from('grades').select('*').order('niveau', { ascending: false });
+  const sel = $('#new-code-grade');
+  sel.innerHTML = grades.map(g => `<option value="${g.id}">${g.nom}</option>`).join('');
+
+  const { data, error } = await sb.from('codes_acces').select('*, grade:grade_id (nom)').order('created_at', { ascending: false });
+  const tbody = $('#codes-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
+  if (!data.length) { tbody.innerHTML = emptyState('Aucun code créé.', 5); return; }
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td class="mono">${c.code}</td>
+      <td>${c.grade.nom}</td>
+      <td>${c.utilisations} / ${c.utilisations_max}</td>
+      <td>${c.actif ? '<span class="badge badge-ok">Actif</span>' : '<span class="badge badge-s">Désactivé</span>'}</td>
+      <td><button class="btn btn-outline code-toggle-actif" data-code="${c.code}" data-actif="${c.actif}">${c.actif ? 'Désactiver' : 'Réactiver'}</button></td>
+    </tr>
+  `).join('');
+
+  $$('.code-toggle-actif', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const actif = btn.dataset.actif === 'true';
+    const { error } = await sb.from('codes_acces').update({ actif: !actif }).eq('code', btn.dataset.code);
+    if (error) return toast("Erreur.");
+    loadCodes();
+  }));
+}
+
+$('#new-code-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const payload = {
-    id: $('#new-agent-uid').value.trim(),
-    matricule: $('#new-agent-matricule').value.trim(),
-    nom: $('#new-agent-nom').value.trim(),
-    prenom: $('#new-agent-prenom').value.trim(),
-    grade_id: Number($('#new-agent-grade').value),
+    code: $('#new-code-valeur').value.trim(),
+    grade_id: Number($('#new-code-grade').value),
+    utilisations_max: Number($('#new-code-max').value) || 1,
   };
-  if (!payload.id || !payload.matricule || !payload.nom || !payload.prenom) {
-    return toast("Tous les champs sont requis (dont l'UID Supabase, voir README).");
-  }
-  const { error } = await sb.from('agents').insert(payload);
-  if (error) return toast("Erreur : vérifie que l'UID existe bien dans Authentication.");
-  toast("Agent ajouté.");
-  $('#new-agent-form').reset();
-  loadAgents();
+  if (!payload.code) return toast("Le code ne peut pas être vide.");
+  const { error } = await sb.from('codes_acces').insert(payload);
+  if (error) return toast(error.message.includes('duplicate') ? "Ce code existe déjà." : "Erreur.");
+  toast("Code créé.");
+  $('#new-code-form').reset();
+  loadCodes();
 });
 
 // ---------------- ADMIN : infractions ----------------
@@ -903,6 +1436,119 @@ async function loadInfractionsAdmin() {
     toast("Infraction mise à jour.");
     loadInfractions();
   }));
+}
+
+// ---------------- AMENDES EN COURS (policiers) ----------------
+
+async function loadAmendes() {
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, citoyen:citoyen_id (nom, prenom)')
+    .eq('paye', false)
+    .eq('statut', 'enregistree')
+    .order('created_at', { ascending: false });
+
+  const tbody = $('#amendes-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
+  if (!data.length) { tbody.innerHTML = emptyState('Aucune amende en attente de paiement.', 5); return; }
+
+  tbody.innerHTML = data.map(i => {
+    const motifs = i.infraction_ids
+      .map(id => infractionsCache.find(f => f.id === id)?.titre)
+      .filter(Boolean)
+      .join(', ');
+    const date = new Date(i.created_at).toLocaleDateString('fr-FR');
+    return `
+      <tr>
+        <td>${i.citoyen ? `${i.citoyen.prenom} ${i.citoyen.nom}` : 'Citoyen supprimé'}</td>
+        <td><strong>${euros(i.montant_total)}</strong></td>
+        <td style="max-width:280px;font-size:.82rem;">${motifs}</td>
+        <td>${date}</td>
+        <td><button class="btn btn-brass valider-paiement-btn" data-id="${i.id}">Marquer payée</button></td>
+      </tr>
+    `;
+  }).join('');
+
+  $$('.valider-paiement-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const confirme = confirm("Confirmer que cette amende a bien été payée ? Cette action est enregistrée avec ton nom.");
+    if (!confirme) return;
+    const { error } = await sb.from('interpellations').update({
+      paye: true,
+      paye_le: new Date().toISOString(),
+      paye_par: moi.id,
+    }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur lors de la validation.");
+    toast("Paiement validé.");
+    loadAmendes();
+  }));
+}
+
+// ---------------- ESPACE CITOYEN ----------------
+
+async function loadMonIdentite() {
+  const c = monCitoyen;
+  const box = $('#mon-identite-card');
+  box.innerHTML = `
+    <h3 style="margin-top:0;">${c.prenom} ${c.nom} ${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''}</h3>
+    <div class="grid-2" style="margin-top:16px;">
+      <div><div style="font-size:.78rem;color:var(--ink-soft);">Date de naissance</div><div style="font-weight:600;">${c.date_naissance ?? 'Non renseignée'}</div></div>
+      <div><div style="font-size:.78rem;color:var(--ink-soft);">Téléphone</div><div style="font-weight:600;">${c.telephone ?? 'Non renseigné'}</div></div>
+      <div style="grid-column:1/-1;"><div style="font-size:.78rem;color:var(--ink-soft);">Adresse</div><div style="font-weight:600;">${c.adresse ?? 'Non renseignée'}</div></div>
+    </div>
+    <p style="font-size:.8rem;color:var(--ink-soft);margin-top:18px;">Ces informations sont gérées par la Police Nationale. Pour une correction, contacte un policier.</p>
+  `;
+}
+
+async function loadMonCasier() {
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, agent:agent_id (nom, prenom, matricule)')
+    .eq('citoyen_id', monCitoyen.id)
+    .order('created_at', { ascending: false });
+
+  const totalBox = $('#mon-casier-total');
+  const listBox = $('#mon-casier-list');
+
+  if (error) { listBox.innerHTML = emptyState('Erreur de chargement.'); totalBox.innerHTML = ''; return; }
+
+  const impayees = data.filter(i => !i.paye && i.statut !== 'annulee');
+  const totalDu = impayees.reduce((s, i) => s + i.montant_total, 0);
+
+  totalBox.innerHTML = totalDu > 0
+    ? `<div class="total-box" style="margin-top:0;"><div>
+         <div style="font-size:.85rem;color:var(--brass-light);">Amendes impayées : ${impayees.length}</div>
+       </div><div class="amount">${euros(totalDu)}</div></div>`
+    : `<div style="display:flex;align-items:center;gap:10px;color:var(--green);font-weight:600;">
+         <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+         Aucune amende en attente de paiement.
+       </div>`;
+
+  if (!data.length) { listBox.innerHTML = emptyState('Casier vierge.'); return; }
+
+  listBox.innerHTML = data.map(i => {
+    const titres = i.infraction_ids
+      .map(id => infractionsCache.find(f => f.id === id)?.titre)
+      .filter(Boolean)
+      .join(', ');
+    const date = new Date(i.created_at).toLocaleDateString('fr-FR');
+    const statutBadge = i.statut === 'annulee'
+      ? '<span class="badge badge-s">ANNULÉE</span>'
+      : i.paye
+        ? '<span class="badge badge-ok">PAYÉE</span>'
+        : '<span class="badge badge-s">IMPAYÉE</span>';
+    return `
+      <div style="border-bottom:1px solid var(--paper-dim);padding:12px 0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <strong style="font-size:.9rem;">${date} — ${euros(i.montant_total)}</strong>
+          ${statutBadge}
+        </div>
+        <div style="font-size:.85rem;margin-top:4px;">${titres}</div>
+        <div style="font-size:.78rem;color:var(--ink-soft);margin-top:2px;">
+          ${i.lieu ? i.lieu + ' · ' : ''}Agent ${i.agent.prenom} ${i.agent.nom}
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 // ---------------- BOOT ----------------
