@@ -479,6 +479,14 @@ tbody tr:hover td:first-child{color:var(--brass);}
       <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5-1.3 2-3 2.5-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg>
       <span>Amendes en cours</span>
     </div>
+    <div class="nav-item role-police" data-view="garde-a-vue">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>Garde à vue</span>
+    </div>
+    <div class="nav-item role-police" data-view="formations">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
+      <span>Formations</span>
+    </div>
     <div class="nav-item role-police locked-commandement" data-view="fiches-s">
       <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
       <span>Fichés S</span>
@@ -578,6 +586,18 @@ tbody tr:hover td:first-child{color:var(--brass);}
         <div id="interp-citoyen-choisi" style="margin-top:8px;"></div>
       </div>
 
+      <div class="card" style="background:var(--navy-950);color:var(--paper);border-color:var(--navy-700);">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <svg class="icon" style="color:var(--brass-light);flex-shrink:0;margin-top:2px;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+          <div>
+            <div style="font-weight:600;font-size:.88rem;margin-bottom:4px;">Rappel — citation des droits à énoncer</div>
+            <p style="font-size:.84rem;color:var(--paper-dim);margin:0;line-height:1.5;">
+              « Vous êtes en état d'interpellation pour [motif]. Vous avez le droit de garder le silence. Tout ce que vous direz pourra être retenu contre vous. Vous avez le droit de connaître les charges retenues contre vous. »
+            </p>
+          </div>
+        </div>
+      </div>
+
       <form id="interpellation-form">
         <div class="card">
           <div class="field-inline" style="margin-bottom:10px;"><label>Infractions constatées</label></div>
@@ -588,6 +608,27 @@ tbody tr:hover td:first-child{color:var(--brass);}
           <div class="grid-2">
             <div class="field-inline"><label>Lieu</label><input id="interp-lieu" placeholder="Ex : Legion Square"></div>
             <div class="field-inline"><label>Notes (facultatif)</label><input id="interp-notes"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="interp-gav-manuel" style="width:17px;height:17px;accent-color:var(--brass);">
+            <span style="font-weight:600;font-size:.9rem;">Placer le citoyen en garde à vue</span>
+          </label>
+          <p style="font-size:.78rem;color:var(--ink-soft);margin:4px 0 0 27px;">Double le montant de l'amende. Durée laissée à ton appréciation.</p>
+          <div id="interp-gav-duree-wrap" style="display:none;margin-top:12px;margin-left:27px;max-width:220px;">
+            <div class="field-inline"><label>Durée de la garde à vue</label>
+              <select id="interp-gav-duree">
+                <option value="1h">1 heure</option>
+                <option value="2h">2 heures</option>
+                <option value="4h">4 heures</option>
+                <option value="6h" selected>6 heures</option>
+                <option value="12h">12 heures</option>
+                <option value="24h">24 heures</option>
+                <option value="48h">48 heures</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -698,6 +739,38 @@ tbody tr:hover td:first-child{color:var(--brass);}
       </div>
       <div class="card" id="mon-casier-total"></div>
       <div class="card" id="mon-casier-list"></div>
+    </section>
+
+    <!-- ---------- VUE GARDE À VUE ---------- -->
+    <section class="view" id="view-garde-a-vue">
+      <div class="page-head">
+        <div>
+          <h2>Garde à vue</h2>
+          <p>Citoyens actuellement placés en garde à vue.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Citoyen</th><th>Début</th><th>Durée</th><th>Fin prévue</th><th></th></tr></thead>
+          <tbody id="gav-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- VUE FORMATIONS ---------- -->
+    <section class="view" id="view-formations">
+      <div class="page-head">
+        <div>
+          <h2>Formations</h2>
+          <p>Fiches d'apprentissage et questionnaires de passage de grade ou de compétence.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg></div>
+      </div>
+      <div class="card-head" style="margin:0 0 12px;"><h3 style="font-size:.95rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;">Passage de grade</h3></div>
+      <div id="formations-grade-list"></div>
+      <div class="card-head" style="margin:26px 0 12px;"><h3 style="font-size:.95rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;">Formations de base</h3></div>
+      <div id="formations-basique-list"></div>
     </section>
 
   </main>
@@ -991,6 +1064,8 @@ function goToView(name) {
   if (name === 'fiches-s') loadFichesS();
   if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); }
   if (name === 'amendes') loadAmendes();
+  if (name === 'garde-a-vue') loadGardeAVue();
+  if (name === 'formations') loadFormations();
   if (name === 'mon-identite') loadMonIdentite();
   if (name === 'mon-casier') loadMonCasier();
 }
@@ -1223,11 +1298,18 @@ function resetInterpellationForm() {
   $('#interp-citoyen-results').innerHTML = '';
   $('#interp-lieu').value = '';
   $('#interp-notes').value = '';
+  $('#interp-gav-manuel').checked = false;
+  $('#interp-gav-duree-wrap').style.display = 'none';
   renderInfractionChecklist();
   updateInterpellationTotal();
   interpellationCitoyen = citoyenCourant; // pré-remplit si on vient d'une fiche
   if (interpellationCitoyen) showChosenCitoyen();
 }
+
+$('#interp-gav-manuel').addEventListener('change', () => {
+  $('#interp-gav-duree-wrap').style.display = $('#interp-gav-manuel').checked ? 'block' : 'none';
+  updateInterpellationTotal();
+});
 
 $('#interp-citoyen-search').addEventListener('input', debounce(async () => {
   const q = $('#interp-citoyen-search').value.trim();
@@ -1282,12 +1364,14 @@ function renderInfractionChecklist() {
 
 function updateInterpellationTotal() {
   const checked = $$('.infraction-check:checked').map(cb => infractionsCache.find(f => f.id == cb.dataset.id));
-  const total = checked.reduce((sum, f) => sum + f.amende_max, 0);
+  let total = checked.reduce((sum, f) => sum + f.amende_max, 0);
   const peines = checked.map(f => f.peine).filter(Boolean);
-  const gav = checked.some(f => f.garde_a_vue);
+  const gavManuel = $('#interp-gav-manuel').checked;
+  const gav = checked.some(f => f.garde_a_vue) || gavManuel;
+  if (gavManuel) total *= 2;
   $('#interp-total').textContent = euros(total);
   $('#interp-peines').textContent = peines.length ? peines.join(' ; ') : 'Aucune sanction complémentaire.';
-  $('#interp-gav').textContent = gav ? 'Oui' : 'Non';
+  $('#interp-gav').textContent = gavManuel ? `Oui (${$('#interp-gav-duree').value}, amende doublée)` : (gav ? 'Oui' : 'Non');
 }
 
 $('#interpellation-form').addEventListener('submit', async (e) => {
@@ -1297,9 +1381,11 @@ $('#interpellation-form').addEventListener('submit', async (e) => {
   if (!checked.length) return toast("Sélectionne au moins une infraction.");
 
   const infs = checked.map(id => infractionsCache.find(f => f.id === id));
-  const montant_total = infs.reduce((s, f) => s + f.amende_max, 0);
+  const gavManuel = $('#interp-gav-manuel').checked;
+  let montant_total = infs.reduce((s, f) => s + f.amende_max, 0);
+  if (gavManuel) montant_total *= 2;
   const peine_appliquee = infs.map(f => f.peine).filter(Boolean).join(' ; ') || null;
-  const garde_a_vue = infs.some(f => f.garde_a_vue);
+  const garde_a_vue = infs.some(f => f.garde_a_vue) || gavManuel;
 
   const { error } = await sb.from('interpellations').insert({
     citoyen_id: interpellationCitoyen.id,
@@ -1308,6 +1394,7 @@ $('#interpellation-form').addEventListener('submit', async (e) => {
     montant_total,
     peine_appliquee,
     garde_a_vue,
+    garde_a_vue_duree: gavManuel ? $('#interp-gav-duree').value : null,
     lieu: $('#interp-lieu').value.trim() || null,
     notes: $('#interp-notes').value.trim() || null,
   });
@@ -1481,6 +1568,153 @@ async function loadAmendes() {
     toast("Paiement validé.");
     loadAmendes();
   }));
+}
+
+// ---------------- GARDE À VUE ----------------
+
+function finPrevueGav(createdAt, duree) {
+  const heures = parseInt(duree, 10) || 0;
+  const fin = new Date(createdAt);
+  fin.setHours(fin.getHours() + heures);
+  return fin;
+}
+
+async function loadGardeAVue() {
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, citoyen:citoyen_id (nom, prenom)')
+    .eq('garde_a_vue_relachee', false)
+    .not('garde_a_vue_duree', 'is', null)
+    .order('created_at', { ascending: false });
+
+  const tbody = $('#gav-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
+  if (!data.length) { tbody.innerHTML = emptyState('Personne en garde à vue actuellement.', 5); return; }
+
+  const maintenant = new Date();
+  tbody.innerHTML = data.map(i => {
+    const debut = new Date(i.created_at);
+    const fin = finPrevueGav(i.created_at, i.garde_a_vue_duree);
+    const termine = fin < maintenant;
+    return `
+      <tr>
+        <td>${i.citoyen ? `${i.citoyen.prenom} ${i.citoyen.nom}` : 'Citoyen supprimé'}</td>
+        <td>${debut.toLocaleString('fr-FR')}</td>
+        <td>${i.garde_a_vue_duree}</td>
+        <td>${fin.toLocaleString('fr-FR')} ${termine ? '<span class="badge badge-s">Dépassée</span>' : ''}</td>
+        <td><button class="btn btn-outline liberer-gav-btn" data-id="${i.id}">Libérer</button></td>
+      </tr>
+    `;
+  }).join('');
+
+  $$('.liberer-gav-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const confirme = confirm("Confirmer la libération de ce citoyen ?");
+    if (!confirme) return;
+    const { error } = await sb.from('interpellations').update({
+      garde_a_vue_relachee: true,
+      garde_a_vue_relachee_le: new Date().toISOString(),
+    }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur lors de la libération.");
+    toast("Citoyen libéré.");
+    loadGardeAVue();
+  }));
+}
+
+// ---------------- FORMATIONS ----------------
+
+let formationsValideesCache = [];
+
+async function loadFormations() {
+  const [{ data: formations, error: errF }, { data: validees, error: errV }] = await Promise.all([
+    sb.from('formations').select('*').order('ordre'),
+    sb.from('formations_validees').select('*').eq('agent_id', moi.id),
+  ]);
+  if (errF) return toast("Erreur de chargement des formations.");
+  formationsValideesCache = validees || [];
+
+  renderFormationsListe('#formations-grade-list', (formations || []).filter(f => f.categorie === 'grade'));
+  renderFormationsListe('#formations-basique-list', (formations || []).filter(f => f.categorie === 'basique'));
+}
+
+function renderFormationsListe(selector, liste) {
+  const box = $(selector);
+  if (!liste.length) { box.innerHTML = emptyState('Aucune formation disponible.'); return; }
+  box.innerHTML = liste.map(f => {
+    const validee = formationsValideesCache.find(v => v.formation_id === f.id);
+    return `
+      <div class="card" data-formation="${f.id}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <div>
+            <h3 style="margin:0 0 4px;font-size:1rem;">${f.titre}</h3>
+            <p style="margin:0;font-size:.85rem;color:var(--ink-soft);">${f.description ?? ''}</p>
+          </div>
+          ${validee
+            ? `<span class="badge badge-ok">Validée (${validee.score}/${validee.total_questions})</span>`
+            : `<button class="btn btn-brass btn-commencer-formation" data-id="${f.id}">Commencer</button>`}
+        </div>
+        <div class="formation-contenu" style="display:none;margin-top:16px;"></div>
+      </div>
+    `;
+  }).join('');
+
+  $$('.btn-commencer-formation', box).forEach(btn => btn.addEventListener('click', () => {
+    const formation = liste.find(f => f.id == btn.dataset.id);
+    ouvrirFormation(btn.closest('.card'), formation);
+  }));
+}
+
+function ouvrirFormation(card, formation) {
+  const zone = card.querySelector('.formation-contenu');
+  zone.style.display = 'block';
+  zone.innerHTML = `
+    <div style="border-top:1px solid var(--paper-dim);padding-top:14px;">
+      <p style="font-size:.88rem;line-height:1.6;color:var(--ink);">${formation.contenu}</p>
+      <form class="formation-quiz-form">
+        ${formation.questions.map((q, qi) => `
+          <div style="margin:16px 0;">
+            <div style="font-weight:600;font-size:.88rem;margin-bottom:8px;">${qi + 1}. ${q.question}</div>
+            ${q.options.map((opt, oi) => `
+              <label style="display:flex;align-items:center;gap:8px;padding:5px 0;font-size:.85rem;cursor:pointer;">
+                <input type="radio" name="q${qi}" value="${oi}" required style="accent-color:var(--brass);">
+                ${opt}
+              </label>
+            `).join('')}
+          </div>
+        `).join('')}
+        <button type="submit" class="btn btn-brass" style="margin-top:6px;">Valider le questionnaire</button>
+        <div class="formation-resultat" style="margin-top:12px;font-size:.88rem;"></div>
+      </form>
+    </div>
+  `;
+  zone.querySelector('.formation-quiz-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let score = 0;
+    formation.questions.forEach((q, qi) => {
+      const val = zone.querySelector(`input[name="q${qi}"]:checked`);
+      if (val && Number(val.value) === q.correct) score++;
+    });
+    const total = formation.questions.length;
+    const resultBox = zone.querySelector('.formation-resultat');
+    const seuil = Math.ceil(total * 0.7);
+
+    if (score >= seuil) {
+      const { error } = await sb.from('formations_validees').insert({
+        agent_id: moi.id,
+        formation_id: formation.id,
+        score,
+        total_questions: total,
+      });
+      if (error) {
+        resultBox.innerHTML = `<span style="color:var(--red);">Erreur lors de l'enregistrement.</span>`;
+        return;
+      }
+      resultBox.innerHTML = `<span style="color:var(--green);font-weight:600;">Formation validée ! Score : ${score}/${total}</span>`;
+      toast("Formation validée.");
+      setTimeout(loadFormations, 1200);
+    } else {
+      resultBox.innerHTML = `<span style="color:var(--red);">Score insuffisant : ${score}/${total} (il faut au moins ${seuil}/${total}). Retente plus tard.</span>`;
+    }
+  });
 }
 
 // ---------------- ESPACE CITOYEN ----------------
