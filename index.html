@@ -220,6 +220,11 @@ svg{display:block;flex-shrink:0;}
 .btn.locked,.card.locked{opacity:.45;cursor:not-allowed;}
 .btn.locked:hover{filter:none;border-color:var(--navy-700);color:var(--paper);}
 .nav-item .lock-icon{margin-left:auto;color:var(--ink-faint);}
+.nav-count{
+  margin-left:auto;background:var(--brass);color:var(--navy-950);
+  font-size:.68rem;font-weight:700;padding:1px 7px;border-radius:10px;
+  min-width:18px;text-align:center;
+}
 
 .sidebar-user{margin-top:auto;padding-top:14px;border-top:1px solid var(--navy-800);}
 .sidebar-user .who-row{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
@@ -480,10 +485,12 @@ tbody tr:hover td:first-child{color:var(--brass);}
     <div class="nav-item role-police" data-view="amendes">
       <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5-1.3 2-3 2.5-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg>
       <span>Amendes en cours</span>
+      <span class="nav-count" id="count-amendes" style="display:none;"></span>
     </div>
     <div class="nav-item role-police" data-view="garde-a-vue">
       <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       <span>Garde à vue</span>
+      <span class="nav-count" id="count-gav" style="display:none;"></span>
     </div>
     <div class="nav-item role-police" data-view="formations">
       <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
@@ -500,6 +507,11 @@ tbody tr:hover td:first-child{color:var(--brass);}
     <div class="nav-item role-police" data-view="recherches">
       <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v3l2 2"/></svg>
       <span>Recherchés</span>
+    </div>
+    <div class="nav-item role-police locked-direction" data-view="statistiques">
+      <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Statistiques</span>
+      <svg class="icon icon-sm lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     </div>
     <div class="nav-item role-police locked-commandement" data-view="perquisitions">
       <svg class="icon" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
@@ -710,21 +722,6 @@ tbody tr:hover td:first-child{color:var(--brass);}
       </div>
 
       <div class="card">
-        <div class="card-head"><h3>Statistiques</h3></div>
-        <div id="stats-resume" class="grid-2" style="margin-bottom:18px;"></div>
-        <div class="grid-2">
-          <div>
-            <h4 style="font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;">Par agent</h4>
-            <table><thead><tr><th>Agent</th><th>Interpellations</th><th>Total généré</th></tr></thead><tbody id="stats-agents-tbody"></tbody></table>
-          </div>
-          <div>
-            <h4 style="font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;">Infractions les plus fréquentes</h4>
-            <table><thead><tr><th>Infraction</th><th>Occurrences</th></tr></thead><tbody id="stats-infractions-tbody"></tbody></table>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
         <div class="card-head"><h3>Référentiel des infractions</h3></div>
         <table>
           <thead><tr><th>Infraction</th><th>Amende min</th><th>Amende max</th><th>Points</th></tr></thead>
@@ -898,6 +895,30 @@ tbody tr:hover td:first-child{color:var(--brass);}
           <thead><tr><th>Citoyen</th><th>Début</th><th>Durée</th><th>Fin prévue</th><th></th></tr></thead>
           <tbody id="gav-tbody"></tbody>
         </table>
+      </div>
+    </section>
+
+    <!-- ---------- VUE STATISTIQUES ---------- -->
+    <section class="view" id="view-statistiques">
+      <div class="page-head">
+        <div>
+          <h2>Statistiques</h2>
+          <p>Vue d'ensemble de l'activité du service. Réservé à la Direction.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      </div>
+      <div class="card">
+        <div id="stats-resume" class="grid-2" style="margin-bottom:18px;"></div>
+        <div class="grid-2">
+          <div>
+            <h4 style="font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;">Par agent</h4>
+            <table><thead><tr><th>Agent</th><th>Interpellations</th><th>Total généré</th></tr></thead><tbody id="stats-agents-tbody"></tbody></table>
+          </div>
+          <div>
+            <h4 style="font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;">Infractions les plus fréquentes</h4>
+            <table><thead><tr><th>Infraction</th><th>Occurrences</th></tr></thead><tbody id="stats-infractions-tbody"></tbody></table>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1159,6 +1180,23 @@ function showAppPolice() {
 
   loadInfractions();
   goToView('citoyens');
+  refreshCompteurs();
+}
+
+function setNavCount(id, n) {
+  const el = $('#' + id);
+  if (!el) return;
+  if (n > 0) { el.textContent = n > 99 ? '99+' : n; el.style.display = 'inline-block'; }
+  else { el.style.display = 'none'; }
+}
+
+async function refreshCompteurs() {
+  const [{ count: amendesCount }, { count: gavCount }] = await Promise.all([
+    sb.from('interpellations').select('id', { count: 'exact', head: true }).eq('paye', false).eq('statut', 'enregistree'),
+    sb.from('interpellations').select('id', { count: 'exact', head: true }).eq('garde_a_vue_relachee', false).not('garde_a_vue_duree', 'is', null),
+  ]);
+  setNavCount('count-amendes', amendesCount || 0);
+  setNavCount('count-gav', gavCount || 0);
 }
 
 function showAppCitoyen() {
@@ -1206,7 +1244,8 @@ function goToView(name) {
   if (name === 'citoyens') refreshCitoyensList();
   if (name === 'interpellation') resetInterpellationForm();
   if (name === 'fiches-s') loadFichesS();
-  if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); loadStatistiques(); }
+  if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); }
+  if (name === 'statistiques') loadStatistiques();
   if (name === 'amendes') loadAmendes();
   if (name === 'garde-a-vue') loadGardeAVue();
   if (name === 'formations') loadFormations();
@@ -1558,6 +1597,7 @@ $('#interpellation-form').addEventListener('submit', async (e) => {
   });
   if (error) return toast("Erreur lors de l'enregistrement.");
   toast(`Interpellation enregistrée — ${euros(montant_total)}`);
+  refreshCompteurs();
   resetInterpellationForm();
 });
 
@@ -1725,6 +1765,7 @@ async function loadAmendes() {
     if (error) return toast("Erreur lors de la validation.");
     toast("Paiement validé.");
     loadAmendes();
+    refreshCompteurs();
   }));
 }
 
@@ -1775,6 +1816,7 @@ async function loadGardeAVue() {
     if (error) return toast("Erreur lors de la libération.");
     toast("Citoyen libéré.");
     loadGardeAVue();
+    refreshCompteurs();
   }));
 }
 
