@@ -217,6 +217,8 @@ svg{display:block;flex-shrink:0;}
 .nav-item.locked{opacity:.35;cursor:not-allowed;}
 .nav-item.locked:hover{background:none;color:var(--paper-dim);}
 .nav-item.locked:hover .icon{color:var(--ink-faint);}
+.btn.locked,.card.locked{opacity:.45;cursor:not-allowed;}
+.btn.locked:hover{filter:none;border-color:var(--navy-700);color:var(--paper);}
 .nav-item .lock-icon{margin-left:auto;color:var(--ink-faint);}
 
 .sidebar-user{margin-top:auto;padding-top:14px;border-top:1px solid var(--navy-800);}
@@ -487,6 +489,23 @@ tbody tr:hover td:first-child{color:var(--brass);}
       <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
       <span>Formations</span>
     </div>
+    <div class="nav-item role-police" data-view="interventions-pdf">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg>
+      <span>Interventions (PDF)</span>
+    </div>
+    <div class="nav-item role-police" data-view="rapports">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+      <span>Rapports</span>
+    </div>
+    <div class="nav-item role-police" data-view="recherches">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v3l2 2"/></svg>
+      <span>Recherchés</span>
+    </div>
+    <div class="nav-item role-police locked-commandement" data-view="perquisitions">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+      <span>Perquisitions</span>
+      <svg class="icon icon-sm lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
     <div class="nav-item role-police locked-commandement" data-view="fiches-s">
       <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
       <span>Fichés S</span>
@@ -691,6 +710,21 @@ tbody tr:hover td:first-child{color:var(--brass);}
       </div>
 
       <div class="card">
+        <div class="card-head"><h3>Statistiques</h3></div>
+        <div id="stats-resume" class="grid-2" style="margin-bottom:18px;"></div>
+        <div class="grid-2">
+          <div>
+            <h4 style="font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;">Par agent</h4>
+            <table><thead><tr><th>Agent</th><th>Interpellations</th><th>Total généré</th></tr></thead><tbody id="stats-agents-tbody"></tbody></table>
+          </div>
+          <div>
+            <h4 style="font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;">Infractions les plus fréquentes</h4>
+            <table><thead><tr><th>Infraction</th><th>Occurrences</th></tr></thead><tbody id="stats-infractions-tbody"></tbody></table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
         <div class="card-head"><h3>Référentiel des infractions</h3></div>
         <table>
           <thead><tr><th>Infraction</th><th>Amende min</th><th>Amende max</th><th>Points</th></tr></thead>
@@ -714,6 +748,115 @@ tbody tr:hover td:first-child{color:var(--brass);}
           <tbody id="amendes-tbody"></tbody>
         </table>
       </div>
+    </section>
+
+    <!-- ---------- VUE INTERVENTIONS PDF ---------- -->
+    <section class="view" id="view-interventions-pdf">
+      <div class="page-head">
+        <div>
+          <h2>Interventions (PDF)</h2>
+          <p>Génère un PDF officiel (en-tête Police Nationale, date, agent) pour une interpellation ou un rapport.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg></div>
+      </div>
+
+      <div class="card-head" style="margin:0 0 12px;"><h3 style="font-size:.95rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;">Interpellations récentes</h3></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Citoyen</th><th>Montant</th><th>Date</th><th></th></tr></thead>
+          <tbody id="pdf-interpellations-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="card-head" style="margin:26px 0 12px;"><h3 style="font-size:.95rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;">Rapports de service récents</h3></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Titre</th><th>Agent</th><th>Date</th><th></th></tr></thead>
+          <tbody id="pdf-rapports-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- VUE RAPPORTS ---------- -->
+    <section class="view" id="view-rapports">
+      <div class="page-head">
+        <div>
+          <h2>Rapports de service</h2>
+          <p>Main courante — journal des patrouilles et incidents, consultable par tout le service.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg></div>
+      </div>
+      <div class="card">
+        <form id="new-rapport-form">
+          <div class="grid-2">
+            <div class="field-inline"><label>Titre</label><input id="rap-titre" required></div>
+            <div class="field-inline"><label>Catégorie</label>
+              <select id="rap-categorie">
+                <option value="patrouille">Patrouille</option>
+                <option value="incident">Incident</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-inline" style="margin-top:12px;"><label>Compte-rendu</label><textarea id="rap-contenu" required></textarea></div>
+          <button type="submit" class="btn btn-brass" style="margin-top:14px;">Publier le rapport</button>
+        </form>
+      </div>
+      <div id="rapports-list"></div>
+    </section>
+
+    <!-- ---------- VUE RECHERCHÉS (mandats) ---------- -->
+    <section class="view" id="view-recherches">
+      <div class="page-head">
+        <div>
+          <h2>Citoyens recherchés</h2>
+          <p>Mandats de recherche actifs. Émission et levée réservées au Commandement et +.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="card locked-commandement" id="new-mandat-card">
+        <div class="card-head"><h3>Émettre un mandat</h3></div>
+        <div class="search-input-wrap">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="mandat-citoyen-search" placeholder="Rechercher un citoyen…" class="field-inline">
+        </div>
+        <div id="mandat-citoyen-results" style="margin-top:6px;"></div>
+        <div id="mandat-citoyen-choisi" style="margin-top:8px;"></div>
+        <form id="new-mandat-form" style="margin-top:12px;">
+          <div class="field-inline"><label>Motif du mandat</label><input id="mandat-motif" required></div>
+          <button type="submit" class="btn btn-brass" style="margin-top:12px;">Émettre le mandat</button>
+        </form>
+      </div>
+      <div id="mandats-list" style="margin-top:18px;"></div>
+    </section>
+
+    <!-- ---------- VUE PERQUISITIONS ---------- -->
+    <section class="view" id="view-perquisitions">
+      <div class="page-head">
+        <div>
+          <h2>Perquisitions</h2>
+          <p>Registre des perquisitions effectuées. Réservé au Commandement et +.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Nouvelle perquisition</h3></div>
+        <div class="search-input-wrap">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="perq-citoyen-search" placeholder="Rechercher un citoyen (optionnel)…" class="field-inline">
+        </div>
+        <div id="perq-citoyen-results" style="margin-top:6px;"></div>
+        <div id="perq-citoyen-choisi" style="margin-top:8px;"></div>
+        <form id="new-perquisition-form" style="margin-top:12px;">
+          <div class="grid-2">
+            <div class="field-inline"><label>Lieu perquisitionné</label><input id="perq-lieu" required placeholder="Adresse"></div>
+            <div class="field-inline"><label>Motif</label><input id="perq-motif" required></div>
+          </div>
+          <div class="field-inline" style="margin-top:12px;"><label>Résultat / objets saisis</label><textarea id="perq-resultat" placeholder="Ex : rien trouvé, ou détail des objets saisis"></textarea></div>
+          <button type="submit" class="btn btn-brass" style="margin-top:14px;">Enregistrer la perquisition</button>
+        </form>
+      </div>
+      <div id="perquisitions-list" style="margin-top:18px;"></div>
     </section>
 
     <!-- ---------- VUE CITOYEN : MON IDENTITÉ ---------- -->
@@ -779,6 +922,7 @@ tbody tr:hover td:first-child{color:var(--brass);}
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // ============================================================
 // CONFIGURATION SUPABASE
@@ -1062,10 +1206,14 @@ function goToView(name) {
   if (name === 'citoyens') refreshCitoyensList();
   if (name === 'interpellation') resetInterpellationForm();
   if (name === 'fiches-s') loadFichesS();
-  if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); }
+  if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); loadStatistiques(); }
   if (name === 'amendes') loadAmendes();
   if (name === 'garde-a-vue') loadGardeAVue();
   if (name === 'formations') loadFormations();
+  if (name === 'rapports') loadRapports();
+  if (name === 'interventions-pdf') loadInterventionsPdf();
+  if (name === 'recherches') { resetMandatForm(); loadMandats(); }
+  if (name === 'perquisitions') { resetPerquisitionForm(); loadPerquisitions(); }
   if (name === 'mon-identite') loadMonIdentite();
   if (name === 'mon-casier') loadMonCasier();
 }
@@ -1112,7 +1260,11 @@ async function refreshCitoyensList() {
   const q = $('#citoyen-search').value.trim();
   let query = sb.from('citoyens').select('*').order('nom').limit(50);
   if (q) query = query.or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`);
-  const { data, error } = await query;
+  const [{ data, error }, { data: mandatsActifs }] = await Promise.all([
+    query,
+    sb.from('mandats').select('citoyen_id').eq('actif', true),
+  ]);
+  const recherches = new Set((mandatsActifs || []).map(m => m.citoyen_id));
   const tbody = $('#citoyens-tbody');
   tbody.innerHTML = '';
   if (error) return toast("Erreur de chargement des citoyens.");
@@ -1127,7 +1279,10 @@ async function refreshCitoyensList() {
       <td>${c.prenom} ${c.nom}</td>
       <td>${c.date_naissance ?? '—'}</td>
       <td>${c.telephone ?? '—'}</td>
-      <td>${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''}</td>
+      <td>
+        ${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''}
+        ${recherches.has(c.id) ? '<span class="badge badge-s">RECHERCHÉ</span>' : ''}
+      </td>
     `;
     tr.addEventListener('click', () => openCitoyen(c.id));
     tbody.appendChild(tr);
@@ -1137,6 +1292,8 @@ async function refreshCitoyensList() {
 async function openCitoyen(id) {
   const { data: c, error } = await sb.from('citoyens').select('*').eq('id', id).single();
   if (error) return toast("Impossible de charger cette fiche.");
+  const { data: mandat } = await sb.from('mandats').select('*').eq('citoyen_id', id).eq('actif', true).maybeSingle();
+  c.mandatActif = mandat || null;
   citoyenCourant = c;
   renderCitoyenDetail(c, false);
   loadCasier(c.id);
@@ -1186,7 +1343,8 @@ function renderCitoyenDetail(c, editMode) {
   }
 
   box.innerHTML = `
-    <h3>${c.prenom} ${c.nom} ${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''}</h3>
+    <h3>${c.prenom} ${c.nom} ${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''} ${c.mandatActif ? '<span class="badge badge-s">RECHERCHÉ</span>' : ''}</h3>
+    ${c.mandatActif ? `<p style="color:var(--red);font-size:.85rem;margin-top:-4px;font-weight:600;">Mandat actif — ${c.mandatActif.motif}</p>` : ''}
     <p class="meta" style="color:var(--ink-soft);font-size:.85rem;margin-top:-6px;">
       Né(e) le ${c.date_naissance ?? '—'} · ${c.telephone ?? 'tél. inconnu'} · ${c.adresse ?? 'adresse inconnue'}
     </p>
@@ -1715,6 +1873,403 @@ function ouvrirFormation(card, formation) {
       resultBox.innerHTML = `<span style="color:var(--red);">Score insuffisant : ${score}/${total} (il faut au moins ${seuil}/${total}). Retente plus tard.</span>`;
     }
   });
+}
+
+// ---------------- GÉNÉRATION PDF ----------------
+
+function slugify(str) {
+  return (str || 'document')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    .slice(0, 40) || 'document';
+}
+function dateSlug(iso) {
+  return new Date(iso).toISOString().slice(0, 10);
+}
+
+function entetePdf(doc, sousTitre) {
+  const navy = [15, 26, 46];
+  const gold = [182, 138, 61];
+  doc.setFillColor(...navy);
+  doc.rect(0, 0, 210, 32, 'F');
+  doc.setFillColor(...gold);
+  doc.roundedRect(14, 7, 18, 18, 3, 3, 'F');
+  doc.setTextColor(...navy);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.text('PN', 23, 19, { align: 'center' });
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.text('POLICE NATIONALE', 40, 16);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...gold);
+  doc.text(sousTitre || 'Nova Life — Portail interne', 40, 23);
+  doc.setTextColor(0, 0, 0);
+  return 42;
+}
+
+function piedPagePdf(doc) {
+  doc.setFontSize(8);
+  doc.setTextColor(160);
+  doc.text('Document généré automatiquement — Police Nationale Nova Life', 14, 290);
+}
+
+function ecrireParagraphe(doc, texte, x, y, maxWidth, lineHeight = 6) {
+  const lignes = doc.splitTextToSize(texte, maxWidth);
+  lignes.forEach(ligne => {
+    if (y > 280) { doc.addPage(); y = 20; }
+    doc.text(ligne, x, y);
+    y += lineHeight;
+  });
+  return y;
+}
+
+function genererPdfInterpellation(i) {
+  const doc = new jspdf.jsPDF();
+  let y = entetePdf(doc, "Procès-verbal d'intervention");
+
+  doc.setTextColor(0);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+  doc.text(i.citoyen ? `${i.citoyen.prenom} ${i.citoyen.nom}` : 'Citoyen supprimé', 14, y); y += 8;
+
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(90);
+  doc.text(`Agent verbalisateur : ${i.agent.prenom} ${i.agent.nom} (matricule ${i.agent.matricule})`, 14, y); y += 6;
+  doc.text(`Date : ${new Date(i.created_at).toLocaleString('fr-FR')}`, 14, y); y += 6;
+  if (i.lieu) { doc.text(`Lieu : ${i.lieu}`, 14, y); y += 6; }
+  doc.text(`Montant de l'amende : ${euros(i.montant_total)} (${i.paye ? 'payée' : 'impayée'})`, 14, y); y += 6;
+  if (i.garde_a_vue) { doc.text(`Garde à vue : Oui${i.garde_a_vue_duree ? ' — ' + i.garde_a_vue_duree : ''}`, 14, y); y += 6; }
+  y += 4;
+
+  doc.setDrawColor(210); doc.line(14, y, 196, y); y += 8;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(0);
+  doc.text('Infractions constatées :', 14, y); y += 7;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+  const titres = (i.infraction_ids || []).map(id => infractionsCache.find(f => f.id === id)?.titre).filter(Boolean);
+  titres.forEach(t => { y = ecrireParagraphe(doc, '• ' + t, 14, y, 182); });
+
+  if (i.peine_appliquee) {
+    y += 3;
+    doc.setFont('helvetica', 'bold'); doc.text('Sanctions complémentaires :', 14, y); y += 7;
+    doc.setFont('helvetica', 'normal');
+    y = ecrireParagraphe(doc, i.peine_appliquee, 14, y, 182);
+  }
+  if (i.notes) {
+    y += 3;
+    doc.setFont('helvetica', 'bold'); doc.text('Notes :', 14, y); y += 7;
+    doc.setFont('helvetica', 'normal');
+    y = ecrireParagraphe(doc, i.notes, 14, y, 182);
+  }
+
+  piedPagePdf(doc);
+  doc.save(`intervention-${slugify(i.citoyen ? i.citoyen.nom : 'citoyen')}-${dateSlug(i.created_at)}.pdf`);
+}
+
+function genererPdfRapport(r) {
+  const doc = new jspdf.jsPDF();
+  let y = entetePdf(doc, 'Rapport de service');
+
+  const catLabel = { patrouille: 'Patrouille', incident: 'Incident', autre: 'Autre' };
+  doc.setTextColor(0);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+  y = ecrireParagraphe(doc, r.titre, 14, y, 182, 7); y += 2;
+
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(90);
+  doc.text(`Catégorie : ${catLabel[r.categorie] ?? r.categorie}`, 14, y); y += 6;
+  doc.text(`Rédigé par : ${r.agent.prenom} ${r.agent.nom} (matricule ${r.agent.matricule})`, 14, y); y += 6;
+  doc.text(`Date : ${new Date(r.created_at).toLocaleString('fr-FR')}`, 14, y); y += 10;
+
+  doc.setDrawColor(210); doc.line(14, y, 196, y); y += 8;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(20);
+  y = ecrireParagraphe(doc, r.contenu, 14, y, 182);
+
+  piedPagePdf(doc);
+  doc.save(`rapport-${slugify(r.titre)}-${dateSlug(r.created_at)}.pdf`);
+}
+
+let pdfInterpellationsCache = [];
+let pdfRapportsCache = [];
+
+async function loadInterventionsPdf() {
+  const [{ data: interventions, error: errI }, { data: rapps, error: errR }] = await Promise.all([
+    sb.from('interpellations').select('*, citoyen:citoyen_id (nom, prenom), agent:agent_id (nom, prenom, matricule)').order('created_at', { ascending: false }).limit(40),
+    sb.from('rapports').select('*, agent:agent_id (nom, prenom, matricule)').order('created_at', { ascending: false }).limit(40),
+  ]);
+
+  pdfInterpellationsCache = interventions || [];
+  const tbodyI = $('#pdf-interpellations-tbody');
+  if (errI) { tbodyI.innerHTML = emptyState('Erreur de chargement.', 4); }
+  else if (!pdfInterpellationsCache.length) { tbodyI.innerHTML = emptyState('Aucune interpellation.', 4); }
+  else {
+    tbodyI.innerHTML = pdfInterpellationsCache.map((i, idx) => `
+      <tr>
+        <td>${i.citoyen ? `${i.citoyen.prenom} ${i.citoyen.nom}` : 'Citoyen supprimé'}</td>
+        <td>${euros(i.montant_total)}</td>
+        <td>${new Date(i.created_at).toLocaleDateString('fr-FR')}</td>
+        <td><button class="btn btn-outline pdf-interp-btn" data-idx="${idx}">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PDF
+        </button></td>
+      </tr>
+    `).join('');
+    $$('.pdf-interp-btn', tbodyI).forEach(btn => btn.addEventListener('click', () => {
+      genererPdfInterpellation(pdfInterpellationsCache[btn.dataset.idx]);
+    }));
+  }
+
+  pdfRapportsCache = rapps || [];
+  const tbodyR = $('#pdf-rapports-tbody');
+  if (errR) { tbodyR.innerHTML = emptyState('Erreur de chargement.', 3); }
+  else if (!pdfRapportsCache.length) { tbodyR.innerHTML = emptyState('Aucun rapport.', 3); }
+  else {
+    tbodyR.innerHTML = pdfRapportsCache.map((r, idx) => `
+      <tr>
+        <td>${r.titre}</td>
+        <td>${r.agent.prenom} ${r.agent.nom}</td>
+        <td>${new Date(r.created_at).toLocaleDateString('fr-FR')}</td>
+        <td><button class="btn btn-outline pdf-rapport-btn" data-idx="${idx}">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PDF
+        </button></td>
+      </tr>
+    `).join('');
+    $$('.pdf-rapport-btn', tbodyR).forEach(btn => btn.addEventListener('click', () => {
+      genererPdfRapport(pdfRapportsCache[btn.dataset.idx]);
+    }));
+  }
+}
+
+// ---------------- RAPPORTS DE SERVICE ----------------
+
+$('#new-rapport-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    agent_id: moi.id,
+    titre: $('#rap-titre').value.trim(),
+    categorie: $('#rap-categorie').value,
+    contenu: $('#rap-contenu').value.trim(),
+  };
+  if (!payload.titre || !payload.contenu) return;
+  const { error } = await sb.from('rapports').insert(payload);
+  if (error) return toast("Erreur lors de la publication.");
+  toast("Rapport publié.");
+  $('#new-rapport-form').reset();
+  loadRapports();
+});
+
+async function loadRapports() {
+  const { data, error } = await sb
+    .from('rapports')
+    .select('*, agent:agent_id (nom, prenom, matricule)')
+    .order('created_at', { ascending: false })
+    .limit(50);
+  const box = $('#rapports-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Aucun rapport pour le moment.'); return; }
+  const catLabel = { patrouille: 'Patrouille', incident: 'Incident', autre: 'Autre' };
+  box.innerHTML = data.map(r => `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:.98rem;">${r.titre}</h3>
+          <div style="font-size:.78rem;color:var(--ink-soft);">
+            ${catLabel[r.categorie] ?? r.categorie} · ${r.agent.prenom} ${r.agent.nom} (${r.agent.matricule}) · ${new Date(r.created_at).toLocaleString('fr-FR')}
+          </div>
+        </div>
+      </div>
+      <p style="font-size:.88rem;margin:12px 0 0;white-space:pre-wrap;">${r.contenu}</p>
+    </div>
+  `).join('');
+}
+
+// ---------------- MANDATS DE RECHERCHE ----------------
+
+let mandatCitoyen = null;
+
+function resetMandatForm() {
+  mandatCitoyen = null;
+  $('#mandat-citoyen-search').value = '';
+  $('#mandat-citoyen-results').innerHTML = '';
+  $('#mandat-citoyen-choisi').innerHTML = '';
+  $('#mandat-motif').value = '';
+  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) $('#new-mandat-card').classList.add('locked');
+}
+
+$('#mandat-citoyen-search').addEventListener('input', debounce(async () => {
+  const q = $('#mandat-citoyen-search').value.trim();
+  const box = $('#mandat-citoyen-results');
+  if (!q) { box.innerHTML = ''; return; }
+  const { data } = await sb.from('citoyens').select('*').or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`).limit(8);
+  box.innerHTML = (data || []).map(c =>
+    `<div class="nav-item" data-id="${c.id}" style="color:var(--ink);">${c.prenom} ${c.nom}</div>`
+  ).join('') || emptyState('Aucun résultat.');
+  $$('.nav-item', box).forEach(el => el.addEventListener('click', () => {
+    mandatCitoyen = data.find(c => c.id === el.dataset.id);
+    box.innerHTML = '';
+    $('#mandat-citoyen-search').value = '';
+    $('#mandat-citoyen-choisi').innerHTML = `<div class="badge badge-ok">${mandatCitoyen.prenom} ${mandatCitoyen.nom}</div>`;
+  }));
+}, 250));
+
+$('#new-mandat-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) return toast("Réservé au Commandement et +.");
+  if (!mandatCitoyen) return toast("Sélectionne d'abord un citoyen.");
+  const motif = $('#mandat-motif').value.trim();
+  if (!motif) return;
+  const { error } = await sb.from('mandats').insert({
+    citoyen_id: mandatCitoyen.id,
+    motif,
+    created_by: moi.id,
+  });
+  if (error) return toast("Erreur lors de l'émission du mandat.");
+  toast("Mandat émis.");
+  resetMandatForm();
+  loadMandats();
+});
+
+async function loadMandats() {
+  const { data, error } = await sb
+    .from('mandats')
+    .select('*, citoyen:citoyen_id (nom, prenom)')
+    .eq('actif', true)
+    .order('created_at', { ascending: false });
+  const box = $('#mandats-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Aucun mandat actif.'); return; }
+  const estCommandement = moi.grade.niveau >= NIVEAU_COMMANDEMENT;
+  box.innerHTML = data.map(m => `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+        <div>
+          <strong>${m.citoyen ? `${m.citoyen.prenom} ${m.citoyen.nom}` : 'Citoyen supprimé'}</strong>
+          <div style="font-size:.85rem;color:var(--ink-soft);margin-top:2px;">${m.motif}</div>
+          <div style="font-size:.76rem;color:var(--ink-faint);margin-top:2px;">Émis le ${new Date(m.created_at).toLocaleDateString('fr-FR')}</div>
+        </div>
+        <button class="btn btn-outline lever-mandat-btn ${estCommandement ? '' : 'locked'}" data-id="${m.id}">Lever le mandat</button>
+      </div>
+    </div>
+  `).join('');
+  $$('.lever-mandat-btn', box).forEach(btn => btn.addEventListener('click', async () => {
+    if (!estCommandement) return toast("Réservé au Commandement et +.");
+    const { error } = await sb.from('mandats').update({ actif: false, leve_le: new Date().toISOString() }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur.");
+    toast("Mandat levé.");
+    loadMandats();
+  }));
+}
+
+// ---------------- PERQUISITIONS ----------------
+
+let perquisitionCitoyen = null;
+
+function resetPerquisitionForm() {
+  perquisitionCitoyen = null;
+  $('#perq-citoyen-search').value = '';
+  $('#perq-citoyen-results').innerHTML = '';
+  $('#perq-citoyen-choisi').innerHTML = '';
+  $('#new-perquisition-form').reset();
+}
+
+$('#perq-citoyen-search').addEventListener('input', debounce(async () => {
+  const q = $('#perq-citoyen-search').value.trim();
+  const box = $('#perq-citoyen-results');
+  if (!q) { box.innerHTML = ''; return; }
+  const { data } = await sb.from('citoyens').select('*').or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`).limit(8);
+  box.innerHTML = (data || []).map(c =>
+    `<div class="nav-item" data-id="${c.id}" style="color:var(--ink);">${c.prenom} ${c.nom}</div>`
+  ).join('') || emptyState('Aucun résultat.');
+  $$('.nav-item', box).forEach(el => el.addEventListener('click', () => {
+    perquisitionCitoyen = data.find(c => c.id === el.dataset.id);
+    box.innerHTML = '';
+    $('#perq-citoyen-search').value = '';
+    $('#perq-citoyen-choisi').innerHTML = `<div class="badge badge-ok">${perquisitionCitoyen.prenom} ${perquisitionCitoyen.nom}</div>`;
+    if (perquisitionCitoyen.adresse && !$('#perq-lieu').value) $('#perq-lieu').value = perquisitionCitoyen.adresse;
+  }));
+}, 250));
+
+$('#new-perquisition-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) return toast("Réservé au Commandement et +.");
+  const { error } = await sb.from('perquisitions').insert({
+    citoyen_id: perquisitionCitoyen ? perquisitionCitoyen.id : null,
+    agent_id: moi.id,
+    lieu: $('#perq-lieu').value.trim(),
+    motif: $('#perq-motif').value.trim(),
+    resultat: $('#perq-resultat').value.trim() || null,
+  });
+  if (error) return toast("Erreur lors de l'enregistrement.");
+  toast("Perquisition enregistrée.");
+  resetPerquisitionForm();
+  loadPerquisitions();
+});
+
+async function loadPerquisitions() {
+  const { data, error } = await sb
+    .from('perquisitions')
+    .select('*, citoyen:citoyen_id (nom, prenom), agent:agent_id (nom, prenom)')
+    .order('created_at', { ascending: false })
+    .limit(50);
+  const box = $('#perquisitions-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Aucune perquisition enregistrée.'); return; }
+  box.innerHTML = data.map(p => `
+    <div class="card">
+      <div style="font-weight:600;">${p.lieu} ${p.citoyen ? `— ${p.citoyen.prenom} ${p.citoyen.nom}` : ''}</div>
+      <div style="font-size:.85rem;color:var(--ink-soft);margin-top:2px;">${p.motif}</div>
+      ${p.resultat ? `<div style="font-size:.85rem;margin-top:6px;">${p.resultat}</div>` : ''}
+      <div style="font-size:.76rem;color:var(--ink-faint);margin-top:6px;">
+        ${p.agent.prenom} ${p.agent.nom} · ${new Date(p.created_at).toLocaleString('fr-FR')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ---------------- STATISTIQUES (admin) ----------------
+
+async function loadStatistiques() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, agent:agent_id (nom, prenom, matricule)');
+  if (error) return;
+
+  const totalInterpellations = data.length;
+  const totalGenere = data.reduce((s, i) => s + i.montant_total, 0);
+  const totalEncaisse = data.filter(i => i.paye).reduce((s, i) => s + i.montant_total, 0);
+  const totalAttente = totalGenere - totalEncaisse;
+
+  $('#stats-resume').innerHTML = `
+    <div><div style="font-size:.78rem;color:var(--ink-soft);">Interpellations</div><div style="font-size:1.3rem;font-weight:700;">${totalInterpellations}</div></div>
+    <div><div style="font-size:.78rem;color:var(--ink-soft);">Total généré</div><div style="font-size:1.3rem;font-weight:700;">${euros(totalGenere)}</div></div>
+    <div><div style="font-size:.78rem;color:var(--ink-soft);">Encaissé</div><div style="font-size:1.3rem;font-weight:700;color:var(--green);">${euros(totalEncaisse)}</div></div>
+    <div><div style="font-size:.78rem;color:var(--ink-soft);">En attente</div><div style="font-size:1.3rem;font-weight:700;color:var(--red);">${euros(totalAttente)}</div></div>
+  `;
+
+  const parAgent = {};
+  data.forEach(i => {
+    const key = i.agent_id;
+    if (!parAgent[key]) parAgent[key] = { nom: `${i.agent.prenom} ${i.agent.nom}`, count: 0, total: 0 };
+    parAgent[key].count++;
+    parAgent[key].total += i.montant_total;
+  });
+  const agentsTries = Object.values(parAgent).sort((a, b) => b.count - a.count).slice(0, 15);
+  $('#stats-agents-tbody').innerHTML = agentsTries.length
+    ? agentsTries.map(a => `<tr><td>${a.nom}</td><td>${a.count}</td><td>${euros(a.total)}</td></tr>`).join('')
+    : emptyState('Aucune donnée.', 3);
+
+  const parInfraction = {};
+  data.forEach(i => {
+    (i.infraction_ids || []).forEach(id => { parInfraction[id] = (parInfraction[id] || 0) + 1; });
+  });
+  const infractionsTriees = Object.entries(parInfraction)
+    .map(([id, count]) => ({ titre: infractionsCache.find(f => f.id == id)?.titre ?? 'Inconnue', count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 15);
+  $('#stats-infractions-tbody').innerHTML = infractionsTriees.length
+    ? infractionsTriees.map(i => `<tr><td>${i.titre}</td><td>${i.count}</td></tr>`).join('')
+    : emptyState('Aucune donnée.', 2);
 }
 
 // ---------------- ESPACE CITOYEN ----------------
