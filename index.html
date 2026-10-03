@@ -1726,6 +1726,7 @@ async function loadInfractionsAdmin() {
 // ---------------- AMENDES EN COURS (policiers) ----------------
 
 async function loadAmendes() {
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
   const { data, error } = await sb
     .from('interpellations')
     .select('*, citoyen:citoyen_id (nom, prenom)')
@@ -1749,10 +1750,24 @@ async function loadAmendes() {
         <td><strong>${euros(i.montant_total)}</strong></td>
         <td style="max-width:280px;font-size:.82rem;">${motifs}</td>
         <td>${date}</td>
-        <td><button class="btn btn-brass valider-paiement-btn" data-id="${i.id}">Marquer payée</button></td>
+        <td style="display:flex;gap:6px;">
+          <button class="btn btn-brass valider-paiement-btn" data-id="${i.id}">Marquer payée</button>
+          <button class="btn btn-danger supprimer-amende-btn ${estDirection ? '' : 'locked'}" data-id="${i.id}">Supprimer</button>
+        </td>
       </tr>
     `;
   }).join('');
+
+  $$('.supprimer-amende-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+    const confirme = confirm("Supprimer définitivement cette amende/interpellation ? Elle disparaîtra aussi du casier et des statistiques. Irréversible.");
+    if (!confirme) return;
+    const { error } = await sb.from('interpellations').delete().eq('id', btn.dataset.id);
+    if (error) return toast("Erreur lors de la suppression.");
+    toast("Amende supprimée.");
+    loadAmendes();
+    refreshCompteurs();
+  }));
 
   $$('.valider-paiement-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
     const confirme = confirm("Confirmer que cette amende a bien été payée ? Cette action est enregistrée avec ton nom.");
@@ -2034,6 +2049,7 @@ let pdfInterpellationsCache = [];
 let pdfRapportsCache = [];
 
 async function loadInterventionsPdf() {
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
   const [{ data: interventions, error: errI }, { data: rapps, error: errR }] = await Promise.all([
     sb.from('interpellations').select('*, citoyen:citoyen_id (nom, prenom), agent:agent_id (nom, prenom, matricule)').order('created_at', { ascending: false }).limit(40),
     sb.from('rapports').select('*, agent:agent_id (nom, prenom, matricule)').order('created_at', { ascending: false }).limit(40),
@@ -2049,14 +2065,29 @@ async function loadInterventionsPdf() {
         <td>${i.citoyen ? `${i.citoyen.prenom} ${i.citoyen.nom}` : 'Citoyen supprimé'}</td>
         <td>${euros(i.montant_total)}</td>
         <td>${new Date(i.created_at).toLocaleDateString('fr-FR')}</td>
-        <td><button class="btn btn-outline pdf-interp-btn" data-idx="${idx}">
-          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          PDF
-        </button></td>
+        <td style="display:flex;gap:6px;">
+          <button class="btn btn-outline pdf-interp-btn" data-idx="${idx}">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PDF
+          </button>
+          <button class="btn btn-danger supprimer-interp-btn ${estDirection ? '' : 'locked'}" data-id="${i.id}" data-idx="${idx}">Supprimer</button>
+        </td>
       </tr>
     `).join('');
     $$('.pdf-interp-btn', tbodyI).forEach(btn => btn.addEventListener('click', () => {
       genererPdfInterpellation(pdfInterpellationsCache[btn.dataset.idx]);
+    }));
+    $$('.supprimer-interp-btn', tbodyI).forEach(btn => btn.addEventListener('click', async () => {
+      if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+      const item = pdfInterpellationsCache[btn.dataset.idx];
+      const nom = item.citoyen ? `${item.citoyen.prenom} ${item.citoyen.nom}` : 'ce citoyen';
+      const confirme = confirm(`Supprimer définitivement cette interpellation (${nom}, ${euros(item.montant_total)}) ?\n\nElle disparaîtra aussi du casier du citoyen et des statistiques. Irréversible.`);
+      if (!confirme) return;
+      const { error } = await sb.from('interpellations').delete().eq('id', btn.dataset.id);
+      if (error) return toast("Erreur lors de la suppression.");
+      toast("Interpellation supprimée.");
+      loadInterventionsPdf();
+      refreshCompteurs();
     }));
   }
 
@@ -2070,14 +2101,26 @@ async function loadInterventionsPdf() {
         <td>${r.titre}</td>
         <td>${r.agent.prenom} ${r.agent.nom}</td>
         <td>${new Date(r.created_at).toLocaleDateString('fr-FR')}</td>
-        <td><button class="btn btn-outline pdf-rapport-btn" data-idx="${idx}">
-          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          PDF
-        </button></td>
+        <td style="display:flex;gap:6px;">
+          <button class="btn btn-outline pdf-rapport-btn" data-idx="${idx}">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PDF
+          </button>
+          <button class="btn btn-danger supprimer-rapport-btn ${estDirection ? '' : 'locked'}" data-id="${r.id}">Supprimer</button>
+        </td>
       </tr>
     `).join('');
     $$('.pdf-rapport-btn', tbodyR).forEach(btn => btn.addEventListener('click', () => {
       genererPdfRapport(pdfRapportsCache[btn.dataset.idx]);
+    }));
+    $$('.supprimer-rapport-btn', tbodyR).forEach(btn => btn.addEventListener('click', async () => {
+      if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+      const confirme = confirm("Supprimer définitivement ce rapport ? Irréversible.");
+      if (!confirme) return;
+      const { error } = await sb.from('rapports').delete().eq('id', btn.dataset.id);
+      if (error) return toast("Erreur lors de la suppression.");
+      toast("Rapport supprimé.");
+      loadInterventionsPdf();
     }));
   }
 }
@@ -2101,6 +2144,7 @@ $('#new-rapport-form').addEventListener('submit', async (e) => {
 });
 
 async function loadRapports() {
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
   const { data, error } = await sb
     .from('rapports')
     .select('*, agent:agent_id (nom, prenom, matricule)')
@@ -2119,10 +2163,20 @@ async function loadRapports() {
             ${catLabel[r.categorie] ?? r.categorie} · ${r.agent.prenom} ${r.agent.nom} (${r.agent.matricule}) · ${new Date(r.created_at).toLocaleString('fr-FR')}
           </div>
         </div>
+        <button class="btn btn-danger supprimer-rapport-inline-btn ${estDirection ? '' : 'locked'}" data-id="${r.id}" style="flex-shrink:0;">Supprimer</button>
       </div>
       <p style="font-size:.88rem;margin:12px 0 0;white-space:pre-wrap;">${r.contenu}</p>
     </div>
   `).join('');
+  $$('.supprimer-rapport-inline-btn', box).forEach(btn => btn.addEventListener('click', async () => {
+    if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+    const confirme = confirm("Supprimer définitivement ce rapport ? Irréversible.");
+    if (!confirme) return;
+    const { error } = await sb.from('rapports').delete().eq('id', btn.dataset.id);
+    if (error) return toast("Erreur lors de la suppression.");
+    toast("Rapport supprimé.");
+    loadRapports();
+  }));
 }
 
 // ---------------- MANDATS DE RECHERCHE ----------------
