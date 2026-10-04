@@ -343,6 +343,20 @@ tbody tr:hover td:first-child{color:var(--brass);}
 }
 @keyframes toastin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
+.statut-btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--navy-850);border:1px solid var(--navy-700);color:var(--paper-dim);
+  padding:6px 8px;border-radius:6px;font-size:.74rem;font-weight:600;cursor:pointer;
+  transition:border-color .15s ease, background .15s ease;
+}
+.statut-btn:hover{border-color:var(--brass);}
+.statut-btn.active{background:var(--navy-700);border-color:var(--brass);color:var(--paper);}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-dispo{background:#3fae6a;}
+.dot-interv{background:#d4622a;}
+.dot-pause{background:#9aa0ab;}
+.dot-hs{background:#4a5468;}
+
 .chat-bubble{max-width:72%;align-self:flex-start;}
 .chat-bubble.mine{align-self:flex-end;}
 .chat-bubble .who{font-size:.72rem;color:var(--ink-faint);margin-bottom:2px;}
@@ -511,6 +525,10 @@ tbody tr:hover td:first-child{color:var(--brass);}
       <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg>
       <span>Interventions (PDF)</span>
     </div>
+    <div class="nav-item role-police" data-view="indicatifs">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+      <span>Indicatifs</span>
+    </div>
     <div class="nav-item role-police" data-view="chat">
       <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       <span>Chat interne</span>
@@ -561,6 +579,12 @@ tbody tr:hover td:first-child{color:var(--brass);}
           <div class="who" id="sidebar-name">—</div>
           <div class="grade" id="sidebar-grade">—</div>
         </div>
+      </div>
+      <div class="role-police radio-statut-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+        <button type="button" class="statut-btn" data-statut="disponible" title="Disponible"><span class="dot dot-dispo"></span>Dispo</button>
+        <button type="button" class="statut-btn" data-statut="intervention" title="En intervention"><span class="dot dot-interv"></span>Interv.</button>
+        <button type="button" class="statut-btn" data-statut="pause" title="En pause"><span class="dot dot-pause"></span>Pause</button>
+        <button type="button" class="statut-btn" data-statut="hors-service" title="Hors service"><span class="dot dot-hs"></span>Fin</button>
       </div>
       <button class="btn btn-outline btn-full" id="logout-btn">
         <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -790,6 +814,23 @@ tbody tr:hover td:first-child{color:var(--brass);}
       </div>
     </section>
 
+    <!-- ---------- VUE INDICATIFS ---------- -->
+    <section class="view" id="view-indicatifs">
+      <div class="page-head">
+        <div>
+          <h2>Indicatifs</h2>
+          <p>Statut en direct de tous les policiers connectés au service.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Agent</th><th>Grade</th><th>Statut</th><th>Depuis</th></tr></thead>
+          <tbody id="indicatifs-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- ---------- VUE CHAT INTERNE ---------- -->
     <section class="view" id="view-chat">
       <div class="page-head">
@@ -1001,6 +1042,10 @@ let infractionsCache = [];
 let chatOuvert = false;
 let chatNonLus = 0;
 let canalChat = null;
+let statutsCache = {};
+let agentsInfoCache = null;
+let indicatifsOuvert = false;
+let canalStatuts = null;
 let citoyenCourant = null; // citoyen affiché dans le panneau détail (côté police)
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -1197,7 +1242,7 @@ function showLogin() {
   $('#app-shell').classList.remove('active');
 }
 
-function showAppPolice() {
+async function showAppPolice() {
   $('#login-screen').classList.add('hidden');
   $('#app-shell').classList.add('active');
   $$('.role-police').forEach(el => el.style.display = '');
@@ -1219,6 +1264,9 @@ function showAppPolice() {
   goToView('citoyens');
   refreshCompteurs();
   demarrerCanalChat();
+  demarrerCanalStatuts();
+  const { data: monStatut } = await sb.from('statuts_radio').select('statut').eq('agent_id', moi.id).maybeSingle();
+  majBoutonsStatutActif(monStatut?.statut);
 }
 
 function demarrerCanalChat() {
@@ -1302,6 +1350,8 @@ function goToView(name) {
   if (name === 'formations') loadFormations();
   if (name === 'chat') { chatOuvert = true; loadChat(); setNavCount('count-chat', 0); chatNonLus = 0; }
   else { chatOuvert = false; }
+  if (name === 'indicatifs') { indicatifsOuvert = true; loadIndicatifs(); }
+  else { indicatifsOuvert = false; }
   if (name === 'rapports') loadRapports();
   if (name === 'interventions-pdf') loadInterventionsPdf();
   if (name === 'recherches') { resetMandatForm(); loadMandats(); }
@@ -2226,6 +2276,71 @@ $('#chat-form').addEventListener('submit', async (e) => {
   if (error) toast("Erreur lors de l'envoi du message.");
   // Pas besoin de recharger : le canal temps réel affiche le message automatiquement.
 });
+
+// ---------------- INDICATIFS RADIO ----------------
+
+const statutLabel = { disponible: 'Disponible', intervention: 'En intervention', pause: 'En pause', 'hors-service': 'Hors service' };
+const statutOrdre = { disponible: 0, intervention: 1, pause: 2, 'hors-service': 3 };
+
+async function chargerAgentsInfo() {
+  if (agentsInfoCache) return;
+  const { data } = await sb.from('agents').select('id, nom, prenom, grade:grade_id (nom)');
+  agentsInfoCache = {};
+  (data || []).forEach(a => { agentsInfoCache[a.id] = { nom: a.nom, prenom: a.prenom, grade: a.grade?.nom ?? '' }; });
+}
+
+function demarrerCanalStatuts() {
+  if (canalStatuts) return;
+  canalStatuts = sb.channel('statuts-radio')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'statuts_radio' }, (payload) => {
+      const row = (payload.new && Object.keys(payload.new).length) ? payload.new : payload.old;
+      if (!row) return;
+      if (payload.eventType === 'DELETE') delete statutsCache[row.agent_id];
+      else statutsCache[row.agent_id] = row;
+      if (row.agent_id === moi.id) majBoutonsStatutActif(statutsCache[moi.id]?.statut);
+      if (indicatifsOuvert) renderIndicatifs();
+    })
+    .subscribe();
+}
+
+async function loadIndicatifs() {
+  await chargerAgentsInfo();
+  const { data, error } = await sb.from('statuts_radio').select('*');
+  if (!error) {
+    statutsCache = {};
+    (data || []).forEach(r => { statutsCache[r.agent_id] = r; });
+  }
+  renderIndicatifs();
+}
+
+function renderIndicatifs() {
+  const tbody = $('#indicatifs-tbody');
+  if (!tbody) return;
+  const lignes = Object.entries(statutsCache)
+    .map(([agentId, s]) => ({ agentId, ...s, info: agentsInfoCache?.[agentId] }))
+    .filter(l => l.info)
+    .sort((a, b) => (statutOrdre[a.statut] ?? 9) - (statutOrdre[b.statut] ?? 9));
+  if (!lignes.length) { tbody.innerHTML = emptyState("Personne n'a encore défini de statut.", 4); return; }
+  tbody.innerHTML = lignes.map(l => `
+    <tr>
+      <td>${l.info.prenom} ${l.info.nom}</td>
+      <td>${l.info.grade}</td>
+      <td><span class="statut-btn active" style="pointer-events:none;"><span class="dot dot-${l.statut === 'hors-service' ? 'hs' : l.statut === 'intervention' ? 'interv' : l.statut}"></span>${statutLabel[l.statut] ?? l.statut}</span></td>
+      <td style="font-size:.8rem;color:var(--ink-soft);">${new Date(l.updated_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</td>
+    </tr>
+  `).join('');
+}
+
+function majBoutonsStatutActif(statut) {
+  $$('.statut-btn').forEach(b => b.classList.toggle('active', b.dataset.statut === statut));
+}
+
+$$('.statut-btn').forEach(btn => btn.addEventListener('click', async () => {
+  const statut = btn.dataset.statut;
+  majBoutonsStatutActif(statut);
+  const { error } = await sb.from('statuts_radio').upsert({ agent_id: moi.id, statut, updated_at: new Date().toISOString() });
+  if (error) toast("Erreur lors de la mise à jour du statut.");
+}));
 
 // ---------------- RAPPORTS DE SERVICE ----------------
 
