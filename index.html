@@ -343,6 +343,17 @@ tbody tr:hover td:first-child{color:var(--brass);}
 }
 @keyframes toastin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
+.chat-bubble{max-width:72%;align-self:flex-start;}
+.chat-bubble.mine{align-self:flex-end;}
+.chat-bubble .who{font-size:.72rem;color:var(--ink-faint);margin-bottom:2px;}
+.chat-bubble.mine .who{text-align:right;}
+.chat-bubble .bulle{
+  background:var(--paper);border:1px solid var(--paper-line);
+  padding:8px 12px;border-radius:12px;font-size:.88rem;line-height:1.4;
+  word-break:break-word;
+}
+.chat-bubble.mine .bulle{background:var(--navy-950);color:var(--paper);border-color:var(--navy-700);}
+
 .overlay{
   display:none;position:fixed;inset:0;background:rgba(10,17,31,.55);z-index:15;
 }
@@ -499,6 +510,11 @@ tbody tr:hover td:first-child{color:var(--brass);}
     <div class="nav-item role-police" data-view="interventions-pdf">
       <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg>
       <span>Interventions (PDF)</span>
+    </div>
+    <div class="nav-item role-police" data-view="chat">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Chat interne</span>
+      <span class="nav-count" id="count-chat" style="display:none;"></span>
     </div>
     <div class="nav-item role-police" data-view="rapports">
       <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
@@ -774,6 +790,24 @@ tbody tr:hover td:first-child{color:var(--brass);}
       </div>
     </section>
 
+    <!-- ---------- VUE CHAT INTERNE ---------- -->
+    <section class="view" id="view-chat">
+      <div class="page-head">
+        <div>
+          <h2>Chat interne</h2>
+          <p>Discussion en direct entre policiers connectés.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div id="chat-messages" style="height:420px;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:10px;"></div>
+        <form id="chat-form" style="display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--paper-dim);">
+          <input type="text" id="chat-input" placeholder="Écrire un message…" class="field-inline" style="flex:1;padding:9px 12px;border:1px solid var(--paper-line);border-radius:4px;" autocomplete="off">
+          <button type="submit" class="btn btn-brass">Envoyer</button>
+        </form>
+      </div>
+    </section>
+
     <!-- ---------- VUE RAPPORTS ---------- -->
     <section class="view" id="view-rapports">
       <div class="page-head">
@@ -964,6 +998,9 @@ let moi = null;        // { id, matricule, nom, prenom, grade: {nom, niveau} } �
 let monCitoyen = null;  // fiche citoyen liée — si compte citoyen
 let monRole = null;     // 'police' | 'citoyen'
 let infractionsCache = [];
+let chatOuvert = false;
+let chatNonLus = 0;
+let canalChat = null;
 let citoyenCourant = null; // citoyen affiché dans le panneau détail (côté police)
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -1181,6 +1218,20 @@ function showAppPolice() {
   loadInfractions();
   goToView('citoyens');
   refreshCompteurs();
+  demarrerCanalChat();
+}
+
+function demarrerCanalChat() {
+  if (canalChat) return; // déjà abonné
+  canalChat = sb.channel('chat-interne')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages_chat' }, (payload) => {
+      ajouterMessageChat(payload.new, payload.new.agent_id === moi.id);
+      if (!chatOuvert) {
+        chatNonLus++;
+        setNavCount('count-chat', chatNonLus);
+      }
+    })
+    .subscribe();
 }
 
 function setNavCount(id, n) {
@@ -1249,6 +1300,8 @@ function goToView(name) {
   if (name === 'amendes') loadAmendes();
   if (name === 'garde-a-vue') loadGardeAVue();
   if (name === 'formations') loadFormations();
+  if (name === 'chat') { chatOuvert = true; loadChat(); setNavCount('count-chat', 0); chatNonLus = 0; }
+  else { chatOuvert = false; }
   if (name === 'rapports') loadRapports();
   if (name === 'interventions-pdf') loadInterventionsPdf();
   if (name === 'recherches') { resetMandatForm(); loadMandats(); }
@@ -2124,6 +2177,55 @@ async function loadInterventionsPdf() {
     }));
   }
 }
+
+// ---------------- CHAT INTERNE ----------------
+
+let chatAgentsCache = null;
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+async function loadChat() {
+  if (!chatAgentsCache) {
+    const { data } = await sb.from('agents').select('id, nom, prenom');
+    chatAgentsCache = {};
+    (data || []).forEach(a => { chatAgentsCache[a.id] = `${a.prenom} ${a.nom}`; });
+  }
+  const { data, error } = await sb.from('messages_chat').select('*').order('created_at', { ascending: true }).limit(100);
+  const box = $('#chat-messages');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  box.innerHTML = '';
+  (data || []).forEach(m => ajouterMessageChat(m, m.agent_id === moi.id, false));
+  box.scrollTop = box.scrollHeight;
+}
+
+function ajouterMessageChat(m, estMoi, scroll = true) {
+  const box = $('#chat-messages');
+  if (!box) return;
+  const nom = estMoi ? 'Toi' : (chatAgentsCache?.[m.agent_id] ?? 'Agent');
+  const div = document.createElement('div');
+  div.className = 'chat-bubble' + (estMoi ? ' mine' : '');
+  div.innerHTML = `
+    <div class="who">${escapeHtml(nom)} · ${new Date(m.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</div>
+    <div class="bulle">${escapeHtml(m.contenu)}</div>
+  `;
+  box.appendChild(div);
+  if (scroll) box.scrollTop = box.scrollHeight;
+}
+
+$('#chat-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = $('#chat-input');
+  const contenu = input.value.trim();
+  if (!contenu) return;
+  input.value = '';
+  const { error } = await sb.from('messages_chat').insert({ agent_id: moi.id, contenu });
+  if (error) toast("Erreur lors de l'envoi du message.");
+  // Pas besoin de recharger : le canal temps réel affiche le message automatiquement.
+});
 
 // ---------------- RAPPORTS DE SERVICE ----------------
 
