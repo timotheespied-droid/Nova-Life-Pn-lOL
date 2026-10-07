@@ -425,6 +425,7 @@ tbody tr:hover td:first-child{color:var(--brass);}
     <div class="auth-tabs">
       <button type="button" class="btn" id="tab-login">Connexion</button>
       <button type="button" class="btn" id="tab-signup">Créer un compte</button>
+      <button type="button" class="btn" id="tab-candidature">Candidater</button>
     </div>
 
     <form id="login-form">
@@ -465,6 +466,29 @@ tbody tr:hover td:first-child{color:var(--brass);}
         <input type="text" id="signup-code" autocomplete="off">
       </div>
       <button type="submit" class="btn btn-brass btn-full" id="signup-submit-btn">Créer mon compte</button>
+    </form>
+
+    <form id="candidature-form" style="display:none;">
+      <p style="font-size:.84rem;color:var(--paper-dim);margin:-4px 0 16px;line-height:1.5;">
+        Tu veux rejoindre la Police Nationale ? Remplis ce formulaire — pas besoin de compte. La Direction étudiera ta candidature et te recontactera.
+      </p>
+      <div class="field">
+        <label for="cand-prenom">Prénom RP</label>
+        <input type="text" id="cand-prenom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="cand-nom">Nom RP</label>
+        <input type="text" id="cand-nom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="cand-contact">Contact (Discord, etc. — facultatif)</label>
+        <input type="text" id="cand-contact" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="cand-motivation">Pourquoi veux-tu rejoindre la PN ?</label>
+        <textarea id="cand-motivation" required style="width:100%;min-height:90px;background:var(--navy-850);border:1px solid var(--navy-700);color:var(--paper);padding:10px 13px;border-radius:4px;font-family:'Inter';font-size:.95rem;"></textarea>
+      </div>
+      <button type="submit" class="btn btn-brass btn-full" id="candidature-submit-btn">Envoyer ma candidature</button>
     </form>
 
     <p class="login-foot">Citoyens : consultez votre identité et vos amendes.<br>Policiers : accès réservé, code d'accès requis.</p>
@@ -762,6 +786,27 @@ tbody tr:hover td:first-child{color:var(--brass);}
       </div>
 
       <div class="card">
+        <div class="card-head"><h3>Candidatures de recrutement</h3></div>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;">Candidatures reçues via le formulaire public de l'écran de connexion.</p>
+        <table>
+          <thead><tr><th>Candidat</th><th>Contact</th><th>Motivation</th><th>Statut</th><th></th></tr></thead>
+          <tbody id="candidatures-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Primes & récompenses</h3></div>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;">Distinctions attribuées à un agent, visibles de tout le service.</p>
+        <form id="new-recompense-form" class="grid-2" style="margin:14px 0;">
+          <div class="field-inline"><label>Agent</label><select id="new-recompense-agent"></select></div>
+          <div class="field-inline"><label>Titre</label><input id="new-recompense-titre" required placeholder="Ex : Agent du mois"></div>
+          <div class="field-inline" style="grid-column:1/-1;"><label>Description (facultatif)</label><input id="new-recompense-desc"></div>
+          <div style="grid-column:1/-1;"><button type="submit" class="btn btn-brass">Attribuer la récompense</button></div>
+        </form>
+        <div id="recompenses-list"></div>
+      </div>
+
+      <div class="card">
         <div class="card-head"><h3>Référentiel des infractions</h3></div>
         <table>
           <thead><tr><th>Infraction</th><th>Amende min</th><th>Amende max</th><th>Points</th></tr></thead>
@@ -1031,6 +1076,14 @@ const NIVEAU_DIRECTION = 8;     // Commissaire et +
 const NIVEAU_COMMANDEMENT = 5;  // Capitaine et +
 
 // ============================================================
+// WEBHOOK DISCORD (optionnel)
+// Colle ici l'URL de ton webhook pour recevoir une notification
+// automatique sur Discord à chaque amende, perquisition ou mandat.
+// Laisse la valeur vide ("") pour désactiver cette fonctionnalité.
+// ============================================================
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1557430412048072725/3oV1StdgwGAaKc-kMBNweo5EnyxHzzTAoSGzY7DVC_pfckWx-0TFohjo_Y_fMMhQvJZi";
+
+// ============================================================
 // APP - Police Nationale Nova Life
 // ============================================================
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -1087,18 +1140,52 @@ function identifiantDepuisNom(prenom, nom) {
 
 $('#tab-login').addEventListener('click', () => setAuthTab('login'));
 $('#tab-signup').addEventListener('click', () => setAuthTab('signup'));
+$('#tab-candidature').addEventListener('click', () => setAuthTab('candidature'));
 
 function setAuthTab(which) {
   $('#login-form').style.display = which === 'login' ? 'block' : 'none';
   $('#signup-form').style.display = which === 'signup' ? 'block' : 'none';
+  $('#candidature-form').style.display = which === 'candidature' ? 'block' : 'none';
   $('#tab-login').classList.toggle('btn-brass', which === 'login');
   $('#tab-login').classList.toggle('btn-outline', which !== 'login');
   $('#tab-signup').classList.toggle('btn-brass', which === 'signup');
   $('#tab-signup').classList.toggle('btn-outline', which !== 'signup');
+  $('#tab-candidature').classList.toggle('btn-brass', which === 'candidature');
+  $('#tab-candidature').classList.toggle('btn-outline', which !== 'candidature');
   $('#login-error').style.display = 'none';
   $('#login-success').style.display = 'none';
 }
 setAuthTab('login');
+
+$('#candidature-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('#candidature-submit-btn');
+  const errBox = $('#login-error');
+  const okBox = $('#login-success');
+  errBox.style.display = 'none';
+  okBox.style.display = 'none';
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Envoi…';
+
+  const { error } = await sb.from('candidatures').insert({
+    prenom: $('#cand-prenom').value.trim(),
+    nom: $('#cand-nom').value.trim(),
+    contact: $('#cand-contact').value.trim() || null,
+    motivation: $('#cand-motivation').value.trim(),
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Envoyer ma candidature';
+
+  if (error) {
+    errBox.textContent = "Erreur lors de l'envoi. Réessaie plus tard.";
+    errBox.style.display = 'block';
+    return;
+  }
+  okBox.textContent = "Candidature envoyée ! La Direction va l'étudier et te recontactera.";
+  okBox.style.display = 'block';
+  $('#candidature-form').reset();
+});
 
 let signupType = 'citoyen';
 function setSignupType(type) {
@@ -1343,7 +1430,7 @@ function goToView(name) {
   if (name === 'citoyens') refreshCitoyensList();
   if (name === 'interpellation') resetInterpellationForm();
   if (name === 'fiches-s') loadFichesS();
-  if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); }
+  if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); loadCandidatures(); loadRecompenses(); }
   if (name === 'statistiques') loadStatistiques();
   if (name === 'amendes') loadAmendes();
   if (name === 'garde-a-vue') loadGardeAVue();
@@ -1701,6 +1788,17 @@ $('#interpellation-form').addEventListener('submit', async (e) => {
   if (error) return toast("Erreur lors de l'enregistrement.");
   toast(`Interpellation enregistrée — ${euros(montant_total)}`);
   refreshCompteurs();
+  envoyerWebhookDiscord({
+    title: '🚓 Nouvelle interpellation',
+    fields: [
+      { name: 'Citoyen', value: `${interpellationCitoyen.prenom} ${interpellationCitoyen.nom}`, inline: true },
+      { name: 'Montant', value: euros(montant_total), inline: true },
+      { name: 'Agent', value: `${moi.prenom} ${moi.nom} (${moi.matricule})`, inline: true },
+      { name: 'Lieu', value: $('#interp-lieu').value.trim() || 'Non précisé', inline: true },
+      { name: 'Garde à vue', value: gavManuel ? `Oui — ${$('#interp-gav-duree').value}` : (garde_a_vue ? 'Oui' : 'Non'), inline: true },
+      { name: 'Infractions', value: infs.map(f => f.titre).join(', ').slice(0, 1000) },
+    ],
+  });
   resetInterpellationForm();
 });
 
@@ -1886,6 +1984,105 @@ async function loadAmendes() {
     refreshCompteurs();
   }));
 }
+
+// ---------------- CANDIDATURES DE RECRUTEMENT ----------------
+
+function genererCodeCandidature(prenom, nom) {
+  const suffixe = Math.random().toString(36).slice(2, 7).toUpperCase();
+  const base = (prenom || 'PN').slice(0, 3).toUpperCase();
+  return `${base}-${suffixe}`;
+}
+
+async function loadCandidatures() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data, error } = await sb.from('candidatures').select('*').order('statut').order('created_at', { ascending: false });
+  const tbody = $('#candidatures-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
+  if (!data.length) { tbody.innerHTML = emptyState('Aucune candidature reçue.', 5); return; }
+
+  const statutBadge = { en_attente: '<span class="badge badge-s">En attente</span>', acceptee: '<span class="badge badge-ok">Acceptée</span>', refusee: '<span class="badge badge-s">Refusée</span>' };
+
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td>${c.prenom} ${c.nom}</td>
+      <td style="font-size:.82rem;">${c.contact ?? '—'}</td>
+      <td style="max-width:260px;font-size:.82rem;">${c.motivation}</td>
+      <td>${statutBadge[c.statut] ?? c.statut}${c.code_genere ? `<div class="mono" style="font-size:.78rem;margin-top:4px;">${c.code_genere}</div>` : ''}</td>
+      <td>
+        ${c.statut === 'en_attente' ? `
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-brass accepter-cand-btn" data-id="${c.id}" data-prenom="${c.prenom}" data-nom="${c.nom}">Accepter</button>
+            <button class="btn btn-outline refuser-cand-btn" data-id="${c.id}">Refuser</button>
+          </div>
+        ` : ''}
+      </td>
+    </tr>
+  `).join('');
+
+  $$('.accepter-cand-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const code = genererCodeCandidature(btn.dataset.prenom, btn.dataset.nom);
+    const { data: grade } = await sb.from('grades').select('id').eq('nom', 'Gardien de la Paix').single();
+    const { error: errCode } = await sb.from('codes_acces').insert({ code, grade_id: grade.id, utilisations_max: 1 });
+    if (errCode) return toast("Erreur lors de la génération du code.");
+    const { error } = await sb.from('candidatures').update({
+      statut: 'acceptee', code_genere: code, traite_par: moi.id, traite_le: new Date().toISOString(),
+    }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur.");
+    toast(`Candidature acceptée — code ${code} généré, à transmettre au candidat.`);
+    loadCandidatures();
+  }));
+  $$('.refuser-cand-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const { error } = await sb.from('candidatures').update({
+      statut: 'refusee', traite_par: moi.id, traite_le: new Date().toISOString(),
+    }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur.");
+    toast("Candidature refusée.");
+    loadCandidatures();
+  }));
+}
+
+// ---------------- PRIMES / RÉCOMPENSES ----------------
+
+async function loadRecompenses() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data: agents } = await sb.from('agents').select('id, nom, prenom').order('nom');
+  const sel = $('#new-recompense-agent');
+  sel.innerHTML = (agents || []).map(a => `<option value="${a.id}">${a.prenom} ${a.nom}</option>`).join('');
+
+  const { data, error } = await sb.from('recompenses').select('*, agent:agent_id (nom, prenom), par:attribuee_par (nom, prenom)').order('created_at', { ascending: false }).limit(30);
+  const box = $('#recompenses-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Aucune récompense attribuée pour le moment.'); return; }
+  box.innerHTML = data.map(r => `
+    <div class="card" style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <strong>🏅 ${r.titre}</strong> — ${r.agent.prenom} ${r.agent.nom}
+          ${r.description ? `<div style="font-size:.85rem;color:var(--ink-soft);margin-top:4px;">${r.description}</div>` : ''}
+        </div>
+      </div>
+      <div style="font-size:.76rem;color:var(--ink-faint);margin-top:6px;">
+        Attribuée par ${r.par ? `${r.par.prenom} ${r.par.nom}` : '—'} · ${new Date(r.created_at).toLocaleDateString('fr-FR')}
+      </div>
+    </div>
+  `).join('');
+}
+
+$('#new-recompense-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    agent_id: $('#new-recompense-agent').value,
+    titre: $('#new-recompense-titre').value.trim(),
+    description: $('#new-recompense-desc').value.trim() || null,
+    attribuee_par: moi.id,
+  };
+  if (!payload.agent_id || !payload.titre) return;
+  const { error } = await sb.from('recompenses').insert(payload);
+  if (error) return toast("Erreur lors de l'attribution.");
+  toast("Récompense attribuée.");
+  $('#new-recompense-form').reset();
+  loadRecompenses();
+});
 
 // ---------------- GARDE À VUE ----------------
 
@@ -2228,6 +2425,24 @@ async function loadInterventionsPdf() {
   }
 }
 
+// ---------------- WEBHOOK DISCORD ----------------
+
+async function envoyerWebhookDiscord(embed) {
+  if (!DISCORD_WEBHOOK_URL) return; // non configuré, on ne fait rien
+  try {
+    await fetch(DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: 'Police Nationale — Nova Life',
+        embeds: [{ color: 0xb68a3d, timestamp: new Date().toISOString(), ...embed }],
+      }),
+    });
+  } catch (e) {
+    // Jamais bloquant : si Discord est injoignable, le site continue de fonctionner normalement.
+  }
+}
+
 // ---------------- CHAT INTERNE ----------------
 
 let chatAgentsCache = null;
@@ -2438,6 +2653,15 @@ $('#new-mandat-form').addEventListener('submit', async (e) => {
   });
   if (error) return toast("Erreur lors de l'émission du mandat.");
   toast("Mandat émis.");
+  envoyerWebhookDiscord({
+    title: '🚨 Mandat de recherche émis',
+    color: 0xa5342f,
+    fields: [
+      { name: 'Citoyen', value: `${mandatCitoyen.prenom} ${mandatCitoyen.nom}`, inline: true },
+      { name: 'Émis par', value: `${moi.prenom} ${moi.nom} (${moi.matricule})`, inline: true },
+      { name: 'Motif', value: motif },
+    ],
+  });
   resetMandatForm();
   loadMandats();
 });
@@ -2514,6 +2738,16 @@ $('#new-perquisition-form').addEventListener('submit', async (e) => {
   });
   if (error) return toast("Erreur lors de l'enregistrement.");
   toast("Perquisition enregistrée.");
+  envoyerWebhookDiscord({
+    title: '🔍 Nouvelle perquisition',
+    fields: [
+      { name: 'Lieu', value: $('#perq-lieu').value.trim(), inline: true },
+      { name: 'Citoyen', value: perquisitionCitoyen ? `${perquisitionCitoyen.prenom} ${perquisitionCitoyen.nom}` : 'Non précisé', inline: true },
+      { name: 'Agent', value: `${moi.prenom} ${moi.nom} (${moi.matricule})`, inline: true },
+      { name: 'Motif', value: $('#perq-motif').value.trim() },
+      { name: 'Résultat', value: $('#perq-resultat').value.trim() || 'Non renseigné' },
+    ],
+  });
   resetPerquisitionForm();
   loadPerquisitions();
 });
