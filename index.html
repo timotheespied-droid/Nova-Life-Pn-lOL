@@ -1728,7 +1728,7 @@ function showChosenCitoyen() {
 
 function renderInfractionChecklist() {
   const box = $('#infraction-checklist');
-  const cats = { comportement: 'Titre I — Attitudes envers les forces de l\'ordre', route: 'Titre II — Code de la route' };
+  const cats = { comportement: 'Titre I — Attitudes envers les forces de l\'ordre', route: 'Titre II — Code de la route', delit: 'Titre III — Délits' };
   box.innerHTML = Object.entries(cats).map(([key, label]) => `
     <h4 style="margin:14px 0 6px;font-size:.85rem;color:var(--ink-soft);">${label}</h4>
     ${infractionsCache.filter(f => f.categorie === key).map(f => `
