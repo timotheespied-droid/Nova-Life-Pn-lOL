@@ -642,6 +642,21 @@ tbody tr:hover td:first-child{color:var(--brass);}
         </div>
 
         <form id="new-citoyen-form" style="display:none;border:1px solid var(--paper-line);border-radius:8px;padding:16px;margin-bottom:16px;background:var(--paper);">
+          <div id="carte-import" style="border:1px dashed var(--paper-line);border-radius:8px;padding:14px;margin-bottom:16px;background:#fff;">
+            <div style="font-weight:600;font-size:.88rem;margin-bottom:4px;">Importer depuis une capture de carte d'identité</div>
+            <p style="font-size:.78rem;color:var(--ink-soft);margin:0 0 10px;line-height:1.5;">
+              Choisis, glisse ou colle (Ctrl+V) la capture. Tu devras ensuite <strong>recadrer exactement les bords de la carte</strong> avant la lecture.
+              Les champs se remplissent seuls, tu vérifies puis tu crées la fiche.
+            </p>
+            <label class="btn btn-outline" for="carte-file" style="cursor:pointer;">Choisir une capture…</label>
+            <input type="file" id="carte-file" accept="image/*" style="display:none;">
+            <div id="carte-status" style="font-size:.82rem;color:var(--ink-soft);margin-top:10px;"></div>
+            <div id="carte-doublon"></div>
+            <details id="carte-texte-brut" style="display:none;margin-top:10px;">
+              <summary style="font-size:.78rem;color:var(--ink-soft);cursor:pointer;">Texte lu sur la carte</summary>
+              <pre id="carte-texte-pre" style="font-size:.74rem;white-space:pre-wrap;background:var(--paper);padding:10px;border-radius:6px;margin:6px 0 0;"></pre>
+            </details>
+          </div>
           <div class="grid-2">
             <div class="field-inline"><label>Nom</label><input id="nc-nom" required></div>
             <div class="field-inline"><label>Prénom</label><input id="nc-prenom" required></div>
@@ -1060,10 +1075,39 @@ tbody tr:hover td:first-child{color:var(--brass);}
   </main>
 </div>
 
+<div id="crop-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(10,17,31,.9);padding:14px;overflow:auto;">
+  <div style="max-width:980px;margin:0 auto;background:var(--navy-900);border:1px solid var(--navy-700);border-radius:12px;padding:18px;color:var(--paper);">
+    <h3 style="margin:0 0 8px;">Recadre la carte d'identité</h3>
+    <div style="background:rgba(182,138,61,.14);border:1px solid var(--brass);border-radius:6px;padding:10px 12px;font-size:.84rem;line-height:1.5;margin-bottom:12px;">
+      <strong>Le cadre doit épouser exactement les bords de la carte, à tout prix.</strong>
+      Les 4 côtés du rectangle doivent toucher les 4 bords de la carte : rien de la carte coupé, rien d'autre autour.
+      Zoome pour être précis, puis ajuste les coins avec le doigt ou la souris.
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:10px;font-size:.8rem;">
+      <label for="crop-zoom">Zoom</label>
+      <input type="range" id="crop-zoom" min="1" max="4" step="0.25" value="1" style="flex:1;min-width:120px;max-width:240px;">
+      <button type="button" class="btn btn-outline" id="crop-mode-btn" style="padding:6px 12px;font-size:.78rem;">Mode : cadrer (toucher pour déplacer la vue)</button>
+      <span id="crop-info" style="color:var(--paper-dim);"></span>
+    </div>
+    <div id="crop-wrap" style="overflow:auto;max-height:58vh;border:1px solid var(--navy-700);border-radius:6px;background:#000;">
+      <canvas id="crop-canvas" style="display:block;"></canvas>
+    </div>
+    <label style="display:flex;align-items:center;gap:10px;margin-top:14px;font-size:.84rem;cursor:pointer;">
+      <input type="checkbox" id="crop-ok" style="width:17px;height:17px;accent-color:var(--brass);">
+      Je confirme que le cadre touche exactement les 4 bords de la carte.
+    </label>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;">
+      <button type="button" class="btn btn-outline" id="crop-cancel">Annuler</button>
+      <button type="button" class="btn btn-brass" id="crop-confirm" disabled>Valider le cadrage et lire la carte</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
 <script>
 // ============================================================
 // CONFIGURATION SUPABASE
@@ -2424,6 +2468,413 @@ async function loadInterventionsPdf() {
     }));
   }
 }
+
+// ---------------- IMPORT D'IDENTITÉ DEPUIS UNE CAPTURE (OCR) ----------------
+
+// Zones des champs, en proportion de la carte recadrée (0 à 1).
+// Laisser null tant que la mise en page exacte de la carte n'est pas calibrée : la lecture
+// générique (repérage de "Nom", "Prénom", "Né(e) le" + détection de date) est alors utilisée.
+// Exemple : { nom: {x:.30, y:.25, w:.40, h:.10}, prenom: {x:.30, y:.38, w:.40, h:.10}, naissance: {x:.30, y:.52, w:.30, h:.10} }
+const CARTE_ZONES = null;
+
+// <parse-start>
+function titreCase(s) {
+  return s.toLowerCase().replace(/(^|[\s\-'’])([a-zà-öø-ÿ])/g, (m, sep, c) => sep + c.toUpperCase());
+}
+
+function nettoyerNom(s) {
+  let v = (s || '').replace(/([A-Za-zÀ-ÿ])0(?=[A-Za-zÀ-ÿ])/g, '$1O');
+  v = v.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ'’\- ]/g, ' ').replace(/\s+/g, ' ').trim();
+  v = v.replace(/^(de naissance|de famille|d['’]usage)\s*/i, '').replace(/^[\-'’ ]+|[\-'’ ]+$/g, '');
+  return v ? titreCase(v) : '';
+}
+
+const RE_DATE_CARTE = /([0-3OoIl]?[0-9OoIl])\s*[\/\-.]\s*([01OoIl]?[0-9OoIl])\s*[\/\-.]\s*([12Il][0-9OoIl]{3})/g;
+
+function chiffresDepuisOcr(s) {
+  return s.replace(/[Oo]/g, '0').replace(/[Il]/g, '1');
+}
+
+function datesDansTexte(t) {
+  const out = [];
+  for (const m of (t || '').matchAll(RE_DATE_CARTE)) {
+    const j = chiffresDepuisOcr(m[1]).padStart(2, '0');
+    const mo = chiffresDepuisOcr(m[2]).padStart(2, '0');
+    const a = chiffresDepuisOcr(m[3]);
+    if (+j >= 1 && +j <= 31 && +mo >= 1 && +mo <= 12 && +a >= 1900 && +a <= 2100) out.push(`${a}-${mo}-${j}`);
+  }
+  return out;
+}
+
+function analyserTexteCarte(texte) {
+  const lignes = (texte || '').split(/\r?\n/)
+    .map(l => l.replace(/[|_\[\]{}<>«»]/g, ' ').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  const res = { nom: '', prenom: '', naissance: '' };
+
+  // Valeur d'un champ : texte après la mention, sinon la ligne suivante.
+  const valeur = (i, re, stop) => {
+    const m = lignes[i].match(re);
+    if (!m) return null;
+    let v = (m[1] || '').replace(/^[\s:：.\-–—]+/, '').split(stop)[0].trim();
+    if (!nettoyerNom(v) && lignes[i + 1]) v = lignes[i + 1].split(stop)[0];
+    return nettoyerNom(v) || null;
+  };
+
+  lignes.forEach((l, i) => {
+    if (!res.prenom) {
+      const v = valeur(i, /(?:^|\s)pr[ée3]noms?\b(.*)$/i, /\s+nom\b/i);
+      if (v) res.prenom = v;
+    }
+    if (!res.nom) {
+      const v = valeur(i, /^nom\b(.*)$/i, /\s+pr[ée3]noms?\b/i);
+      if (v) res.nom = v;
+    }
+  });
+
+  // Date de naissance : d'abord près d'une mention "naissance" / "né(e) le", sinon la plus ancienne date lue.
+  let naiss = '';
+  for (let i = 0; i < lignes.length && !naiss; i++) {
+    if (/naiss|n[ée]\(?e?\)?\s*le/i.test(lignes[i])) {
+      naiss = datesDansTexte(lignes[i])[0] || (lignes[i + 1] ? datesDansTexte(lignes[i + 1])[0] : '') || '';
+    }
+  }
+  if (!naiss) naiss = datesDansTexte(lignes.join('\n')).sort()[0] || '';
+  res.naissance = naiss;
+  return res;
+}
+// <parse-end>
+
+// ----- Recadrage obligatoire de la carte -----
+
+let cropImg = null, cropUrl = null, cropRect = null, cropFit = 1, cropZoom = 1, cropMode = 'cadrer', cropDrag = null;
+const CROP_MIN_W = 120, CROP_MIN_H = 80;
+
+function ouvrirImportCarte(file) {
+  if (!file || !file.type || !file.type.startsWith('image/')) return toast("Choisis un fichier image (capture d'écran).");
+  if (cropUrl) URL.revokeObjectURL(cropUrl);
+  cropUrl = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    cropImg = img; cropRect = null; cropZoom = 1; cropMode = 'cadrer'; cropDrag = null;
+    $('#crop-zoom').value = 1;
+    $('#crop-ok').checked = false;
+    $('#crop-modal').style.display = 'block';
+    const dispo = Math.min($('#crop-wrap').clientWidth || 800, 940);
+    cropFit = Math.min(1, dispo / img.naturalWidth);
+    majModeCrop();
+    dessinerCrop();
+  };
+  img.onerror = () => toast("Image illisible, essaie une autre capture.");
+  img.src = cropUrl;
+}
+
+function fermerCrop() { $('#crop-modal').style.display = 'none'; }
+
+function majModeCrop() {
+  const c = $('#crop-canvas');
+  c.style.touchAction = cropMode === 'cadrer' ? 'none' : 'auto';
+  c.style.cursor = cropMode === 'cadrer' ? 'crosshair' : 'grab';
+  $('#crop-mode-btn').textContent = cropMode === 'cadrer'
+    ? 'Mode : cadrer (toucher pour déplacer la vue)'
+    : 'Mode : déplacer la vue (toucher pour cadrer)';
+}
+
+function cropValide() { return !!cropRect && cropRect.w >= CROP_MIN_W && cropRect.h >= CROP_MIN_H; }
+
+function majBoutonCrop() {
+  $('#crop-info').textContent = cropRect
+    ? `Cadre : ${Math.round(cropRect.w)} × ${Math.round(cropRect.h)} px`
+    : 'Trace un rectangle autour de la carte';
+  $('#crop-confirm').disabled = !(cropValide() && $('#crop-ok').checked);
+}
+
+function coinsImage(r) {
+  return [{ x: r.x, y: r.y }, { x: r.x + r.w, y: r.y }, { x: r.x, y: r.y + r.h }, { x: r.x + r.w, y: r.y + r.h }];
+}
+
+function rectEntre(a, b) {
+  return { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(a.x - b.x), h: Math.abs(a.y - b.y) };
+}
+
+function dessinerCrop() {
+  const c = $('#crop-canvas');
+  const s = cropFit * cropZoom;
+  c.width = Math.round(cropImg.naturalWidth * s);
+  c.height = Math.round(cropImg.naturalHeight * s);
+  c.style.width = c.width + 'px';
+  c.style.height = c.height + 'px';
+  const g = c.getContext('2d');
+  g.drawImage(cropImg, 0, 0, c.width, c.height);
+  if (cropRect) {
+    const r = { x: cropRect.x * s, y: cropRect.y * s, w: cropRect.w * s, h: cropRect.h * s };
+    g.fillStyle = 'rgba(0,0,0,.55)';
+    g.beginPath();
+    g.rect(0, 0, c.width, c.height);
+    g.rect(r.x, r.y, r.w, r.h);
+    g.fill('evenodd');
+    g.strokeStyle = '#e0bd7a';
+    g.lineWidth = 2;
+    g.strokeRect(r.x, r.y, r.w, r.h);
+    g.fillStyle = '#e0bd7a';
+    coinsImage(r).forEach(p => g.fillRect(p.x - 7, p.y - 7, 14, 14));
+  }
+  majBoutonCrop();
+}
+
+function pointeurCrop(e) {
+  const c = $('#crop-canvas');
+  const b = c.getBoundingClientRect();
+  const s = cropFit * cropZoom;
+  const x = (e.clientX - b.left) * (c.width / b.width) / s;
+  const y = (e.clientY - b.top) * (c.height / b.height) / s;
+  return {
+    x: Math.max(0, Math.min(cropImg.naturalWidth, x)),
+    y: Math.max(0, Math.min(cropImg.naturalHeight, y)),
+  };
+}
+
+$('#crop-canvas').addEventListener('pointerdown', (e) => {
+  if (cropMode !== 'cadrer' || !cropImg) return;
+  e.preventDefault();
+  const p = pointeurCrop(e);
+  const marge = 24 / (cropFit * cropZoom);
+  cropDrag = null;
+  if (cropRect) {
+    const coins = coinsImage(cropRect);
+    const i = coins.findIndex(c => Math.hypot(c.x - p.x, c.y - p.y) <= marge);
+    if (i >= 0) {
+      cropDrag = { type: 'coin', fixe: coins[3 - i] };
+    } else if (p.x >= cropRect.x && p.x <= cropRect.x + cropRect.w && p.y >= cropRect.y && p.y <= cropRect.y + cropRect.h) {
+      cropDrag = { type: 'deplacer', dx: p.x - cropRect.x, dy: p.y - cropRect.y };
+    }
+  }
+  if (!cropDrag) {
+    cropDrag = { type: 'nouveau', origine: p };
+    cropRect = { x: p.x, y: p.y, w: 0, h: 0 };
+  }
+  e.target.setPointerCapture(e.pointerId);
+});
+
+$('#crop-canvas').addEventListener('pointermove', (e) => {
+  if (!cropDrag) return;
+  const p = pointeurCrop(e);
+  if (cropDrag.type === 'nouveau') cropRect = rectEntre(cropDrag.origine, p);
+  else if (cropDrag.type === 'coin') cropRect = rectEntre(cropDrag.fixe, p);
+  else {
+    cropRect.x = Math.max(0, Math.min(cropImg.naturalWidth - cropRect.w, p.x - cropDrag.dx));
+    cropRect.y = Math.max(0, Math.min(cropImg.naturalHeight - cropRect.h, p.y - cropDrag.dy));
+  }
+  dessinerCrop();
+});
+
+function finCrop() {
+  if (!cropDrag) return;
+  cropDrag = null;
+  if (cropRect && (cropRect.w < 20 || cropRect.h < 20)) cropRect = null;
+  dessinerCrop();
+}
+$('#crop-canvas').addEventListener('pointerup', finCrop);
+$('#crop-canvas').addEventListener('pointercancel', finCrop);
+
+$('#crop-zoom').addEventListener('input', (e) => { cropZoom = parseFloat(e.target.value); dessinerCrop(); });
+$('#crop-mode-btn').addEventListener('click', () => { cropMode = cropMode === 'cadrer' ? 'deplacer' : 'cadrer'; majModeCrop(); });
+$('#crop-ok').addEventListener('change', majBoutonCrop);
+$('#crop-cancel').addEventListener('click', fermerCrop);
+$('#crop-confirm').addEventListener('click', async () => {
+  if (!cropValide() || !$('#crop-ok').checked) return;
+  const r = { ...cropRect };
+  fermerCrop();
+  await lireCarte(cropImg, r);
+});
+
+// ----- Lecture OCR (Tesseract.js, dans le navigateur) -----
+
+let ocrWorker = null;
+const OCR_ETAPES = {
+  'loading tesseract core': 'chargement du moteur',
+  'initializing tesseract': 'initialisation',
+  'initializing api': 'initialisation',
+  'loading language traineddata': 'téléchargement de la langue (1re fois seulement)',
+  'recognizing text': 'lecture du texte',
+};
+
+async function obtenirWorker() {
+  if (ocrWorker) return ocrWorker;
+  ocrWorker = await Tesseract.createWorker('fra', 1, {
+    logger: (m) => {
+      if (m.status && typeof m.progress === 'number') {
+        $('#carte-status').textContent = `Lecture en cours : ${OCR_ETAPES[m.status] || m.status} ${Math.round(m.progress * 100)} %`;
+      }
+    },
+  });
+  return ocrWorker;
+}
+
+// Niveaux de gris + étirement du contraste (sans ctx.filter, non supporté par Safari).
+function niveauxDeGris(cv) {
+  const g = cv.getContext('2d');
+  const d = g.getImageData(0, 0, cv.width, cv.height);
+  const px = d.data;
+  const hist = new Uint32Array(256);
+  for (let i = 0; i < px.length; i += 4) {
+    const v = Math.round(0.299 * px[i] + 0.587 * px[i + 1] + 0.114 * px[i + 2]);
+    px[i] = px[i + 1] = px[i + 2] = v;
+    hist[v]++;
+  }
+  const total = px.length / 4;
+  let cumul = 0, bas = 0, haut = 255;
+  for (let v = 0; v < 256; v++) { cumul += hist[v]; if (cumul >= total * 0.02) { bas = v; break; } }
+  cumul = 0;
+  for (let v = 255; v >= 0; v--) { cumul += hist[v]; if (cumul >= total * 0.02) { haut = v; break; } }
+  const plage = Math.max(1, haut - bas);
+  for (let i = 0; i < px.length; i += 4) {
+    const v = Math.max(0, Math.min(255, (px[i] - bas) * 255 / plage));
+    px[i] = px[i + 1] = px[i + 2] = v;
+  }
+  g.putImageData(d, 0, 0);
+}
+
+function inverserCanvas(cv) {
+  const c2 = document.createElement('canvas');
+  c2.width = cv.width; c2.height = cv.height;
+  const g = c2.getContext('2d');
+  g.drawImage(cv, 0, 0);
+  const d = g.getImageData(0, 0, c2.width, c2.height);
+  const px = d.data;
+  for (let i = 0; i < px.length; i += 4) { px[i] = 255 - px[i]; px[i + 1] = 255 - px[i + 1]; px[i + 2] = 255 - px[i + 2]; }
+  g.putImageData(d, 0, 0);
+  return c2;
+}
+
+async function lireParZones(worker, cv) {
+  const out = {};
+  for (const [champ, z] of Object.entries(CARTE_ZONES)) {
+    const rectangle = {
+      left: Math.round(z.x * cv.width), top: Math.round(z.y * cv.height),
+      width: Math.round(z.w * cv.width), height: Math.round(z.h * cv.height),
+    };
+    await worker.setParameters({ tessedit_char_whitelist: champ === 'naissance' ? '0123456789/-. ' : '' });
+    const { data } = await worker.recognize(cv, { rectangle });
+    out[champ] = data.text.replace(/\s+/g, ' ').trim();
+  }
+  await worker.setParameters({ tessedit_char_whitelist: '' });
+  return out;
+}
+
+async function lireCarte(img, r) {
+  const status = $('#carte-status');
+  $('#carte-doublon').innerHTML = '';
+  $('#carte-texte-brut').style.display = 'none';
+  if (typeof Tesseract === 'undefined') {
+    status.textContent = "Module de lecture non chargé (vérifie ta connexion). Saisis les champs à la main.";
+    return;
+  }
+  status.textContent = "Préparation de l'image…";
+
+  // Découpe aux bords exacts du cadre + agrandissement (un texte plus grand se lit mieux).
+  const echelle = Math.min(4, Math.max(1, 1500 / r.w));
+  const cv = document.createElement('canvas');
+  cv.width = Math.round(r.w * echelle);
+  cv.height = Math.round(r.h * echelle);
+  const g = cv.getContext('2d');
+  g.imageSmoothingQuality = 'high';
+  g.drawImage(img, r.x, r.y, r.w, r.h, 0, 0, cv.width, cv.height);
+  niveauxDeGris(cv);
+
+  const resultat = { nom: '', prenom: '', naissance: '' };
+  let texteBrut = '';
+  const compte = () => [resultat.nom, resultat.prenom, resultat.naissance].filter(Boolean).length;
+
+  try {
+    const worker = await obtenirWorker();
+    for (const inverse of [false, true]) {
+      if (inverse && compte() >= 2) break; // version inversée seulement si la 1re lecture est insuffisante
+      const cvPasse = inverse ? inverserCanvas(cv) : cv;
+      let lu;
+      if (CARTE_ZONES) {
+        const z = await lireParZones(worker, cvPasse);
+        texteBrut += `${inverse ? '\n--- version inversée ---\n' : ''}Nom: ${z.nom}\nPrénom: ${z.prenom}\nNaissance: ${z.naissance}\n`;
+        lu = { nom: nettoyerNom(z.nom), prenom: nettoyerNom(z.prenom), naissance: datesDansTexte(z.naissance)[0] || '' };
+      } else {
+        const { data } = await worker.recognize(cvPasse);
+        texteBrut += `${inverse ? '\n--- version inversée ---\n' : ''}${data.text}`;
+        lu = analyserTexteCarte(data.text);
+      }
+      ['nom', 'prenom', 'naissance'].forEach(k => { if (!resultat[k] && lu[k]) resultat[k] = lu[k]; });
+    }
+  } catch (err) {
+    console.error(err);
+    status.textContent = "La lecture a échoué (connexion ou image). Réessaie, ou saisis les champs à la main.";
+    return;
+  }
+
+  if (resultat.nom) $('#nc-nom').value = resultat.nom;
+  if (resultat.prenom) $('#nc-prenom').value = resultat.prenom;
+  if (resultat.naissance) $('#nc-naissance').value = resultat.naissance;
+
+  const n = compte();
+  status.textContent = n === 3
+    ? "Lecture terminée : vérifie bien les champs ci-dessous avant de créer la fiche."
+    : n === 0
+      ? "Aucun champ reconnu. Recommence avec un cadrage plus précis, ou saisis à la main."
+      : `${n}/3 champs reconnus : vérifie-les et complète les autres à la main.`;
+  $('#carte-texte-pre').textContent = texteBrut.trim();
+  $('#carte-texte-brut').style.display = 'block';
+  verifierDoublonCarte(resultat);
+}
+
+async function verifierDoublonCarte(r) {
+  const box = $('#carte-doublon');
+  box.innerHTML = '';
+  if (!r.nom || !r.prenom) return;
+  const { data } = await sb.from('citoyens').select('id, nom, prenom').ilike('nom', r.nom).ilike('prenom', r.prenom).limit(3);
+  if (!data || !data.length) return;
+  const div = document.createElement('div');
+  div.className = 'login-error';
+  div.style.display = 'block';
+  div.style.marginTop = '10px';
+  div.textContent = `Une fiche existe déjà à ce nom : ${data.map(c => `${c.prenom} ${c.nom}`).join(', ')}. `;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn btn-outline';
+  btn.style.marginTop = '8px';
+  btn.textContent = 'Ouvrir la fiche existante';
+  btn.addEventListener('click', () => openCitoyen(data[0].id));
+  div.appendChild(document.createElement('br'));
+  div.appendChild(btn);
+  box.appendChild(div);
+}
+
+// ----- Branchements : choix de fichier, glisser-déposer, collage -----
+
+$('#carte-file').addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  e.target.value = '';
+  ouvrirImportCarte(f);
+});
+
+(function () {
+  const zone = $('#carte-import');
+  ['dragenter', 'dragover'].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.style.borderColor = 'var(--brass)'; }));
+  ['dragleave', 'drop'].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.style.borderColor = ''; }));
+  zone.addEventListener('drop', (e) => {
+    const f = e.dataTransfer && e.dataTransfer.files[0];
+    if (f) ouvrirImportCarte(f);
+  });
+})();
+
+document.addEventListener('paste', (e) => {
+  if (!$('#view-citoyens').classList.contains('active') || $('#new-citoyen-form').style.display === 'none') return;
+  const item = Array.from((e.clipboardData && e.clipboardData.items) || []).find(i => i.type.startsWith('image/'));
+  if (item) { e.preventDefault(); ouvrirImportCarte(item.getAsFile()); }
+});
+
+$('#new-citoyen-form').addEventListener('reset', () => {
+  $('#carte-status').textContent = '';
+  $('#carte-doublon').innerHTML = '';
+  $('#carte-texte-brut').style.display = 'none';
+});
 
 // ---------------- WEBHOOK DISCORD ----------------
 
