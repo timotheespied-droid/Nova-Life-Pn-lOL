@@ -1,155 +1,3684 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Fiche de dépôt de plainte – PN de Belle-Roche</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Police Nationale — Nova Life</title>
 <style>
-:root{--bg:#dfe5ee;--ink:#14233f;--navy:#0f2a5c;--navy2:#1b3f86;--line:#b9c6dc;--soft:#eef2f8;--red:#d4202f;--paper:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1422}}
-:root[data-theme="dark"]{--bg:#0d1422}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;color:var(--ink);font-size:13px;line-height:1.45}
-.bar{max-width:820px;margin:12px auto 0;padding:0 12px;display:flex;gap:8px;justify-content:flex-end}
-.bar button{background:var(--navy);color:#fff;border:0;border-radius:6px;padding:8px 14px;font:inherit;cursor:pointer}
-.bar button:focus-visible{outline:3px solid var(--red);outline-offset:2px}
-.sheet{max-width:820px;margin:12px auto 24px;background:var(--paper);padding:22px;border-radius:4px}
-header{display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line);padding-bottom:12px}
-.badge{flex:none;width:74px;height:74px;border-radius:50%;background:radial-gradient(circle,#3b6fd0,var(--navy));border:3px solid #c8d3e8;display:grid;place-items:center;color:#fff;font-size:10px;text-align:center;font-weight:700;line-height:1.1}
-.hd{flex:1;text-align:center}
-.hd h1{margin:0;font-size:30px;letter-spacing:.5px;color:var(--navy);font-weight:800}
-.hd p{margin:2px 0 6px;font-size:11px;font-weight:600}
-.flag{height:5px;background:linear-gradient(90deg,var(--navy2) 33%,#e9edf5 33% 66%,var(--red) 66%)}
-.motto{flex:none;font-style:italic;font-weight:700;color:var(--navy);font-size:13px;line-height:1.2}
-.title{background:var(--navy);color:#fff;text-align:center;padding:10px;margin:12px 0;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.title div{flex:1}
-.title h2{margin:0;font-size:22px;letter-spacing:.5px}
-.title span{font-size:15px;opacity:.9}
-.ident{font-size:10px;text-align:left!important;flex:none!important;border:1px solid #7f94c0;padding:4px 8px}
-.ident b{display:block;font-size:12px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.full{grid-column:1/-1}
-.box{border:1px solid var(--line);border-radius:3px;background:var(--soft)}
-.box>h3{margin:0;background:var(--navy);color:#fff;font-size:12.5px;padding:7px 10px;letter-spacing:.3px}
-.box .in{padding:10px}
-.row{display:flex;gap:6px;padding:2px 0}
-.row b{flex:none;min-width:112px}
-[contenteditable]{flex:1;min-width:40px;border-bottom:1px dotted #9fb0cf;outline:0}
-[contenteditable]:focus{background:#fff8d6}
-.txt[contenteditable]{display:block;min-height:96px;border:1px dotted #9fb0cf;background:#fff;padding:8px;white-space:pre-wrap}
-.photos{display:flex;gap:10px;flex-wrap:wrap}
-.ph{flex:1;min-width:120px;text-align:center;font-size:12px}
-.ph label{display:grid;place-items:center;height:92px;background:#e4e9f2;border:1px solid var(--line);color:#7b8ba8;font-size:10px;cursor:pointer;overflow:hidden;margin-bottom:4px}
-.ph label:focus-within{outline:3px solid var(--red)}
-.ph img{width:100%;height:100%;object-fit:cover}
-.ph input{position:absolute;opacity:0;width:1px;height:1px}
-.ph [contenteditable]{display:block;border-bottom:1px dotted #9fb0cf;margin-top:2px}
-.checks{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
-.checks label{display:flex;gap:6px;align-items:center}
-select{font:inherit;border:0;border-bottom:1px dotted #9fb0cf;background:transparent;color:inherit;flex:1}
-footer{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-top:6px;padding-top:12px;border-top:1px solid var(--line)}
-.sig{width:170px;height:56px;border-bottom:1px solid var(--ink);color:#7b8ba8;font-size:10px;display:flex;align-items:flex-end}
-.pn{font-weight:800;color:var(--navy);font-size:15px}
-.pn small{display:block;font-weight:600;font-style:italic;font-size:10px;letter-spacing:1px;color:#5a6c8f;margin-top:2px}
-@media(max-width:640px){.grid{grid-template-columns:1fr}.hd h1{font-size:20px}.title{flex-direction:column}.motto{display:none}.row b{min-width:96px}}
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root{
+  --navy-950:#0a111f;
+  --navy-900:#0f1a2e;
+  --navy-850:#131f38;
+  --navy-800:#182746;
+  --navy-700:#22355c;
+  --navy-600:#324a78;
+  --brass:#b68a3d;
+  --brass-light:#e0bd7a;
+  --brass-dim:rgba(182,138,61,.16);
+  --paper:#f6f3ec;
+  --paper-dim:#e7e2d3;
+  --paper-line:#ded7c3;
+  --ink:#1b1f27;
+  --ink-soft:#666d7a;
+  --ink-faint:#9aa0ab;
+  --red:#a5342f;
+  --red-bg:rgba(165,52,47,.1);
+  --green:#2f6b4f;
+  --green-bg:rgba(47,107,79,.1);
+  --radius-sm:4px;
+  --radius:8px;
+  --radius-lg:14px;
+  --shadow-sm:0 1px 2px rgba(15,20,35,.06);
+  --shadow-md:0 6px 20px -6px rgba(15,20,35,.18);
+  --shadow-card:0 1px 3px rgba(15,20,35,.05), 0 1px 2px rgba(15,20,35,.04);
+  font-size:16px;
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:var(--navy-950);
+  color:var(--paper);
+  font-family:'Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+
+h1,h2,h3,.brand{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  letter-spacing:.1px;
+}
+
+.mono{font-family:'IBM Plex Mono',monospace;letter-spacing:.2px;}
+a{color:inherit;}
+svg{display:block;flex-shrink:0;}
+.icon{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.icon-sm{width:14px;height:14px;}
+.icon-lg{width:26px;height:26px;}
+
+::selection{background:var(--brass-dim);color:var(--ink);}
+
+/* scrollbars */
+::-webkit-scrollbar{width:9px;height:9px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:6px;}
+.main::-webkit-scrollbar-thumb{background:rgba(20,25,40,.15);}
+.main::-webkit-scrollbar-thumb:hover{background:rgba(20,25,40,.25);}
+
+/* ---------- Login ---------- */
+.login-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(900px 500px at 12% 8%, rgba(182,138,61,.14), transparent 55%),
+    radial-gradient(700px 500px at 90% 95%, rgba(34,53,92,.5), transparent 55%),
+    var(--navy-950);
+  padding:24px;
+}
+.login-card{
+  width:100%;
+  max-width:412px;
+  background:var(--navy-900);
+  border:1px solid var(--navy-700);
+  border-radius:var(--radius-lg);
+  padding:38px 34px 30px;
+  box-shadow:var(--shadow-md);
+  animation:rise .5s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.login-crest{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:28px;
+}
+.login-crest .badge-icon{
+  width:46px;height:46px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(155deg,var(--navy-800),var(--navy-850));
+  border:1px solid var(--navy-700);
+  border-radius:var(--radius);
+  color:var(--brass-light);
+}
+.login-crest h1{font-size:1.2rem;margin:0;line-height:1.25;}
+.login-crest span{display:block;font-size:.78rem;color:var(--brass-light);font-weight:500;font-family:'Inter';margin-top:1px;}
+
+.auth-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--navy-950);padding:4px;border-radius:var(--radius);border:1px solid var(--navy-700);}
+.auth-tabs .btn{flex:1;padding:8px 10px;font-size:.85rem;}
+.auth-tabs .btn.btn-outline{background:transparent;border:none;color:var(--ink-faint);}
+.auth-tabs .btn.btn-brass{box-shadow:var(--shadow-sm);}
+
+.field{margin-bottom:15px;}
+.field label{display:block;font-size:.8rem;color:var(--paper-dim);margin-bottom:6px;font-weight:500;}
+.field input{
+  width:100%;
+  background:var(--navy-850);
+  border:1px solid var(--navy-700);
+  color:var(--paper);
+  padding:10px 13px;
+  border-radius:var(--radius-sm);
+  font-size:.95rem;
+  font-family:'Inter';
+  transition:border-color .15s ease, background .15s ease;
+}
+.field input:hover{border-color:var(--navy-600,#324a78);}
+.field input:focus{outline:none;border-color:var(--brass);background:var(--navy-800);}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  border:none;
+  cursor:pointer;
+  padding:10px 18px;
+  border-radius:var(--radius-sm);
+  font-size:.88rem;
+  font-weight:600;
+  font-family:'Inter';
+  transition:filter .12s ease, transform .08s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+  white-space:nowrap;
+}
+.btn:active{transform:translateY(1px) scale(.99);}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none;}
+.btn-brass{background:linear-gradient(180deg,var(--brass-light),var(--brass));color:var(--navy-950);box-shadow:0 1px 0 rgba(255,255,255,.25) inset;}
+.btn-brass:hover:not(:disabled){filter:brightness(1.06);}
+.btn-outline{background:transparent;border:1px solid var(--navy-700);color:var(--paper);}
+.btn-outline:hover{border-color:var(--brass);color:var(--brass-light);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-full{width:100%;}
+
+.login-error, .login-success{
+  padding:10px 13px;
+  border-radius:var(--radius-sm);
+  font-size:.82rem;
+  margin-bottom:16px;
+  display:none;
+  align-items:flex-start;
+  gap:8px;
+  line-height:1.4;
+  animation:rise .25s ease;
+}
+.login-error{background:var(--red-bg);border:1px solid var(--red);color:#f3c7c4;}
+.login-success{background:var(--green-bg);border:1px solid var(--green);color:#bfe6d2;}
+
+.login-foot{margin-top:24px;font-size:.76rem;color:var(--ink-faint);text-align:center;line-height:1.6;}
+
+/* ---------- App shell ---------- */
+.app-shell{display:none;min-height:100vh;background:var(--paper);color:var(--ink);}
+.app-shell.active{display:flex;}
+.login-screen.hidden{display:none;}
+
+.sidebar{
+  width:236px;
+  flex-shrink:0;
+  background:var(--navy-950);
+  color:var(--paper);
+  display:flex;
+  flex-direction:column;
+  padding:20px 14px;
+  position:relative;
+  z-index:20;
+}
+.sidebar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.sidebar .brand-row{display:flex;align-items:center;gap:10px;}
+.sidebar .brand-row .badge-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--navy-850);border:1px solid var(--navy-700);border-radius:6px;color:var(--brass-light);flex-shrink:0;}
+.sidebar .brand{font-size:.94rem;line-height:1.2;}
+.sidebar .brand span{display:block;font-size:.68rem;color:var(--brass-light);font-family:'Inter';font-weight:500;}
+.sidebar hr{border:none;border-top:1px solid var(--navy-800);margin:16px 0;}
+.sidebar-close{display:none;background:none;border:none;color:var(--ink-faint);cursor:pointer;padding:4px;}
+
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:9px 11px;
+  border-radius:var(--radius-sm);
+  font-size:.87rem;
+  font-weight:500;
+  color:var(--paper-dim);
+  cursor:pointer;
+  margin-bottom:2px;
+  border-left:2px solid transparent;
+  transition:background .12s ease, color .12s ease;
+}
+.nav-item .icon{color:var(--ink-faint);transition:color .12s ease;}
+.nav-item:hover{background:var(--navy-900);color:var(--paper);}
+.nav-item:hover .icon{color:var(--brass-light);}
+.nav-item.active{background:var(--navy-900);color:var(--paper);border-left-color:var(--brass);}
+.nav-item.active .icon{color:var(--brass-light);}
+.nav-item.locked{opacity:.35;cursor:not-allowed;}
+.nav-item.locked:hover{background:none;color:var(--paper-dim);}
+.nav-item.locked:hover .icon{color:var(--ink-faint);}
+.btn.locked,.card.locked{opacity:.45;cursor:not-allowed;}
+.btn.locked:hover{filter:none;border-color:var(--navy-700);color:var(--paper);}
+.nav-item .lock-icon{margin-left:auto;color:var(--ink-faint);}
+.nav-count{
+  margin-left:auto;background:var(--brass);color:var(--navy-950);
+  font-size:.68rem;font-weight:700;padding:1px 7px;border-radius:10px;
+  min-width:18px;text-align:center;
+}
+
+.sidebar-user{margin-top:auto;padding-top:14px;border-top:1px solid var(--navy-800);}
+.sidebar-user .who-row{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.sidebar-user .avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(155deg,var(--brass-light),var(--brass));
+  color:var(--navy-950);display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces';font-weight:700;font-size:.85rem;flex-shrink:0;
+}
+.sidebar-user .who{font-size:.84rem;font-weight:600;line-height:1.25;}
+.sidebar-user .grade{font-size:.72rem;color:var(--brass-light);}
+
+.mobile-topbar{display:none;}
+
+.main{flex:1;min-width:0;padding:34px 42px 60px;overflow-y:auto;height:100vh;}
+.view{display:none;}
+.view.active{display:block;max-width:1000px;animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.page-head{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+.page-head h2{font-size:1.55rem;margin:0 0 4px;letter-spacing:-.2px;}
+.page-head p{margin:0;color:var(--ink-soft);font-size:.9rem;}
+.page-head-icon{
+  width:42px;height:42px;flex-shrink:0;border-radius:var(--radius);
+  background:#fff;border:1px solid var(--paper-line);
+  display:flex;align-items:center;justify-content:center;color:var(--brass);
+  box-shadow:var(--shadow-card);
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  padding:22px 24px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow-card);
+  transition:box-shadow .15s ease;
+}
+
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.card-head h3{margin:0;font-size:1rem;}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.field-inline label{display:block;font-size:.78rem;color:var(--ink-soft);margin-bottom:5px;font-weight:500;}
+.field-inline input,.field-inline select,.field-inline textarea{
+  width:100%;padding:9px 12px;border:1px solid var(--paper-line);border-radius:var(--radius-sm);
+  font-family:'Inter';font-size:.92rem;background:var(--paper);color:var(--ink);
+  transition:border-color .15s ease, background .15s ease;
+}
+.field-inline input:hover,.field-inline select:hover{border-color:#c9c1a8;}
+.field-inline input:focus,.field-inline select:focus,.field-inline textarea:focus{
+  outline:none;border-color:var(--brass);background:#fff;
+}
+.field-inline textarea{resize:vertical;min-height:64px;}
+
+.search-input-wrap{position:relative;flex:1;}
+.search-input-wrap .icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-faint);pointer-events:none;}
+.search-input-wrap input{padding-left:36px !important;}
+
+table{width:100%;border-collapse:collapse;font-size:.87rem;}
+th{text-align:left;font-weight:600;color:var(--ink-soft);font-size:.73rem;text-transform:uppercase;letter-spacing:.04em;padding:0 10px 10px;border-bottom:1px solid var(--paper-line);}
+td{padding:12px 10px;border-bottom:1px solid var(--paper-dim);}
+tr:last-child td{border-bottom:none;}
+tr.row-click{cursor:pointer;transition:background .1s ease;}
+tr.row-click:hover{background:var(--paper);}
+tbody tr:hover td:first-child{color:var(--brass);}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:.71rem;font-weight:700;letter-spacing:.02em;}
+.badge-s{background:var(--red-bg);color:var(--red);}
+.badge-ok{background:var(--green-bg);color:var(--green);}
+
+.infraction-row{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 4px;border-bottom:1px solid var(--paper-dim);
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  transition:background .12s ease;
+}
+.infraction-row:hover{background:var(--paper);}
+.infraction-row:last-child{border-bottom:none;}
+.infraction-row input{margin-top:3px;width:16px;height:16px;accent-color:var(--brass);cursor:pointer;}
+.infraction-row .titre{font-weight:600;font-size:.9rem;}
+.infraction-row .meta{font-size:.78rem;color:var(--ink-soft);margin-top:3px;}
+
+.total-box{
+  display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(155deg,var(--navy-900),var(--navy-950));
+  color:var(--paper);
+  padding:18px 22px;border-radius:var(--radius);margin-top:16px;
+  box-shadow:var(--shadow-card);
+}
+.total-box .amount{font-family:'Fraunces';font-size:1.7rem;color:var(--brass-light);font-weight:700;}
+
+.empty-state{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;color:var(--ink-faint);font-size:.87rem;padding:34px 10px;text-align:center;
+}
+.empty-state .icon{width:26px;height:26px;color:var(--paper-line);}
+
+.spinner{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid var(--paper-line);border-top-color:var(--brass);
+  animation:spin .7s linear infinite;display:inline-block;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-row{display:flex;align-items:center;justify-content:center;gap:8px;padding:30px 0;color:var(--ink-faint);font-size:.85rem;}
+
+.toast{
+  position:fixed;bottom:22px;right:22px;
+  background:var(--navy-950);color:var(--paper);
+  padding:12px 18px;border-radius:var(--radius-sm);
+  font-size:.85rem;border-left:3px solid var(--brass);
+  display:none;z-index:100;box-shadow:var(--shadow-md);
+  animation:toastin .25s cubic-bezier(.2,.8,.2,1);
+  max-width:320px;
+}
+@keyframes toastin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.veh-card{margin:0 !important;}
+.veh-card.veh-hs{border-color:var(--red);}
+.veh-img{position:relative;height:170px;background:var(--paper);display:flex;align-items:center;justify-content:center;}
+.veh-placeholder{color:var(--paper-line);}
+.veh-placeholder .icon{width:44px;height:44px;}
+.veh-hs-banner{position:absolute;left:0;right:0;bottom:0;background:rgba(165,52,47,.92);color:#fff;text-align:center;font-weight:700;font-size:.78rem;letter-spacing:.08em;padding:6px;}
+.veh-plaque{font-size:1.02rem;font-weight:600;background:var(--navy-950);color:var(--brass-light);padding:3px 10px;border-radius:5px;letter-spacing:.06em;}
+.veh-label{display:flex;justify-content:space-between;font-size:.76rem;color:var(--ink-soft);font-weight:600;margin-bottom:5px;}
+.veh-bar{height:8px;background:var(--paper-dim);border-radius:6px;overflow:hidden;}
+.veh-bar-fill{height:100%;border-radius:6px;transition:width .15s ease,background .15s ease;}
+.veh-fuel{width:100%;margin-top:8px;accent-color:var(--brass);}
+.veh-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.veh-seg-btn{padding:8px 4px;border:1px solid var(--paper-line);background:var(--paper);border-radius:6px;font-size:.78rem;font-weight:600;color:var(--ink-soft);cursor:pointer;font-family:'Inter';}
+.veh-seg-btn:hover{border-color:var(--brass);}
+.veh-seg-btn.actif.veh-v-aucun{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+.veh-seg-btn.actif.veh-v-fixe{background:rgba(217,154,43,.15);border-color:#d99a2b;color:#8a5d0a;}
+.veh-seg-btn.actif.veh-v-clignotant{background:var(--red-bg);border-color:var(--red);color:var(--red);animation:veh-blink 1s infinite;}
+@keyframes veh-blink{0%,49%{opacity:1;}50%,100%{opacity:.3;}}
+.veh-meta{font-size:.74rem;color:var(--ink-faint);margin-top:10px;}
+
+.statut-btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--navy-850);border:1px solid var(--navy-700);color:var(--paper-dim);
+  padding:6px 8px;border-radius:6px;font-size:.74rem;font-weight:600;cursor:pointer;
+  transition:border-color .15s ease, background .15s ease;
+}
+.statut-btn:hover{border-color:var(--brass);}
+.statut-btn.active{background:var(--navy-700);border-color:var(--brass);color:var(--paper);}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-dispo{background:#3fae6a;}
+.dot-interv{background:#d4622a;}
+.dot-pause{background:#9aa0ab;}
+.dot-hs{background:#4a5468;}
+
+.chat-bubble{max-width:72%;align-self:flex-start;}
+.chat-bubble.mine{align-self:flex-end;}
+.chat-bubble .who{font-size:.72rem;color:var(--ink-faint);margin-bottom:2px;}
+.chat-bubble.mine .who{text-align:right;}
+.chat-bubble .bulle{
+  background:var(--paper);border:1px solid var(--paper-line);
+  padding:8px 12px;border-radius:12px;font-size:.88rem;line-height:1.4;
+  word-break:break-word;
+}
+.chat-bubble.mine .bulle{background:var(--navy-950);color:var(--paper);border-color:var(--navy-700);}
+
+.overlay{
+  display:none;position:fixed;inset:0;background:rgba(10,17,31,.55);z-index:15;
+}
+.overlay.active{display:block;}
+
+/* citizen detail actions row */
+.detail-actions{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap;}
+
+@media (max-width:900px){
+  .app-shell.active{position:relative;}
+  .mobile-topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--navy-950);color:var(--paper);padding:14px 18px;
+    position:sticky;top:0;z-index:10;border-bottom:1px solid var(--navy-800);
+  }
+  .mobile-topbar .brand-row{display:flex;align-items:center;gap:9px;}
+  .mobile-topbar .badge-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--navy-850);border-radius:6px;color:var(--brass-light);}
+  .mobile-topbar button{background:none;border:none;color:var(--paper);cursor:pointer;padding:6px;}
+  .app-shell{flex-direction:column;}
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;z-index:25;
+    transform:translateX(-100%);transition:transform .25s ease;
+    width:78vw;max-width:280px;box-shadow:var(--shadow-md);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-close{display:block;}
+  .sidebar-user{display:block;}
+  .main{padding:20px 16px 50px;height:calc(100vh - 53px);}
+  .grid-2{grid-template-columns:1fr;}
+  .page-head{flex-direction:row;align-items:center;}
+  .page-head h2{font-size:1.25rem;}
+  .card{padding:18px;}
+}
+
 </style>
 </head>
 <body>
-<div class="bar"><button type="button" id="dl">Télécharger le PDF</button></div>
-<main class="sheet">
-<header>
- <div class="badge" aria-hidden="true">SÉCURITÉ<br>PUBLIQUE</div>
- <div class="hd"><h1>POLICE NATIONALE</h1><p>DIRECTION DÉPARTEMENTALE DE LA SÉCURITÉ PUBLIQUE<br>PN DE BELLE-ROCHE</p><div class="flag"></div></div>
- <div class="motto">Protéger<br>Servir<br>Sécuriser</div>
-</header>
 
-<div class="title">
- <div><h2>FICHE DE DÉPÔT DE PLAINTE</h2><span>Plaignant – <span contenteditable="true" style="display:inline-block;min-width:140px;border-bottom:1px dotted #9fb0e0">NOM Prénom</span></span></div>
- <div class="ident">N° D’IDENTIFICATION<b contenteditable="true" style="border:0">PNBR-2026-0001</b></div>
+<!-- ============ ÉCRAN DE CONNEXION ============ -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-crest">
+      <div class="badge-icon">
+        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+      </div>
+      <div>
+        <h1>Police Nationale</h1>
+        <span>Portail interne — Nova Life</span>
+      </div>
+    </div>
+
+    <div class="login-error" id="login-error"></div>
+    <div class="login-success" id="login-success"></div>
+
+    <div class="auth-tabs">
+      <button type="button" class="btn" id="tab-login">Connexion</button>
+      <button type="button" class="btn" id="tab-signup">Créer un compte</button>
+      <button type="button" class="btn" id="tab-candidature">Candidater</button>
+    </div>
+
+    <form id="login-form">
+      <div class="field">
+        <label for="login-prenom">Prénom RP</label>
+        <input type="text" id="login-prenom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="login-nom">Nom RP</label>
+        <input type="text" id="login-nom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="login-password">Mot de passe</label>
+        <input type="password" id="login-password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-brass btn-full" id="login-submit-btn">Se connecter</button>
+    </form>
+
+    <form id="signup-form" style="display:none;">
+      <div class="auth-tabs" style="margin-bottom:16px;">
+        <button type="button" class="btn" id="signup-type-citoyen">Citoyen</button>
+        <button type="button" class="btn" id="signup-type-police">Policier</button>
+      </div>
+      <div class="field">
+        <label for="signup-prenom">Prénom RP</label>
+        <input type="text" id="signup-prenom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="signup-nom">Nom RP</label>
+        <input type="text" id="signup-nom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="signup-password">Mot de passe (6 caractères min.)</label>
+        <input type="password" id="signup-password" required autocomplete="new-password" minlength="6">
+      </div>
+      <div class="field" id="signup-code-field">
+        <label for="signup-code">Code d'accès policier</label>
+        <input type="text" id="signup-code" autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn-brass btn-full" id="signup-submit-btn">Créer mon compte</button>
+    </form>
+
+    <form id="candidature-form" style="display:none;">
+      <p style="font-size:.84rem;color:var(--paper-dim);margin:-4px 0 16px;line-height:1.5;">
+        Tu veux rejoindre la Police Nationale ? Remplis ce formulaire — pas besoin de compte. La Direction étudiera ta candidature et te recontactera.
+      </p>
+      <div class="field">
+        <label for="cand-prenom">Prénom RP</label>
+        <input type="text" id="cand-prenom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="cand-nom">Nom RP</label>
+        <input type="text" id="cand-nom" required autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="cand-contact">Contact (Discord, etc. — facultatif)</label>
+        <input type="text" id="cand-contact" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="cand-motivation">Pourquoi veux-tu rejoindre la PN ?</label>
+        <textarea id="cand-motivation" required style="width:100%;min-height:90px;background:var(--navy-850);border:1px solid var(--navy-700);color:var(--paper);padding:10px 13px;border-radius:4px;font-family:'Inter';font-size:.95rem;"></textarea>
+      </div>
+      <button type="submit" class="btn btn-brass btn-full" id="candidature-submit-btn">Envoyer ma candidature</button>
+    </form>
+
+    <p class="login-foot">Citoyens : consultez votre identité et vos amendes.<br>Policiers : accès réservé, code d'accès requis.</p>
+  </div>
 </div>
 
-<div class="grid">
- <section class="box"><h3>IDENTITÉ DU PLAIGNANT</h3><div class="in">
-  <div class="row"><b>Nom :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Prénom :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Âge :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Nationalité :</b><span contenteditable="true">Française</span></div>
-  <div class="row"><b>Profession :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Domicile :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Téléphone :</b><span contenteditable="true"></span></div>
- </div></section>
+<!-- ============ APPLICATION ============ -->
+<div class="app-shell" id="app-shell">
 
- <section class="box"><h3>INFORMATIONS IMPORTANTES</h3><div class="in">
-  <div class="row"><b>Nature :</b><select><option>Vol</option><option>Agression</option><option>Cambriolage</option><option>Dégradation</option><option>Menaces</option><option>Escroquerie</option><option>Autre</option></select></div>
-  <div class="row"><b>Plainte contre :</b><select><option>X (auteur inconnu)</option><option>Personne identifiée</option></select></div>
-  <div class="row"><b>Gravité :</b><select><option>Faible</option><option>Modérée</option><option>Élevée</option></select></div>
-  <div class="row"><b>Blessures :</b><select><option>Aucune</option><option>Légères</option><option>Graves</option></select></div>
-  <div class="row"><b>Arme utilisée :</b><select><option>Non</option><option>Oui</option><option>Inconnu</option></select></div>
-  <div class="row"><b>Suite donnée :</b><select><option>Enquête ouverte</option><option>Main courante</option><option>Transmise au parquet</option></select></div>
- </div></section>
+  <div class="overlay" id="sidebar-overlay"></div>
+
+  <header class="mobile-topbar">
+    <button id="mobile-menu-btn" aria-label="Menu">
+      <svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="brand-row">
+      <div class="badge-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+      <div class="brand" style="font-size:.9rem;">Police Nationale</div>
+    </div>
+    <div style="width:24px;"></div>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="brand-row">
+        <div class="badge-icon"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+        <div class="brand">Police Nationale<span>Nova Life</span></div>
+      </div>
+      <button class="sidebar-close" id="sidebar-close-btn" aria-label="Fermer">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <hr>
+
+    <div class="nav-item role-police active" data-view="citoyens">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Citoyens</span>
+    </div>
+    <div class="nav-item role-police" data-view="interpellation">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11v6"/><path d="M9 14h6"/></svg>
+      <span>Nouvelle interpellation</span>
+    </div>
+    <div class="nav-item role-police" data-view="amendes">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5-1.3 2-3 2.5-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg>
+      <span>Amendes en cours</span>
+      <span class="nav-count" id="count-amendes" style="display:none;"></span>
+    </div>
+    <div class="nav-item role-police" data-view="garde-a-vue">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>Garde à vue</span>
+      <span class="nav-count" id="count-gav" style="display:none;"></span>
+    </div>
+    <div class="nav-item role-police" data-view="formations">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
+      <span>Formations</span>
+    </div>
+    <div class="nav-item role-police" data-view="interventions-pdf">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg>
+      <span>Interventions (PDF)</span>
+    </div>
+    <div class="nav-item role-police" data-view="indicatifs">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+      <span>Indicatifs</span>
+    </div>
+    <div class="nav-item role-police" data-view="vehicules">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+      <span>Véhicules PN</span>
+    </div>
+    <div class="nav-item role-police" data-view="chat">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Chat interne</span>
+      <span class="nav-count" id="count-chat" style="display:none;"></span>
+    </div>
+    <div class="nav-item role-police" data-view="rapports">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+      <span>Rapports</span>
+    </div>
+    <div class="nav-item role-police" data-view="recherches">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v3l2 2"/></svg>
+      <span>Recherchés</span>
+    </div>
+    <div class="nav-item role-police locked-direction" data-view="statistiques">
+      <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Statistiques</span>
+      <svg class="icon icon-sm lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="nav-item role-police locked-commandement" data-view="perquisitions">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+      <span>Perquisitions</span>
+      <svg class="icon icon-sm lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="nav-item role-police locked-commandement" data-view="fiches-s">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <span>Fichés S</span>
+      <svg class="icon icon-sm lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="nav-item role-police locked-direction" data-view="admin">
+      <svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      <span>Administration</span>
+      <svg class="icon icon-sm lock-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+
+    <div class="nav-item role-citoyen active" data-view="mon-identite" style="display:none;">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+      <span>Mon identité</span>
+    </div>
+    <div class="nav-item role-citoyen" data-view="mon-casier" style="display:none;">
+      <svg class="icon" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+      <span>Mon casier</span>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="who-row">
+        <div class="avatar" id="sidebar-avatar">—</div>
+        <div>
+          <div class="who" id="sidebar-name">—</div>
+          <div class="grade" id="sidebar-grade">—</div>
+        </div>
+      </div>
+      <div class="role-police radio-statut-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;">
+        <button type="button" class="statut-btn" data-statut="disponible" title="Disponible"><span class="dot dot-dispo"></span>Dispo</button>
+        <button type="button" class="statut-btn" data-statut="intervention" title="En intervention"><span class="dot dot-interv"></span>Interv.</button>
+        <button type="button" class="statut-btn" data-statut="pause" title="En pause"><span class="dot dot-pause"></span>Pause</button>
+        <button type="button" class="statut-btn" data-statut="hors-service" title="Hors service"><span class="dot dot-hs"></span>Fin</button>
+      </div>
+      <button class="btn btn-outline btn-full" id="logout-btn">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Déconnexion
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ---------- VUE CITOYENS ---------- -->
+    <section class="view active" id="view-citoyens">
+      <div class="page-head">
+        <div>
+          <h2>Citoyens</h2>
+          <p>Recherche une identité existante ou crée une nouvelle fiche.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+          <div class="search-input-wrap">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="citoyen-search" placeholder="Rechercher par nom ou prénom…" class="field-inline">
+          </div>
+          <button class="btn btn-outline" id="toggle-new-citoyen">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nouvelle identité
+          </button>
+        </div>
+
+        <form id="new-citoyen-form" style="display:none;border:1px solid var(--paper-line);border-radius:8px;padding:16px;margin-bottom:16px;background:var(--paper);">
+          <div id="carte-import" style="border:1px dashed var(--paper-line);border-radius:8px;padding:14px;margin-bottom:16px;background:#fff;">
+            <div style="font-weight:600;font-size:.88rem;margin-bottom:4px;">Importer depuis une capture de carte d'identité</div>
+            <p style="font-size:.78rem;color:var(--ink-soft);margin:0 0 10px;line-height:1.5;">
+              Choisis, glisse ou colle (Ctrl+V) la capture. Tu devras ensuite <strong>recadrer exactement les bords de la carte</strong> avant la lecture.
+              Les champs se remplissent seuls, tu vérifies puis tu crées la fiche.
+            </p>
+            <label class="btn btn-outline" for="carte-file" style="cursor:pointer;">Choisir une capture…</label>
+            <input type="file" id="carte-file" accept="image/*" style="display:none;">
+            <div id="carte-status" style="font-size:.82rem;color:var(--ink-soft);margin-top:10px;"></div>
+            <div id="carte-doublon"></div>
+            <details id="carte-texte-brut" style="display:none;margin-top:10px;">
+              <summary style="font-size:.78rem;color:var(--ink-soft);cursor:pointer;">Texte lu sur la carte</summary>
+              <pre id="carte-texte-pre" style="font-size:.74rem;white-space:pre-wrap;background:var(--paper);padding:10px;border-radius:6px;margin:6px 0 0;"></pre>
+            </details>
+          </div>
+          <div class="grid-2">
+            <div class="field-inline"><label>Nom</label><input id="nc-nom" required></div>
+            <div class="field-inline"><label>Prénom</label><input id="nc-prenom" required></div>
+            <div class="field-inline"><label>Date de naissance</label><input type="date" id="nc-naissance"></div>
+            <div class="field-inline"><label>Téléphone</label><input id="nc-telephone"></div>
+          </div>
+          <div class="field-inline" style="margin-top:12px;"><label>Adresse</label><input id="nc-adresse"></div>
+          <button type="submit" class="btn btn-brass" style="margin-top:14px;">Créer l'identité</button>
+        </form>
+
+        <table>
+          <thead><tr><th>Nom</th><th>Naissance</th><th>Téléphone</th><th></th></tr></thead>
+          <tbody id="citoyens-tbody"><tr><td colspan="4"><div class="loading-row"><span class="spinner"></span>Chargement…</div></td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card" id="citoyen-detail" style="display:none;"></div>
+    </section>
+
+    <!-- ---------- VUE INTERPELLATION ---------- -->
+    <section class="view" id="view-interpellation">
+      <div class="page-head">
+        <div>
+          <h2>Nouvelle interpellation</h2>
+          <p>Sélectionne le citoyen, coche les infractions constatées : l'amende et les sanctions se calculent automatiquement.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11v6"/><path d="M9 14h6"/></svg></div>
+      </div>
+
+      <div class="card">
+        <div class="field-inline" style="margin-bottom:6px;"><label>Citoyen</label></div>
+        <div class="search-input-wrap">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="interp-citoyen-search" placeholder="Rechercher un citoyen…" class="field-inline">
+        </div>
+        <div id="interp-citoyen-results" style="margin-top:6px;"></div>
+        <div id="interp-citoyen-choisi" style="margin-top:8px;"></div>
+      </div>
+
+      <div class="card" style="background:var(--navy-950);color:var(--paper);border-color:var(--navy-700);">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <svg class="icon" style="color:var(--brass-light);flex-shrink:0;margin-top:2px;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+          <div>
+            <div style="font-weight:600;font-size:.88rem;margin-bottom:4px;">Rappel — citation des droits à énoncer</div>
+            <p style="font-size:.84rem;color:var(--paper-dim);margin:0;line-height:1.5;">
+              « Vous êtes en état d'interpellation pour [motif]. Vous avez le droit de garder le silence. Tout ce que vous direz pourra être retenu contre vous. Vous avez le droit de connaître les charges retenues contre vous. »
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <form id="interpellation-form">
+        <div class="card">
+          <div class="field-inline" style="margin-bottom:10px;"><label>Infractions constatées</label></div>
+          <div id="infraction-checklist"></div>
+        </div>
+
+        <div class="card">
+          <div class="grid-2">
+            <div class="field-inline"><label>Lieu</label><input id="interp-lieu" placeholder="Ex : Legion Square"></div>
+            <div class="field-inline"><label>Notes (facultatif)</label><input id="interp-notes"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <input type="checkbox" id="interp-gav-manuel" style="width:17px;height:17px;accent-color:var(--brass);">
+            <span style="font-weight:600;font-size:.9rem;">Placer le citoyen en garde à vue</span>
+          </label>
+          <p style="font-size:.78rem;color:var(--ink-soft);margin:4px 0 0 27px;">Double le montant de l'amende. Durée laissée à ton appréciation.</p>
+          <div id="interp-gav-duree-wrap" style="display:none;margin-top:12px;margin-left:27px;max-width:220px;">
+            <div class="field-inline"><label>Durée de la garde à vue</label>
+              <select id="interp-gav-duree">
+                <option value="1h">1 heure</option>
+                <option value="2h">2 heures</option>
+                <option value="4h">4 heures</option>
+                <option value="6h" selected>6 heures</option>
+                <option value="12h">12 heures</option>
+                <option value="24h">24 heures</option>
+                <option value="48h">48 heures</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="total-box">
+          <div>
+            <div style="font-size:.8rem;color:var(--brass-light);">Sanctions complémentaires : <span id="interp-peines">—</span></div>
+            <div style="font-size:.8rem;color:var(--brass-light);">Garde à vue : <span id="interp-gav">Non</span></div>
+          </div>
+          <div class="amount" id="interp-total">0 €</div>
+        </div>
+
+        <button type="submit" class="btn btn-brass" style="margin-top:16px;">Enregistrer l'interpellation</button>
+      </form>
+    </section>
+
+    <!-- ---------- VUE FICHÉS S ---------- -->
+    <section class="view" id="view-fiches-s">
+      <div class="page-head">
+        <div>
+          <h2>Fichés S</h2>
+          <p>Liste des individus signalés comme sensibles. Accès Commandement et +.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div>
+      </div>
+      <div id="fiches-s-list"></div>
+    </section>
+
+    <!-- ---------- VUE ADMIN ---------- -->
+    <section class="view" id="view-admin">
+      <div class="page-head">
+        <div>
+          <h2>Administration</h2>
+          <p>Gestion des comptes policiers et du référentiel légal. Accès Direction uniquement.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Agents</h3></div>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;">Les nouveaux policiers s'inscrivent eux-mêmes via "Créer un compte" avec un code d'accès. Tu peux ici ajuster leur grade ou les désactiver.</p>
+        <table>
+          <thead><tr><th>Nom</th><th>Matricule</th><th>Grade</th><th>Statut</th><th></th></tr></thead>
+          <tbody id="agents-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Codes d'accès</h3></div>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;">Donne un de ces codes à un nouveau policier : il l'utilisera dans "Créer un compte" pour obtenir automatiquement le grade associé.</p>
+        <form id="new-code-form" class="grid-2" style="margin:14px 0;">
+          <div class="field-inline"><label>Code (ex : GPX-2026)</label><input id="new-code-valeur" required></div>
+          <div class="field-inline"><label>Grade attribué</label><select id="new-code-grade"></select></div>
+          <div class="field-inline"><label>Nombre d'utilisations autorisées</label><input type="number" id="new-code-max" value="1" min="1"></div>
+          <div style="align-self:end;"><button type="submit" class="btn btn-brass btn-full">Créer le code</button></div>
+        </form>
+        <table>
+          <thead><tr><th>Code</th><th>Grade</th><th>Utilisations</th><th>Statut</th><th></th></tr></thead>
+          <tbody id="codes-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Candidatures de recrutement</h3></div>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;">Candidatures reçues via le formulaire public de l'écran de connexion.</p>
+        <table>
+          <thead><tr><th>Candidat</th><th>Contact</th><th>Motivation</th><th>Statut</th><th></th></tr></thead>
+          <tbody id="candidatures-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Primes & récompenses</h3></div>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;">Distinctions attribuées à un agent, visibles de tout le service.</p>
+        <form id="new-recompense-form" class="grid-2" style="margin:14px 0;">
+          <div class="field-inline"><label>Agent</label><select id="new-recompense-agent"></select></div>
+          <div class="field-inline"><label>Titre</label><input id="new-recompense-titre" required placeholder="Ex : Agent du mois"></div>
+          <div class="field-inline" style="grid-column:1/-1;"><label>Description (facultatif)</label><input id="new-recompense-desc"></div>
+          <div style="grid-column:1/-1;"><button type="submit" class="btn btn-brass">Attribuer la récompense</button></div>
+        </form>
+        <div id="recompenses-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Référentiel des infractions</h3></div>
+        <table>
+          <thead><tr><th>Infraction</th><th>Amende min</th><th>Amende max</th><th>Points</th></tr></thead>
+          <tbody id="infractions-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- VUE AMENDES EN COURS ---------- -->
+    <section class="view" id="view-amendes">
+      <div class="page-head">
+        <div>
+          <h2>Amendes en cours</h2>
+          <p>Amendes non réglées, tous citoyens confondus. Valide un paiement au guichet en un clic.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5-1.3 2-3 2.5-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Citoyen</th><th>Montant</th><th>Motif</th><th>Date</th><th></th></tr></thead>
+          <tbody id="amendes-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- VUE INTERVENTIONS PDF ---------- -->
+    <section class="view" id="view-interventions-pdf">
+      <div class="page-head">
+        <div>
+          <h2>Interventions (PDF)</h2>
+          <p>Génère un PDF officiel (en-tête Police Nationale, date, agent) pour une interpellation ou un rapport.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 11v6"/><path d="m9 14 3 3 3-3"/></svg></div>
+      </div>
+
+      <div class="card-head" style="margin:0 0 12px;"><h3 style="font-size:.95rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;">Interpellations récentes</h3></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Citoyen</th><th>Montant</th><th>Date</th><th></th></tr></thead>
+          <tbody id="pdf-interpellations-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="card-head" style="margin:26px 0 12px;"><h3 style="font-size:.95rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;">Rapports de service récents</h3></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Titre</th><th>Agent</th><th>Date</th><th></th></tr></thead>
+          <tbody id="pdf-rapports-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- VUE VÉHICULES PN ---------- -->
+    <section class="view" id="view-vehicules">
+      <div class="page-head">
+        <div>
+          <h2>Véhicules PN</h2>
+          <p>Parc automobile de la Police Nationale. L'état (carburant, voyant moteur, hors service) est modifiable par tous les policiers et se met à jour en direct.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <button type="button" class="btn btn-brass" id="btn-nouveau-vehicule">+ Ajouter un véhicule</button>
+      </div>
+
+      <form id="vehicule-form" class="card" style="display:none;">
+        <div class="card-head"><h3 id="vehicule-form-titre">Nouveau véhicule</h3></div>
+        <div class="grid-2">
+          <div class="field-inline"><label>Plaque d'immatriculation</label><input id="veh-plaque" required maxlength="14" placeholder="AB-123-CD" autocomplete="off" style="text-transform:uppercase;"></div>
+          <div class="field-inline"><label>Modèle</label><select id="veh-modele"></select></div>
+          <div class="field-inline" id="veh-modele-autre-wrap" style="display:none;grid-column:1/-1;"><label>Nom du modèle</label><input id="veh-modele-autre" maxlength="40" autocomplete="off"></div>
+        </div>
+        <div class="field-inline" style="margin-top:12px;">
+          <label>Photo (facultatif)</label>
+          <div id="veh-drop" style="border:1px dashed var(--paper-line);border-radius:8px;padding:14px;text-align:center;cursor:pointer;background:var(--paper);">
+            <span id="veh-drop-texte" style="font-size:.84rem;color:var(--ink-soft);">Glisse une image ici, ou touche pour en choisir une</span>
+            <img id="veh-apercu" alt="" style="display:none;max-height:150px;max-width:100%;border-radius:6px;margin:0 auto;">
+          </div>
+          <input type="file" id="veh-fichier" accept="image/*" style="display:none;">
+        </div>
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button type="submit" class="btn btn-brass" id="vehicule-form-valider">Ajouter le véhicule</button>
+          <button type="button" class="btn btn-outline" id="vehicule-form-annuler">Annuler</button>
+        </div>
+      </form>
+
+      <div id="vehicules-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;"></div>
+    </section>
+
+    <!-- ---------- VUE INDICATIFS ---------- -->
+    <section class="view" id="view-indicatifs">
+      <div class="page-head">
+        <div>
+          <h2>Indicatifs</h2>
+          <p>Statut en direct de tous les policiers connectés au service.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Agent</th><th>Grade</th><th>Statut</th><th>Depuis</th></tr></thead>
+          <tbody id="indicatifs-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- VUE CHAT INTERNE ---------- -->
+    <section class="view" id="view-chat">
+      <div class="page-head">
+        <div>
+          <h2>Chat interne</h2>
+          <p>Discussion en direct entre policiers connectés.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div id="chat-messages" style="height:420px;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:10px;"></div>
+        <form id="chat-form" style="display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--paper-dim);">
+          <input type="text" id="chat-input" placeholder="Écrire un message…" class="field-inline" style="flex:1;padding:9px 12px;border:1px solid var(--paper-line);border-radius:4px;" autocomplete="off">
+          <button type="submit" class="btn btn-brass">Envoyer</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ---------- VUE RAPPORTS ---------- -->
+    <section class="view" id="view-rapports">
+      <div class="page-head">
+        <div>
+          <h2>Rapports de service</h2>
+          <p>Main courante — journal des patrouilles et incidents, consultable par tout le service.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg></div>
+      </div>
+      <div class="card">
+        <form id="new-rapport-form">
+          <div class="grid-2">
+            <div class="field-inline"><label>Titre</label><input id="rap-titre" required></div>
+            <div class="field-inline"><label>Catégorie</label>
+              <select id="rap-categorie">
+                <option value="patrouille">Patrouille</option>
+                <option value="incident">Incident</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-inline" style="margin-top:12px;"><label>Compte-rendu</label><textarea id="rap-contenu" required></textarea></div>
+          <button type="submit" class="btn btn-brass" style="margin-top:14px;">Publier le rapport</button>
+        </form>
+      </div>
+      <div id="rapports-list"></div>
+    </section>
+
+    <!-- ---------- VUE RECHERCHÉS (mandats) ---------- -->
+    <section class="view" id="view-recherches">
+      <div class="page-head">
+        <div>
+          <h2>Citoyens recherchés</h2>
+          <p>Mandats de recherche actifs. Émission et levée réservées au Commandement et +.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      </div>
+      <div class="card locked-commandement" id="new-mandat-card">
+        <div class="card-head"><h3>Émettre un mandat</h3></div>
+        <div class="search-input-wrap">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="mandat-citoyen-search" placeholder="Rechercher un citoyen…" class="field-inline">
+        </div>
+        <div id="mandat-citoyen-results" style="margin-top:6px;"></div>
+        <div id="mandat-citoyen-choisi" style="margin-top:8px;"></div>
+        <form id="new-mandat-form" style="margin-top:12px;">
+          <div class="field-inline"><label>Motif du mandat</label><input id="mandat-motif" required></div>
+          <button type="submit" class="btn btn-brass" style="margin-top:12px;">Émettre le mandat</button>
+        </form>
+      </div>
+      <div id="mandats-list" style="margin-top:18px;"></div>
+    </section>
+
+    <!-- ---------- VUE PERQUISITIONS ---------- -->
+    <section class="view" id="view-perquisitions">
+      <div class="page-head">
+        <div>
+          <h2>Perquisitions</h2>
+          <p>Registre des perquisitions effectuées. Réservé au Commandement et +.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Nouvelle perquisition</h3></div>
+        <div class="search-input-wrap">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="perq-citoyen-search" placeholder="Rechercher un citoyen (optionnel)…" class="field-inline">
+        </div>
+        <div id="perq-citoyen-results" style="margin-top:6px;"></div>
+        <div id="perq-citoyen-choisi" style="margin-top:8px;"></div>
+        <form id="new-perquisition-form" style="margin-top:12px;">
+          <div class="grid-2">
+            <div class="field-inline"><label>Lieu perquisitionné</label><input id="perq-lieu" required placeholder="Adresse"></div>
+            <div class="field-inline"><label>Motif</label><input id="perq-motif" required></div>
+          </div>
+          <div class="field-inline" style="margin-top:12px;"><label>Résultat / objets saisis</label><textarea id="perq-resultat" placeholder="Ex : rien trouvé, ou détail des objets saisis"></textarea></div>
+          <button type="submit" class="btn btn-brass" style="margin-top:14px;">Enregistrer la perquisition</button>
+        </form>
+      </div>
+      <div id="perquisitions-list" style="margin-top:18px;"></div>
+    </section>
+
+    <!-- ---------- VUE CITOYEN : MON IDENTITÉ ---------- -->
+    <section class="view" id="view-mon-identite">
+      <div class="page-head">
+        <div>
+          <h2>Mon identité</h2>
+          <p>Les informations enregistrées à ton sujet par la Police Nationale.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg></div>
+      </div>
+      <div class="card" id="mon-identite-card"></div>
+    </section>
+
+    <!-- ---------- VUE CITOYEN : MON CASIER ---------- -->
+    <section class="view" id="view-mon-casier">
+      <div class="page-head">
+        <div>
+          <h2>Mon casier</h2>
+          <p>L'historique de tes interpellations et l'état de tes amendes.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg></div>
+      </div>
+      <div class="card" id="mon-casier-total"></div>
+      <div class="card" id="mon-casier-list"></div>
+    </section>
+
+    <!-- ---------- VUE GARDE À VUE ---------- -->
+    <section class="view" id="view-garde-a-vue">
+      <div class="page-head">
+        <div>
+          <h2>Garde à vue</h2>
+          <p>Citoyens actuellement placés en garde à vue.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Citoyen</th><th>Début</th><th>Durée</th><th>Fin prévue</th><th></th></tr></thead>
+          <tbody id="gav-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- VUE STATISTIQUES ---------- -->
+    <section class="view" id="view-statistiques">
+      <div class="page-head">
+        <div>
+          <h2>Statistiques</h2>
+          <p>Vue d'ensemble de l'activité du service. Réservé à la Direction.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      </div>
+      <div class="card">
+        <div id="stats-resume" class="grid-2" style="margin-bottom:18px;"></div>
+        <div class="grid-2">
+          <div>
+            <h4 style="font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;">Par agent</h4>
+            <table><thead><tr><th>Agent</th><th>Interpellations</th><th>Total généré</th></tr></thead><tbody id="stats-agents-tbody"></tbody></table>
+          </div>
+          <div>
+            <h4 style="font-size:.85rem;color:var(--ink-soft);margin-bottom:8px;">Infractions les plus fréquentes</h4>
+            <table><thead><tr><th>Infraction</th><th>Occurrences</th></tr></thead><tbody id="stats-infractions-tbody"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- VUE FORMATIONS ---------- -->
+    <section class="view" id="view-formations">
+      <div class="page-head">
+        <div>
+          <h2>Formations</h2>
+          <p>Fiches d'apprentissage et questionnaires de passage de grade ou de compétence.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg></div>
+      </div>
+      <div class="card-head" style="margin:0 0 12px;"><h3 style="font-size:.95rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;">Passage de grade</h3></div>
+      <div id="formations-grade-list"></div>
+      <div class="card-head" style="margin:26px 0 12px;"><h3 style="font-size:.95rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;">Formations de base</h3></div>
+      <div id="formations-basique-list"></div>
+    </section>
+
+  </main>
 </div>
 
-<div class="grid">
- <section class="box"><h3>CIRCONSTANCES DES FAITS</h3><div class="in">
-  <div class="row"><b>Date :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Heure :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Lieu :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Témoins :</b><span contenteditable="true">Aucun</span></div>
-  <div class="row"><b>Caméras :</b><select><option>Non</option><option>Oui</option><option>À vérifier</option></select></div>
- </div></section>
-
- <section class="box"><h3>MIS EN CAUSE</h3><div class="in">
-  <div class="row"><b>Nom :</b><span contenteditable="true">Inconnu</span></div>
-  <div class="row"><b>Signalement :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Tenue :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Véhicule :</b><span contenteditable="true"></span></div>
-  <div class="row"><b>Direction fuite :</b><span contenteditable="true"></span></div>
- </div></section>
+<div id="crop-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(10,17,31,.9);padding:14px;overflow:auto;">
+  <div style="max-width:980px;margin:0 auto;background:var(--navy-900);border:1px solid var(--navy-700);border-radius:12px;padding:18px;color:var(--paper);">
+    <h3 style="margin:0 0 8px;">Recadre la carte d'identité</h3>
+    <div style="background:rgba(182,138,61,.14);border:1px solid var(--brass);border-radius:6px;padding:10px 12px;font-size:.84rem;line-height:1.5;margin-bottom:12px;">
+      <strong>Le cadre doit épouser exactement les bords de la carte, à tout prix.</strong>
+      Les 4 côtés du rectangle doivent toucher les 4 bords de la carte : rien de la carte coupé, rien d'autre autour.
+      Zoome pour être précis, puis ajuste les coins avec le doigt ou la souris.
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:10px;font-size:.8rem;">
+      <label for="crop-zoom">Zoom</label>
+      <input type="range" id="crop-zoom" min="1" max="4" step="0.25" value="1" style="flex:1;min-width:120px;max-width:240px;">
+      <button type="button" class="btn btn-outline" id="crop-mode-btn" style="padding:6px 12px;font-size:.78rem;">Mode : cadrer (toucher pour déplacer la vue)</button>
+      <span id="crop-info" style="color:var(--paper-dim);"></span>
+    </div>
+    <div id="crop-wrap" style="overflow:auto;max-height:58vh;border:1px solid var(--navy-700);border-radius:6px;background:#000;">
+      <canvas id="crop-canvas" style="display:block;"></canvas>
+    </div>
+    <label style="display:flex;align-items:center;gap:10px;margin-top:14px;font-size:.84rem;cursor:pointer;">
+      <input type="checkbox" id="crop-ok" style="width:17px;height:17px;accent-color:var(--brass);">
+      Je confirme que le cadre touche exactement les 4 bords de la carte.
+    </label>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;">
+      <button type="button" class="btn btn-outline" id="crop-cancel">Annuler</button>
+      <button type="button" class="btn btn-brass" id="crop-confirm" disabled>Valider le cadrage et lire la carte</button>
+    </div>
+  </div>
 </div>
 
-<section class="box full" style="margin-bottom:12px"><h3>BIENS / PRÉJUDICE</h3><div class="in">
- <div class="photos">
-  <div class="ph"><label tabindex="-1"><span>PHOTO<br>À AJOUTER</span><input type="file" accept="image/*"></label><b contenteditable="true">Objet / bien 1</b><span contenteditable="true">Description</span></div>
-  <div class="ph"><label tabindex="-1"><span>PHOTO<br>À AJOUTER</span><input type="file" accept="image/*"></label><b contenteditable="true">Objet / bien 2</b><span contenteditable="true">Description</span></div>
-  <div class="ph"><label tabindex="-1"><span>PHOTO<br>À AJOUTER</span><input type="file" accept="image/*"></label><b contenteditable="true">Véhicule / lieu</b><span contenteditable="true">Immatriculation</span></div>
- </div>
- <div class="row" style="margin-top:8px"><b>Valeur estimée :</b><span contenteditable="true"></span></div>
-</div></section>
+<div class="toast" id="toast"></div>
 
-<section class="box full" style="margin-bottom:12px"><h3>EXPOSÉ DES FAITS / OBSERVATIONS</h3><div class="in">
- <div class="txt" contenteditable="true">Le plaignant déclare avoir été victime de…</div>
- <div class="checks" style="margin-top:8px">
-  <label><input type="checkbox"> Plainte lue et confirmée</label>
-  <label><input type="checkbox"> Photos / preuves jointes</label>
-  <label><input type="checkbox"> Récépissé remis au plaignant</label>
-  <label><input type="checkbox"> Transmise à la brigade</label>
- </div>
-</div></section>
-
-<footer>
- <div><div class="pn">PN de Belle-Roche</div><div>Le <span contenteditable="true" style="display:inline-block;min-width:120px">26 octobre 2026</span></div></div>
- <div>Rédigée par :<br><b contenteditable="true" style="border:0">Prénom NOM</b><br>Brigadier de Police</div>
- <div><div class="sig">Signature</div></div>
- <div class="pn">POLICE NATIONALE<small>PLUS PROCHE, PLUS EFFICACE</small></div>
-</footer>
-</main>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
 <script>
-document.querySelectorAll('.ph input').forEach(function(i){
- i.addEventListener('change',function(){
-  var f=i.files&&i.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(){var l=i.parentNode;var im=l.querySelector('img')||document.createElement('img');im.src=r.result;im.alt='Photo ajoutée';l.insertBefore(im,l.firstChild);var s=l.querySelector('span');if(s)s.style.display='none';};
-  r.readAsDataURL(f);
- });
+// ============================================================
+// CONFIGURATION SUPABASE
+// ============================================================
+const SUPABASE_URL = "https://xcgndyrjujbvmneqwyaz.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_rVKgSiKXpZebMybNTQSNIg_3zowx8II";
+
+// Seuils de grade utilisés côté interface (doivent correspondre au schema.sql)
+const NIVEAU_DIRECTION = 8;     // Commissaire et +
+const NIVEAU_COMMANDEMENT = 5;  // Capitaine et +
+
+// ============================================================
+// WEBHOOK DISCORD (optionnel)
+// Colle ici l'URL de ton webhook pour recevoir une notification
+// automatique sur Discord à chaque amende, perquisition ou mandat.
+// Laisse la valeur vide ("") pour désactiver cette fonctionnalité.
+// ============================================================
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1557430412048072725/3oV1StdgwGAaKc-kMBNweo5EnyxHzzTAoSGzY7DVC_pfckWx-0TFohjo_Y_fMMhQvJZi";
+
+// ============================================================
+// APP - Police Nationale Nova Life
+// ============================================================
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let moi = null;        // { id, matricule, nom, prenom, grade: {nom, niveau} } — si policier
+let monCitoyen = null;  // fiche citoyen liée — si compte citoyen
+let monRole = null;     // 'police' | 'citoyen'
+let infractionsCache = [];
+let chatOuvert = false;
+let chatNonLus = 0;
+let canalChat = null;
+let statutsCache = {};
+let agentsInfoCache = null;
+let indicatifsOuvert = false;
+let canalStatuts = null;
+let citoyenCourant = null; // citoyen affiché dans le panneau détail (côté police)
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => (t.style.display = 'none'), 3200);
+}
+
+function euros(n) {
+  return new Intl.NumberFormat('fr-FR').format(n) + ' €';
+}
+
+function emptyState(text, colspan) {
+  const icon = '<svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+  const inner = `<div class="empty-state">${icon}<span>${text}</span></div>`;
+  return colspan ? `<tr><td colspan="${colspan}">${inner}</td></tr>` : inner;
+}
+function loadingState(text, colspan) {
+  const inner = `<div class="loading-row"><span class="spinner"></span>${text}</div>`;
+  return colspan ? `<tr><td colspan="${colspan}">${inner}</td></tr>` : inner;
+}
+
+// ---------------- AUTH ----------------
+
+// Transforme un prénom + nom RP en un identifiant technique unique
+// (Supabase a besoin d'un "email" en interne, mais l'utilisateur ne voit jamais ça).
+function identifiantDepuisNom(prenom, nom) {
+  const nettoyer = s => (s || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // enlève les accents
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, ''); // enlève espaces, tirets, apostrophes...
+  return `${nettoyer(prenom)}.${nettoyer(nom)}@gmail.com`;
+}
+
+$('#tab-login').addEventListener('click', () => setAuthTab('login'));
+$('#tab-signup').addEventListener('click', () => setAuthTab('signup'));
+$('#tab-candidature').addEventListener('click', () => setAuthTab('candidature'));
+
+function setAuthTab(which) {
+  $('#login-form').style.display = which === 'login' ? 'block' : 'none';
+  $('#signup-form').style.display = which === 'signup' ? 'block' : 'none';
+  $('#candidature-form').style.display = which === 'candidature' ? 'block' : 'none';
+  $('#tab-login').classList.toggle('btn-brass', which === 'login');
+  $('#tab-login').classList.toggle('btn-outline', which !== 'login');
+  $('#tab-signup').classList.toggle('btn-brass', which === 'signup');
+  $('#tab-signup').classList.toggle('btn-outline', which !== 'signup');
+  $('#tab-candidature').classList.toggle('btn-brass', which === 'candidature');
+  $('#tab-candidature').classList.toggle('btn-outline', which !== 'candidature');
+  $('#login-error').style.display = 'none';
+  $('#login-success').style.display = 'none';
+}
+setAuthTab('login');
+
+$('#candidature-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('#candidature-submit-btn');
+  const errBox = $('#login-error');
+  const okBox = $('#login-success');
+  errBox.style.display = 'none';
+  okBox.style.display = 'none';
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Envoi…';
+
+  const { error } = await sb.from('candidatures').insert({
+    prenom: $('#cand-prenom').value.trim(),
+    nom: $('#cand-nom').value.trim(),
+    contact: $('#cand-contact').value.trim() || null,
+    motivation: $('#cand-motivation').value.trim(),
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Envoyer ma candidature';
+
+  if (error) {
+    errBox.textContent = "Erreur lors de l'envoi. Réessaie plus tard.";
+    errBox.style.display = 'block';
+    return;
+  }
+  okBox.textContent = "Candidature envoyée ! La Direction va l'étudier et te recontactera.";
+  okBox.style.display = 'block';
+  $('#candidature-form').reset();
 });
-document.getElementById('dl').onclick=async function(){
- var b=this;b.disabled=true;b.textContent='Création du PDF...';if(document.activeElement)document.activeElement.blur();
- var nom=(document.querySelector('.title [contenteditable]')||{}).textContent||'plainte',id=(document.querySelector('.ident b')||{}).textContent||'';
- try{await document.fonts.ready;await html2pdf().set({margin:0,filename:('Plainte-'+id+'-'+nom).replace(/[^\w\-]+/g,'_')+'.pdf',image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',windowWidth:820},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css']}}).from(document.querySelector('.sheet')).save()}
- catch(e){alert('Erreur PDF : '+e.message)}
- b.disabled=false;b.textContent='Télécharger le PDF'};
+
+let signupType = 'citoyen';
+function setSignupType(type) {
+  signupType = type;
+  $('#signup-type-citoyen').classList.toggle('btn-brass', type === 'citoyen');
+  $('#signup-type-citoyen').classList.toggle('btn-outline', type !== 'citoyen');
+  $('#signup-type-police').classList.toggle('btn-brass', type === 'police');
+  $('#signup-type-police').classList.toggle('btn-outline', type !== 'police');
+  $('#signup-code-field').style.display = type === 'police' ? 'block' : 'none';
+  $('#signup-code').required = type === 'police';
+}
+$('#signup-type-citoyen').addEventListener('click', () => setSignupType('citoyen'));
+$('#signup-type-police').addEventListener('click', () => setSignupType('police'));
+setSignupType('citoyen');
+
+$('#login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const prenom = $('#login-prenom').value.trim();
+  const nom = $('#login-nom').value.trim();
+  const password = $('#login-password').value;
+  const errBox = $('#login-error');
+  const btn = $('#login-submit-btn');
+  errBox.style.display = 'none';
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Connexion…';
+
+  const email = identifiantDepuisNom(prenom, nom);
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) {
+    errBox.textContent = "Identifiants incorrects ou compte inconnu.";
+    errBox.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Se connecter';
+    return;
+  }
+  await bootAfterLogin();
+  btn.disabled = false;
+  btn.textContent = 'Se connecter';
+});
+
+$('#signup-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const prenom = $('#signup-prenom').value.trim();
+  const nom = $('#signup-nom').value.trim();
+  const password = $('#signup-password').value;
+  const code = $('#signup-code').value.trim();
+  const errBox = $('#login-error');
+  const okBox = $('#login-success');
+  const btn = $('#signup-submit-btn');
+  errBox.style.display = 'none';
+  okBox.style.display = 'none';
+
+  if (!prenom || !nom || !password) return;
+  if (signupType === 'police' && !code) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Création…';
+  const resetBtn = () => { btn.disabled = false; btn.textContent = 'Créer mon compte'; };
+
+  const email = identifiantDepuisNom(prenom, nom);
+  const { error: signUpError } = await sb.auth.signUp({ email, password });
+  if (signUpError) {
+    errBox.textContent = signUpError.message.includes('already registered')
+      ? "Ce prénom/nom est déjà utilisé. Connecte-toi plutôt, ou contacte la Direction."
+      : "Erreur lors de la création du compte : " + signUpError.message;
+    errBox.style.display = 'block';
+    resetBtn();
+    return;
+  }
+
+  // À ce stade signUp a aussi ouvert une session (confirmation email désactivée),
+  // on peut donc appeler la fonction qui relie ce compte à une fiche policier ou citoyen.
+  const rpcName = signupType === 'police' ? 'inscrire_agent' : 'inscrire_citoyen';
+  const rpcParams = signupType === 'police'
+    ? { p_nom: nom, p_prenom: prenom, p_code: code }
+    : { p_nom: nom, p_prenom: prenom };
+
+  const { data: resultat, error: rpcError } = await sb.rpc(rpcName, rpcParams);
+
+  if (rpcError || !resultat || resultat.startsWith('ERREUR')) {
+    errBox.textContent = rpcError ? rpcError.message : resultat.replace('ERREUR: ', '');
+    errBox.style.display = 'block';
+    resetBtn();
+    await sb.auth.signOut();
+    return;
+  }
+
+  const matricule = resultat.includes(':') ? resultat.split(':')[1] : null;
+  okBox.textContent = matricule
+    ? `Compte créé ! Ton matricule est ${matricule}. Connexion en cours…`
+    : `Compte créé ! Connexion en cours…`;
+  okBox.style.display = 'block';
+  $('#signup-form').reset();
+  setTimeout(bootAfterLogin, 900);
+});
+
+$('#logout-btn').addEventListener('click', async () => {
+  await sb.auth.signOut();
+  location.reload();
+});
+
+async function bootAfterLogin() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return showLogin();
+
+  const { data: agent } = await sb
+    .from('agents')
+    .select('id, matricule, nom, prenom, actif, grade:grade_id (nom, niveau)')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if (agent && agent.actif) {
+    moi = agent;
+    monRole = 'police';
+    return showAppPolice();
+  }
+
+  const { data: citoyen } = await sb
+    .from('citoyens')
+    .select('*')
+    .eq('auth_id', user.id)
+    .maybeSingle();
+
+  if (citoyen) {
+    monCitoyen = citoyen;
+    monRole = 'citoyen';
+    return showAppCitoyen();
+  }
+
+  $('#login-error').textContent = agent
+    ? "Ce compte n'est pas (ou plus) un compte policier actif. Contacte la Direction."
+    : "Ce compte n'est relié à aucune fiche. Contacte la Direction.";
+  $('#login-error').style.display = 'block';
+  await sb.auth.signOut();
+  return showLogin();
+}
+
+function showLogin() {
+  $('#login-screen').classList.remove('hidden');
+  $('#app-shell').classList.remove('active');
+}
+
+async function showAppPolice() {
+  $('#login-screen').classList.add('hidden');
+  $('#app-shell').classList.add('active');
+  $$('.role-police').forEach(el => el.style.display = '');
+  $$('.role-citoyen').forEach(el => el.style.display = 'none');
+
+  $('#sidebar-name').textContent = `${moi.prenom} ${moi.nom}`;
+  $('#sidebar-grade').textContent = `${moi.grade.nom} · ${moi.matricule}`;
+  $('#sidebar-avatar').textContent = (moi.prenom[0] || '?').toUpperCase() + (moi.nom[0] || '').toUpperCase();
+
+  const niveau = moi.grade.niveau;
+  if (niveau < NIVEAU_COMMANDEMENT) {
+    $$('.locked-commandement').forEach(el => el.classList.add('locked'));
+  }
+  if (niveau < NIVEAU_DIRECTION) {
+    $$('.locked-direction').forEach(el => el.classList.add('locked'));
+  }
+
+  loadInfractions();
+  goToView('citoyens');
+  refreshCompteurs();
+  demarrerCanalChat();
+  demarrerCanalStatuts();
+  demarrerCanalVehicules();
+  const { data: monStatut } = await sb.from('statuts_radio').select('statut').eq('agent_id', moi.id).maybeSingle();
+  majBoutonsStatutActif(monStatut?.statut);
+}
+
+function demarrerCanalChat() {
+  if (canalChat) return; // déjà abonné
+  canalChat = sb.channel('chat-interne')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages_chat' }, (payload) => {
+      ajouterMessageChat(payload.new, payload.new.agent_id === moi.id);
+      if (!chatOuvert) {
+        chatNonLus++;
+        setNavCount('count-chat', chatNonLus);
+      }
+    })
+    .subscribe();
+}
+
+function setNavCount(id, n) {
+  const el = $('#' + id);
+  if (!el) return;
+  if (n > 0) { el.textContent = n > 99 ? '99+' : n; el.style.display = 'inline-block'; }
+  else { el.style.display = 'none'; }
+}
+
+async function refreshCompteurs() {
+  const [{ count: amendesCount }, { count: gavCount }] = await Promise.all([
+    sb.from('interpellations').select('id', { count: 'exact', head: true }).eq('paye', false).eq('statut', 'enregistree'),
+    sb.from('interpellations').select('id', { count: 'exact', head: true }).eq('garde_a_vue_relachee', false).not('garde_a_vue_duree', 'is', null),
+  ]);
+  setNavCount('count-amendes', amendesCount || 0);
+  setNavCount('count-gav', gavCount || 0);
+}
+
+function showAppCitoyen() {
+  $('#login-screen').classList.add('hidden');
+  $('#app-shell').classList.add('active');
+  $$('.role-citoyen').forEach(el => el.style.display = '');
+  $$('.role-police').forEach(el => el.style.display = 'none');
+
+  $('#sidebar-name').textContent = `${monCitoyen.prenom} ${monCitoyen.nom}`;
+  $('#sidebar-grade').textContent = 'Compte citoyen';
+  $('#sidebar-avatar').textContent = (monCitoyen.prenom[0] || '?').toUpperCase() + (monCitoyen.nom[0] || '').toUpperCase();
+
+  goToView('mon-identite');
+}
+
+// ---------------- MENU MOBILE ----------------
+
+function closeMobileMenu() {
+  $('#sidebar').classList.remove('open');
+  $('#sidebar-overlay').classList.remove('active');
+}
+$('#mobile-menu-btn')?.addEventListener('click', () => {
+  $('#sidebar').classList.add('open');
+  $('#sidebar-overlay').classList.add('active');
+});
+$('#sidebar-close-btn')?.addEventListener('click', closeMobileMenu);
+$('#sidebar-overlay')?.addEventListener('click', closeMobileMenu);
+
+// ---------------- NAVIGATION ----------------
+
+$$('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    if (item.classList.contains('locked')) {
+      toast("Accès réservé à un grade supérieur.");
+      return;
+    }
+    goToView(item.dataset.view);
+    closeMobileMenu();
+  });
+});
+
+function goToView(name) {
+  $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === name));
+  $$('.view').forEach(v => v.classList.toggle('active', v.id === `view-${name}`));
+  if (name === 'citoyens') refreshCitoyensList();
+  if (name === 'interpellation') resetInterpellationForm();
+  if (name === 'fiches-s') loadFichesS();
+  if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); loadCandidatures(); loadRecompenses(); }
+  if (name === 'statistiques') loadStatistiques();
+  if (name === 'amendes') loadAmendes();
+  if (name === 'garde-a-vue') loadGardeAVue();
+  if (name === 'formations') loadFormations();
+  if (name === 'chat') { chatOuvert = true; loadChat(); setNavCount('count-chat', 0); chatNonLus = 0; }
+  else { chatOuvert = false; }
+  if (name === 'indicatifs') { indicatifsOuvert = true; loadIndicatifs(); }
+  else { indicatifsOuvert = false; }
+  if (name === 'vehicules') { vehiculesOuvert = true; loadVehicules(); }
+  else { vehiculesOuvert = false; }
+  if (name === 'rapports') loadRapports();
+  if (name === 'interventions-pdf') loadInterventionsPdf();
+  if (name === 'recherches') { resetMandatForm(); loadMandats(); }
+  if (name === 'perquisitions') { resetPerquisitionForm(); loadPerquisitions(); }
+  if (name === 'mon-identite') loadMonIdentite();
+  if (name === 'mon-casier') loadMonCasier();
+}
+
+// ---------------- INFRACTIONS (référentiel) ----------------
+
+async function loadInfractions() {
+  const { data, error } = await sb.from('infractions').select('*').order('categorie').order('id');
+  if (error) return toast("Impossible de charger le référentiel des infractions.");
+  infractionsCache = data;
+}
+
+// ---------------- CITOYENS ----------------
+
+$('#citoyen-search').addEventListener('input', debounce(refreshCitoyensList, 250));
+
+$('#new-citoyen-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    nom: $('#nc-nom').value.trim(),
+    prenom: $('#nc-prenom').value.trim(),
+    date_naissance: $('#nc-naissance').value || null,
+    adresse: $('#nc-adresse').value.trim() || null,
+    telephone: $('#nc-telephone').value.trim() || null,
+    created_by: moi.id,
+  };
+  if (!payload.nom || !payload.prenom) return toast("Nom et prénom requis.");
+
+  const { data, error } = await sb.from('citoyens').insert(payload).select().single();
+  if (error) return toast("Erreur lors de la création de l'identité.");
+  toast(`Identité créée : ${data.prenom} ${data.nom}`);
+  $('#new-citoyen-form').reset();
+  $('#new-citoyen-form').style.display = 'none';
+  refreshCitoyensList();
+  openCitoyen(data.id);
+});
+
+$('#toggle-new-citoyen').addEventListener('click', () => {
+  const panel = $('#new-citoyen-form');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+});
+
+async function refreshCitoyensList() {
+  const q = $('#citoyen-search').value.trim();
+  let query = sb.from('citoyens').select('*').order('nom').limit(50);
+  if (q) query = query.or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`);
+  const [{ data, error }, { data: mandatsActifs }] = await Promise.all([
+    query,
+    sb.from('mandats').select('citoyen_id').eq('actif', true),
+  ]);
+  const recherches = new Set((mandatsActifs || []).map(m => m.citoyen_id));
+  const tbody = $('#citoyens-tbody');
+  tbody.innerHTML = '';
+  if (error) return toast("Erreur de chargement des citoyens.");
+  if (!data.length) {
+    tbody.innerHTML = emptyState("Aucun résultat.", 4);
+    return;
+  }
+  data.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.className = 'row-click';
+    tr.innerHTML = `
+      <td>${c.prenom} ${c.nom}</td>
+      <td>${c.date_naissance ?? '—'}</td>
+      <td>${c.telephone ?? '—'}</td>
+      <td>
+        ${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''}
+        ${recherches.has(c.id) ? '<span class="badge badge-s">RECHERCHÉ</span>' : ''}
+      </td>
+    `;
+    tr.addEventListener('click', () => openCitoyen(c.id));
+    tbody.appendChild(tr);
+  });
+}
+
+async function openCitoyen(id) {
+  const { data: c, error } = await sb.from('citoyens').select('*').eq('id', id).single();
+  if (error) return toast("Impossible de charger cette fiche.");
+  const { data: mandat } = await sb.from('mandats').select('*').eq('citoyen_id', id).eq('actif', true).maybeSingle();
+  c.mandatActif = mandat || null;
+  citoyenCourant = c;
+  renderCitoyenDetail(c, false);
+  loadCasier(c.id);
+}
+
+function renderCitoyenDetail(c, editMode) {
+  const box = $('#citoyen-detail');
+  box.style.display = 'block';
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
+  const estCommandement = moi.grade.niveau >= NIVEAU_COMMANDEMENT;
+
+  if (editMode) {
+    box.innerHTML = `
+      <h3 style="margin-top:0;">Modifier la fiche</h3>
+      <form id="edit-citoyen-form">
+        <div class="grid-2">
+          <div class="field-inline"><label>Nom</label><input id="ec-nom" value="${c.nom}" required></div>
+          <div class="field-inline"><label>Prénom</label><input id="ec-prenom" value="${c.prenom}" required></div>
+          <div class="field-inline"><label>Date de naissance</label><input type="date" id="ec-naissance" value="${c.date_naissance ?? ''}"></div>
+          <div class="field-inline"><label>Téléphone</label><input id="ec-telephone" value="${c.telephone ?? ''}"></div>
+        </div>
+        <div class="field-inline" style="margin-top:12px;"><label>Adresse</label><input id="ec-adresse" value="${c.adresse ?? ''}"></div>
+        <div style="display:flex;gap:8px;margin-top:16px;">
+          <button type="submit" class="btn btn-brass">Enregistrer</button>
+          <button type="button" class="btn btn-outline" id="btn-annuler-edition">Annuler</button>
+        </div>
+      </form>
+    `;
+    $('#edit-citoyen-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        nom: $('#ec-nom').value.trim(),
+        prenom: $('#ec-prenom').value.trim(),
+        date_naissance: $('#ec-naissance').value || null,
+        telephone: $('#ec-telephone').value.trim() || null,
+        adresse: $('#ec-adresse').value.trim() || null,
+        updated_at: new Date().toISOString(),
+      };
+      const { error } = await sb.from('citoyens').update(payload).eq('id', c.id);
+      if (error) return toast("Erreur lors de la modification.");
+      toast("Fiche mise à jour.");
+      refreshCitoyensList();
+      openCitoyen(c.id);
+    });
+    $('#btn-annuler-edition').addEventListener('click', () => renderCitoyenDetail(c, false));
+    return;
+  }
+
+  box.innerHTML = `
+    <h3>${c.prenom} ${c.nom} ${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''} ${c.mandatActif ? '<span class="badge badge-s">RECHERCHÉ</span>' : ''}</h3>
+    ${c.mandatActif ? `<p style="color:var(--red);font-size:.85rem;margin-top:-4px;font-weight:600;">Mandat actif — ${c.mandatActif.motif}</p>` : ''}
+    <p class="meta" style="color:var(--ink-soft);font-size:.85rem;margin-top:-6px;">
+      Né(e) le ${c.date_naissance ?? '—'} · ${c.telephone ?? 'tél. inconnu'} · ${c.adresse ?? 'adresse inconnue'}
+    </p>
+    <div class="detail-actions">
+      <button class="btn btn-outline" id="btn-nouvelle-interpellation-depuis-fiche">+ Interpellation</button>
+      <button class="btn btn-outline locked-commandement" id="btn-toggle-fiche-s">${c.fiche_s ? 'Lever le fiché S' : 'Marquer fiché S'}</button>
+      <button class="btn btn-outline locked-direction" id="btn-modifier-citoyen">Modifier</button>
+      <button class="btn btn-danger locked-direction" id="btn-supprimer-citoyen">Supprimer</button>
+    </div>
+    <h4 style="margin-bottom:8px;">Casier judiciaire</h4>
+    <div id="casier-list">${loadingState("Chargement…")}</div>
+  `;
+  if (!estCommandement) $('#btn-toggle-fiche-s').classList.add('locked');
+  if (!estDirection) {
+    $('#btn-modifier-citoyen').classList.add('locked');
+    $('#btn-supprimer-citoyen').classList.add('locked');
+  }
+
+  $('#btn-nouvelle-interpellation-depuis-fiche').addEventListener('click', () => {
+    goToView('interpellation');
+    selectCitoyenForInterpellation(c);
+  });
+  $('#btn-toggle-fiche-s').addEventListener('click', () => {
+    if (!estCommandement) return toast("Réservé au Commandement et +.");
+    toggleFicheS(c);
+  });
+  $('#btn-modifier-citoyen').addEventListener('click', () => {
+    if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+    renderCitoyenDetail(c, true);
+  });
+  $('#btn-supprimer-citoyen').addEventListener('click', () => {
+    if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+    supprimerCitoyen(c);
+  });
+}
+
+async function supprimerCitoyen(c) {
+  const confirme = confirm(
+    `Supprimer définitivement la fiche de ${c.prenom} ${c.nom} ?\n\nSon casier judiciaire complet (toutes ses interpellations) sera aussi supprimé. Cette action est irréversible.`
+  );
+  if (!confirme) return;
+  const { error } = await sb.from('citoyens').delete().eq('id', c.id);
+  if (error) return toast("Erreur lors de la suppression (droits insuffisants ?).");
+  toast("Fiche supprimée.");
+  $('#citoyen-detail').style.display = 'none';
+  citoyenCourant = null;
+  refreshCitoyensList();
+}
+
+async function toggleFicheS(c) {
+  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) return toast("Réservé au Commandement et +.");
+  let motif = null;
+  if (!c.fiche_s) {
+    motif = prompt("Motif du fiché S (visible uniquement des policiers) :") || 'Non précisé';
+  }
+  const { error } = await sb.from('citoyens')
+    .update({ fiche_s: !c.fiche_s, fiche_s_motif: motif, updated_at: new Date().toISOString() })
+    .eq('id', c.id);
+  if (error) return toast("Erreur lors de la mise à jour.");
+  toast(c.fiche_s ? "Fiché S levé." : "Fiché S enregistré.");
+  openCitoyen(c.id);
+  refreshCitoyensList();
+}
+
+async function loadCasier(citoyenId) {
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, agent:agent_id (nom, prenom, matricule)')
+    .eq('citoyen_id', citoyenId)
+    .order('created_at', { ascending: false });
+
+  const box = $('#casier-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Casier vierge.'); return; }
+
+  box.innerHTML = data.map(i => {
+    const titres = i.infraction_ids
+      .map(id => infractionsCache.find(f => f.id === id)?.titre)
+      .filter(Boolean)
+      .join(', ');
+    const date = new Date(i.created_at).toLocaleDateString('fr-FR');
+    return `
+      <div style="border-bottom:1px solid var(--paper-dim);padding:10px 0;">
+        <div style="display:flex;justify-content:space-between;">
+          <strong style="font-size:.88rem;">${date} — ${euros(i.montant_total)}</strong>
+          <span style="font-size:.78rem;color:var(--ink-soft);">${i.statut === 'annulee' ? 'ANNULÉE' : ''}</span>
+        </div>
+        <div style="font-size:.85rem;margin-top:2px;">${titres}</div>
+        <div style="font-size:.78rem;color:var(--ink-soft);margin-top:2px;">
+          Agent ${i.agent.prenom} ${i.agent.nom} (${i.agent.matricule})${i.lieu ? ' · ' + i.lieu : ''}${i.garde_a_vue ? ' · Garde à vue' : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function debounce(fn, ms) {
+  let t;
+  return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+}
+
+// ---------------- NOUVELLE INTERPELLATION ----------------
+
+let interpellationCitoyen = null;
+
+function resetInterpellationForm() {
+  $('#interp-citoyen-choisi').innerHTML = '';
+  $('#interp-citoyen-search').value = '';
+  $('#interp-citoyen-results').innerHTML = '';
+  $('#interp-lieu').value = '';
+  $('#interp-notes').value = '';
+  $('#interp-gav-manuel').checked = false;
+  $('#interp-gav-duree-wrap').style.display = 'none';
+  renderInfractionChecklist();
+  updateInterpellationTotal();
+  interpellationCitoyen = citoyenCourant; // pré-remplit si on vient d'une fiche
+  if (interpellationCitoyen) showChosenCitoyen();
+}
+
+$('#interp-gav-manuel').addEventListener('change', () => {
+  $('#interp-gav-duree-wrap').style.display = $('#interp-gav-manuel').checked ? 'block' : 'none';
+  updateInterpellationTotal();
+});
+
+$('#interp-citoyen-search').addEventListener('input', debounce(async () => {
+  const q = $('#interp-citoyen-search').value.trim();
+  const box = $('#interp-citoyen-results');
+  if (!q) { box.innerHTML = ''; return; }
+  const { data } = await sb.from('citoyens').select('*')
+    .or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`).limit(8);
+  box.innerHTML = (data || []).map(c =>
+    `<div class="nav-item" data-id="${c.id}" style="color:var(--ink);">${c.prenom} ${c.nom}</div>`
+  ).join('') || emptyState('Aucun résultat — utilise "Citoyens" pour créer l\'identité.');
+  $$('.nav-item', box).forEach(el => el.addEventListener('click', () => {
+    selectCitoyenForInterpellation(data.find(c => c.id === el.dataset.id));
+  }));
+}, 250));
+
+function selectCitoyenForInterpellation(c) {
+  interpellationCitoyen = c;
+  $('#interp-citoyen-results').innerHTML = '';
+  $('#interp-citoyen-search').value = '';
+  showChosenCitoyen();
+}
+
+function showChosenCitoyen() {
+  const c = interpellationCitoyen;
+  $('#interp-citoyen-choisi').innerHTML = c
+    ? `<div class="badge badge-ok">${c.prenom} ${c.nom}</div>`
+    : '';
+}
+
+function renderInfractionChecklist() {
+  const box = $('#infraction-checklist');
+  const cats = { comportement: 'Titre I — Attitudes envers les forces de l\'ordre', route: 'Titre II — Code de la route', delit: 'Titre III — Délits' };
+  box.innerHTML = Object.entries(cats).map(([key, label]) => `
+    <h4 style="margin:14px 0 6px;font-size:.85rem;color:var(--ink-soft);">${label}</h4>
+    ${infractionsCache.filter(f => f.categorie === key).map(f => `
+      <label class="infraction-row">
+        <input type="checkbox" data-id="${f.id}" class="infraction-check">
+        <span>
+          <div class="titre">${f.titre}</div>
+          <div class="meta">
+            ${f.amende_min === f.amende_max ? euros(f.amende_min) : euros(f.amende_min) + ' – ' + euros(f.amende_max)}
+            ${f.points ? ' · ' + f.points + ' pts' : ''}
+            ${f.garde_a_vue ? ' · Garde à vue possible' : ''}
+            ${f.peine ? ' · ' + f.peine : ''}
+          </div>
+        </span>
+      </label>
+    `).join('')}
+  `).join('');
+  $$('.infraction-check', box).forEach(cb => cb.addEventListener('change', updateInterpellationTotal));
+}
+
+function updateInterpellationTotal() {
+  const checked = $$('.infraction-check:checked').map(cb => infractionsCache.find(f => f.id == cb.dataset.id));
+  let total = checked.reduce((sum, f) => sum + f.amende_max, 0);
+  const peines = checked.map(f => f.peine).filter(Boolean);
+  const gavManuel = $('#interp-gav-manuel').checked;
+  const gav = checked.some(f => f.garde_a_vue) || gavManuel;
+  if (gavManuel) total *= 2;
+  $('#interp-total').textContent = euros(total);
+  $('#interp-peines').textContent = peines.length ? peines.join(' ; ') : 'Aucune sanction complémentaire.';
+  $('#interp-gav').textContent = gavManuel ? `Oui (${$('#interp-gav-duree').value}, amende doublée)` : (gav ? 'Oui' : 'Non');
+}
+
+$('#interpellation-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!interpellationCitoyen) return toast("Sélectionne d'abord un citoyen.");
+  const checked = $$('.infraction-check:checked').map(cb => Number(cb.dataset.id));
+  if (!checked.length) return toast("Sélectionne au moins une infraction.");
+
+  const infs = checked.map(id => infractionsCache.find(f => f.id === id));
+  const gavManuel = $('#interp-gav-manuel').checked;
+  let montant_total = infs.reduce((s, f) => s + f.amende_max, 0);
+  if (gavManuel) montant_total *= 2;
+  const peine_appliquee = infs.map(f => f.peine).filter(Boolean).join(' ; ') || null;
+  const garde_a_vue = infs.some(f => f.garde_a_vue) || gavManuel;
+
+  const { error } = await sb.from('interpellations').insert({
+    citoyen_id: interpellationCitoyen.id,
+    agent_id: moi.id,
+    infraction_ids: checked,
+    montant_total,
+    peine_appliquee,
+    garde_a_vue,
+    garde_a_vue_duree: gavManuel ? $('#interp-gav-duree').value : null,
+    lieu: $('#interp-lieu').value.trim() || null,
+    notes: $('#interp-notes').value.trim() || null,
+  });
+  if (error) return toast("Erreur lors de l'enregistrement.");
+  toast(`Interpellation enregistrée — ${euros(montant_total)}`);
+  refreshCompteurs();
+  envoyerWebhookDiscord({
+    title: '🚓 Nouvelle interpellation',
+    fields: [
+      { name: 'Citoyen', value: `${interpellationCitoyen.prenom} ${interpellationCitoyen.nom}`, inline: true },
+      { name: 'Montant', value: euros(montant_total), inline: true },
+      { name: 'Agent', value: `${moi.prenom} ${moi.nom} (${moi.matricule})`, inline: true },
+      { name: 'Lieu', value: $('#interp-lieu').value.trim() || 'Non précisé', inline: true },
+      { name: 'Garde à vue', value: gavManuel ? `Oui — ${$('#interp-gav-duree').value}` : (garde_a_vue ? 'Oui' : 'Non'), inline: true },
+      { name: 'Infractions', value: infs.map(f => f.titre).join(', ').slice(0, 1000) },
+    ],
+  });
+  resetInterpellationForm();
+});
+
+// ---------------- FICHÉS S ----------------
+
+async function loadFichesS() {
+  const { data, error } = await sb.from('citoyens').select('*').eq('fiche_s', true).order('nom');
+  const box = $('#fiches-s-list');
+  if (error) return (box.innerHTML = emptyState('Erreur de chargement.'));
+  if (!data.length) return (box.innerHTML = emptyState('Aucun fiché S actuellement.'));
+  box.innerHTML = data.map(c => `
+    <div class="card" style="cursor:pointer;" data-id="${c.id}">
+      <strong>${c.prenom} ${c.nom}</strong>
+      <div style="font-size:.85rem;color:var(--ink-soft);margin-top:4px;">${c.fiche_s_motif ?? 'Motif non précisé'}</div>
+    </div>
+  `).join('');
+  $$('.card', box).forEach(el => el.addEventListener('click', () => {
+    goToView('citoyens');
+    openCitoyen(el.dataset.id);
+  }));
+}
+
+// ---------------- ADMIN : agents ----------------
+
+async function loadAgents() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data: grades } = await sb.from('grades').select('*').order('niveau');
+
+  const { data, error } = await sb.from('agents').select('*, grade:grade_id (nom, niveau)').order('nom');
+  const tbody = $('#agents-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
+  tbody.innerHTML = data.map(a => `
+    <tr>
+      <td>${a.prenom} ${a.nom}</td>
+      <td class="mono">${a.matricule}</td>
+      <td>
+        <select data-agent="${a.id}" class="agent-grade-select">
+          ${grades.map(g => `<option value="${g.id}" ${g.id === a.grade_id ? 'selected' : ''}>${g.nom}</option>`).join('')}
+        </select>
+      </td>
+      <td>${a.actif ? '<span class="badge badge-ok">Actif</span>' : '<span class="badge badge-s">Inactif</span>'}</td>
+      <td><button class="btn btn-outline agent-toggle-actif" data-agent="${a.id}" data-actif="${a.actif}">${a.actif ? 'Désactiver' : 'Réactiver'}</button></td>
+    </tr>
+  `).join('');
+
+  $$('.agent-grade-select', tbody).forEach(sel => sel.addEventListener('change', async () => {
+    const { error } = await sb.from('agents').update({ grade_id: Number(sel.value) }).eq('id', sel.dataset.agent);
+    toast(error ? "Erreur." : "Grade mis à jour.");
+  }));
+  $$('.agent-toggle-actif', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const actif = btn.dataset.actif === 'true';
+    const { error } = await sb.from('agents').update({ actif: !actif }).eq('id', btn.dataset.agent);
+    if (error) return toast("Erreur.");
+    loadAgents();
+  }));
+}
+
+// ---------------- ADMIN : codes d'accès ----------------
+
+async function loadCodes() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data: grades } = await sb.from('grades').select('*').order('niveau', { ascending: false });
+  const sel = $('#new-code-grade');
+  sel.innerHTML = grades.map(g => `<option value="${g.id}">${g.nom}</option>`).join('');
+
+  const { data, error } = await sb.from('codes_acces').select('*, grade:grade_id (nom)').order('created_at', { ascending: false });
+  const tbody = $('#codes-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
+  if (!data.length) { tbody.innerHTML = emptyState('Aucun code créé.', 5); return; }
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td class="mono">${c.code}</td>
+      <td>${c.grade.nom}</td>
+      <td>${c.utilisations} / ${c.utilisations_max}</td>
+      <td>${c.actif ? '<span class="badge badge-ok">Actif</span>' : '<span class="badge badge-s">Désactivé</span>'}</td>
+      <td><button class="btn btn-outline code-toggle-actif" data-code="${c.code}" data-actif="${c.actif}">${c.actif ? 'Désactiver' : 'Réactiver'}</button></td>
+    </tr>
+  `).join('');
+
+  $$('.code-toggle-actif', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const actif = btn.dataset.actif === 'true';
+    const { error } = await sb.from('codes_acces').update({ actif: !actif }).eq('code', btn.dataset.code);
+    if (error) return toast("Erreur.");
+    loadCodes();
+  }));
+}
+
+$('#new-code-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    code: $('#new-code-valeur').value.trim(),
+    grade_id: Number($('#new-code-grade').value),
+    utilisations_max: Number($('#new-code-max').value) || 1,
+  };
+  if (!payload.code) return toast("Le code ne peut pas être vide.");
+  const { error } = await sb.from('codes_acces').insert(payload);
+  if (error) return toast(error.message.includes('duplicate') ? "Ce code existe déjà." : "Erreur.");
+  toast("Code créé.");
+  $('#new-code-form').reset();
+  loadCodes();
+});
+
+// ---------------- ADMIN : infractions ----------------
+
+async function loadInfractionsAdmin() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const tbody = $('#infractions-tbody');
+  tbody.innerHTML = infractionsCache.map(f => `
+    <tr>
+      <td style="max-width:220px;">${f.titre}</td>
+      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="amende_min" value="${f.amende_min}" style="width:80px;"></td>
+      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="amende_max" value="${f.amende_max}" style="width:80px;"></td>
+      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="points" value="${f.points}" style="width:60px;"></td>
+    </tr>
+  `).join('');
+  $$('.inf-edit', tbody).forEach(inp => inp.addEventListener('change', async () => {
+    const { error } = await sb.from('infractions')
+      .update({ [inp.dataset.field]: Number(inp.value) })
+      .eq('id', inp.dataset.id);
+    if (error) return toast("Erreur (droits insuffisants ?).");
+    toast("Infraction mise à jour.");
+    loadInfractions();
+  }));
+}
+
+// ---------------- AMENDES EN COURS (policiers) ----------------
+
+async function loadAmendes() {
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, citoyen:citoyen_id (nom, prenom)')
+    .eq('paye', false)
+    .eq('statut', 'enregistree')
+    .order('created_at', { ascending: false });
+
+  const tbody = $('#amendes-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
+  if (!data.length) { tbody.innerHTML = emptyState('Aucune amende en attente de paiement.', 5); return; }
+
+  tbody.innerHTML = data.map(i => {
+    const motifs = i.infraction_ids
+      .map(id => infractionsCache.find(f => f.id === id)?.titre)
+      .filter(Boolean)
+      .join(', ');
+    const date = new Date(i.created_at).toLocaleDateString('fr-FR');
+    return `
+      <tr>
+        <td>${i.citoyen ? `${i.citoyen.prenom} ${i.citoyen.nom}` : 'Citoyen supprimé'}</td>
+        <td><strong>${euros(i.montant_total)}</strong></td>
+        <td style="max-width:280px;font-size:.82rem;">${motifs}</td>
+        <td>${date}</td>
+        <td style="display:flex;gap:6px;">
+          <button class="btn btn-brass valider-paiement-btn" data-id="${i.id}">Marquer payée</button>
+          <button class="btn btn-danger supprimer-amende-btn ${estDirection ? '' : 'locked'}" data-id="${i.id}">Supprimer</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  $$('.supprimer-amende-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+    const confirme = confirm("Supprimer définitivement cette amende/interpellation ? Elle disparaîtra aussi du casier et des statistiques. Irréversible.");
+    if (!confirme) return;
+    const { error } = await sb.from('interpellations').delete().eq('id', btn.dataset.id);
+    if (error) return toast("Erreur lors de la suppression.");
+    toast("Amende supprimée.");
+    loadAmendes();
+    refreshCompteurs();
+  }));
+
+  $$('.valider-paiement-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const confirme = confirm("Confirmer que cette amende a bien été payée ? Cette action est enregistrée avec ton nom.");
+    if (!confirme) return;
+    const { error } = await sb.from('interpellations').update({
+      paye: true,
+      paye_le: new Date().toISOString(),
+      paye_par: moi.id,
+    }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur lors de la validation.");
+    toast("Paiement validé.");
+    loadAmendes();
+    refreshCompteurs();
+  }));
+}
+
+// ---------------- CANDIDATURES DE RECRUTEMENT ----------------
+
+function genererCodeCandidature(prenom, nom) {
+  const suffixe = Math.random().toString(36).slice(2, 7).toUpperCase();
+  const base = (prenom || 'PN').slice(0, 3).toUpperCase();
+  return `${base}-${suffixe}`;
+}
+
+async function loadCandidatures() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data, error } = await sb.from('candidatures').select('*').order('statut').order('created_at', { ascending: false });
+  const tbody = $('#candidatures-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
+  if (!data.length) { tbody.innerHTML = emptyState('Aucune candidature reçue.', 5); return; }
+
+  const statutBadge = { en_attente: '<span class="badge badge-s">En attente</span>', acceptee: '<span class="badge badge-ok">Acceptée</span>', refusee: '<span class="badge badge-s">Refusée</span>' };
+
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td>${c.prenom} ${c.nom}</td>
+      <td style="font-size:.82rem;">${c.contact ?? '—'}</td>
+      <td style="max-width:260px;font-size:.82rem;">${c.motivation}</td>
+      <td>${statutBadge[c.statut] ?? c.statut}${c.code_genere ? `<div class="mono" style="font-size:.78rem;margin-top:4px;">${c.code_genere}</div>` : ''}</td>
+      <td>
+        ${c.statut === 'en_attente' ? `
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-brass accepter-cand-btn" data-id="${c.id}" data-prenom="${c.prenom}" data-nom="${c.nom}">Accepter</button>
+            <button class="btn btn-outline refuser-cand-btn" data-id="${c.id}">Refuser</button>
+          </div>
+        ` : ''}
+      </td>
+    </tr>
+  `).join('');
+
+  $$('.accepter-cand-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const code = genererCodeCandidature(btn.dataset.prenom, btn.dataset.nom);
+    const { data: grade } = await sb.from('grades').select('id').eq('nom', 'Gardien de la Paix').single();
+    const { error: errCode } = await sb.from('codes_acces').insert({ code, grade_id: grade.id, utilisations_max: 1 });
+    if (errCode) return toast("Erreur lors de la génération du code.");
+    const { error } = await sb.from('candidatures').update({
+      statut: 'acceptee', code_genere: code, traite_par: moi.id, traite_le: new Date().toISOString(),
+    }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur.");
+    toast(`Candidature acceptée — code ${code} généré, à transmettre au candidat.`);
+    loadCandidatures();
+  }));
+  $$('.refuser-cand-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const { error } = await sb.from('candidatures').update({
+      statut: 'refusee', traite_par: moi.id, traite_le: new Date().toISOString(),
+    }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur.");
+    toast("Candidature refusée.");
+    loadCandidatures();
+  }));
+}
+
+// ---------------- PRIMES / RÉCOMPENSES ----------------
+
+async function loadRecompenses() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data: agents } = await sb.from('agents').select('id, nom, prenom').order('nom');
+  const sel = $('#new-recompense-agent');
+  sel.innerHTML = (agents || []).map(a => `<option value="${a.id}">${a.prenom} ${a.nom}</option>`).join('');
+
+  const { data, error } = await sb.from('recompenses').select('*, agent:agent_id (nom, prenom), par:attribuee_par (nom, prenom)').order('created_at', { ascending: false }).limit(30);
+  const box = $('#recompenses-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Aucune récompense attribuée pour le moment.'); return; }
+  box.innerHTML = data.map(r => `
+    <div class="card" style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <strong>🏅 ${r.titre}</strong> — ${r.agent.prenom} ${r.agent.nom}
+          ${r.description ? `<div style="font-size:.85rem;color:var(--ink-soft);margin-top:4px;">${r.description}</div>` : ''}
+        </div>
+      </div>
+      <div style="font-size:.76rem;color:var(--ink-faint);margin-top:6px;">
+        Attribuée par ${r.par ? `${r.par.prenom} ${r.par.nom}` : '—'} · ${new Date(r.created_at).toLocaleDateString('fr-FR')}
+      </div>
+    </div>
+  `).join('');
+}
+
+$('#new-recompense-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    agent_id: $('#new-recompense-agent').value,
+    titre: $('#new-recompense-titre').value.trim(),
+    description: $('#new-recompense-desc').value.trim() || null,
+    attribuee_par: moi.id,
+  };
+  if (!payload.agent_id || !payload.titre) return;
+  const { error } = await sb.from('recompenses').insert(payload);
+  if (error) return toast("Erreur lors de l'attribution.");
+  toast("Récompense attribuée.");
+  $('#new-recompense-form').reset();
+  loadRecompenses();
+});
+
+// ---------------- GARDE À VUE ----------------
+
+function finPrevueGav(createdAt, duree) {
+  const heures = parseInt(duree, 10) || 0;
+  const fin = new Date(createdAt);
+  fin.setHours(fin.getHours() + heures);
+  return fin;
+}
+
+async function loadGardeAVue() {
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, citoyen:citoyen_id (nom, prenom)')
+    .eq('garde_a_vue_relachee', false)
+    .not('garde_a_vue_duree', 'is', null)
+    .order('created_at', { ascending: false });
+
+  const tbody = $('#gav-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement.', 5); return; }
+  if (!data.length) { tbody.innerHTML = emptyState('Personne en garde à vue actuellement.', 5); return; }
+
+  const maintenant = new Date();
+  tbody.innerHTML = data.map(i => {
+    const debut = new Date(i.created_at);
+    const fin = finPrevueGav(i.created_at, i.garde_a_vue_duree);
+    const termine = fin < maintenant;
+    return `
+      <tr>
+        <td>${i.citoyen ? `${i.citoyen.prenom} ${i.citoyen.nom}` : 'Citoyen supprimé'}</td>
+        <td>${debut.toLocaleString('fr-FR')}</td>
+        <td>${i.garde_a_vue_duree}</td>
+        <td>${fin.toLocaleString('fr-FR')} ${termine ? '<span class="badge badge-s">Dépassée</span>' : ''}</td>
+        <td><button class="btn btn-outline liberer-gav-btn" data-id="${i.id}">Libérer</button></td>
+      </tr>
+    `;
+  }).join('');
+
+  $$('.liberer-gav-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
+    const confirme = confirm("Confirmer la libération de ce citoyen ?");
+    if (!confirme) return;
+    const { error } = await sb.from('interpellations').update({
+      garde_a_vue_relachee: true,
+      garde_a_vue_relachee_le: new Date().toISOString(),
+    }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur lors de la libération.");
+    toast("Citoyen libéré.");
+    loadGardeAVue();
+    refreshCompteurs();
+  }));
+}
+
+// ---------------- FORMATIONS ----------------
+
+let formationsValideesCache = [];
+
+async function loadFormations() {
+  const [{ data: formations, error: errF }, { data: validees, error: errV }] = await Promise.all([
+    sb.from('formations').select('*').order('ordre'),
+    sb.from('formations_validees').select('*').eq('agent_id', moi.id),
+  ]);
+  if (errF) return toast("Erreur de chargement des formations.");
+  formationsValideesCache = validees || [];
+
+  renderFormationsListe('#formations-grade-list', (formations || []).filter(f => f.categorie === 'grade'));
+  renderFormationsListe('#formations-basique-list', (formations || []).filter(f => f.categorie === 'basique'));
+}
+
+function renderFormationsListe(selector, liste) {
+  const box = $(selector);
+  if (!liste.length) { box.innerHTML = emptyState('Aucune formation disponible.'); return; }
+  box.innerHTML = liste.map(f => {
+    const validee = formationsValideesCache.find(v => v.formation_id === f.id);
+    return `
+      <div class="card" data-formation="${f.id}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <div>
+            <h3 style="margin:0 0 4px;font-size:1rem;">${f.titre}</h3>
+            <p style="margin:0;font-size:.85rem;color:var(--ink-soft);">${f.description ?? ''}</p>
+          </div>
+          ${validee
+            ? `<span class="badge badge-ok">Validée (${validee.score}/${validee.total_questions})</span>`
+            : `<button class="btn btn-brass btn-commencer-formation" data-id="${f.id}">Commencer</button>`}
+        </div>
+        <div class="formation-contenu" style="display:none;margin-top:16px;"></div>
+      </div>
+    `;
+  }).join('');
+
+  $$('.btn-commencer-formation', box).forEach(btn => btn.addEventListener('click', () => {
+    const formation = liste.find(f => f.id == btn.dataset.id);
+    ouvrirFormation(btn.closest('.card'), formation);
+  }));
+}
+
+function ouvrirFormation(card, formation) {
+  const zone = card.querySelector('.formation-contenu');
+  zone.style.display = 'block';
+  zone.innerHTML = `
+    <div style="border-top:1px solid var(--paper-dim);padding-top:14px;">
+      <p style="font-size:.88rem;line-height:1.6;color:var(--ink);">${formation.contenu}</p>
+      <form class="formation-quiz-form">
+        ${formation.questions.map((q, qi) => `
+          <div style="margin:16px 0;">
+            <div style="font-weight:600;font-size:.88rem;margin-bottom:8px;">${qi + 1}. ${q.question}</div>
+            ${q.options.map((opt, oi) => `
+              <label style="display:flex;align-items:center;gap:8px;padding:5px 0;font-size:.85rem;cursor:pointer;">
+                <input type="radio" name="q${qi}" value="${oi}" required style="accent-color:var(--brass);">
+                ${opt}
+              </label>
+            `).join('')}
+          </div>
+        `).join('')}
+        <button type="submit" class="btn btn-brass" style="margin-top:6px;">Valider le questionnaire</button>
+        <div class="formation-resultat" style="margin-top:12px;font-size:.88rem;"></div>
+      </form>
+    </div>
+  `;
+  zone.querySelector('.formation-quiz-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let score = 0;
+    formation.questions.forEach((q, qi) => {
+      const val = zone.querySelector(`input[name="q${qi}"]:checked`);
+      if (val && Number(val.value) === q.correct) score++;
+    });
+    const total = formation.questions.length;
+    const resultBox = zone.querySelector('.formation-resultat');
+    const seuil = Math.ceil(total * 0.7);
+
+    if (score >= seuil) {
+      const { error } = await sb.from('formations_validees').insert({
+        agent_id: moi.id,
+        formation_id: formation.id,
+        score,
+        total_questions: total,
+      });
+      if (error) {
+        resultBox.innerHTML = `<span style="color:var(--red);">Erreur lors de l'enregistrement.</span>`;
+        return;
+      }
+      resultBox.innerHTML = `<span style="color:var(--green);font-weight:600;">Formation validée ! Score : ${score}/${total}</span>`;
+      toast("Formation validée.");
+      setTimeout(loadFormations, 1200);
+    } else {
+      resultBox.innerHTML = `<span style="color:var(--red);">Score insuffisant : ${score}/${total} (il faut au moins ${seuil}/${total}). Retente plus tard.</span>`;
+    }
+  });
+}
+
+// ---------------- GÉNÉRATION PDF ----------------
+
+function slugify(str) {
+  return (str || 'document')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    .slice(0, 40) || 'document';
+}
+function dateSlug(iso) {
+  return new Date(iso).toISOString().slice(0, 10);
+}
+
+function entetePdf(doc, sousTitre) {
+  const navy = [15, 26, 46];
+  const gold = [182, 138, 61];
+  doc.setFillColor(...navy);
+  doc.rect(0, 0, 210, 32, 'F');
+  doc.setFillColor(...gold);
+  doc.roundedRect(14, 7, 18, 18, 3, 3, 'F');
+  doc.setTextColor(...navy);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.text('PN', 23, 19, { align: 'center' });
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.text('POLICE NATIONALE', 40, 16);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...gold);
+  doc.text(sousTitre || 'Nova Life — Portail interne', 40, 23);
+  doc.setTextColor(0, 0, 0);
+  return 42;
+}
+
+function piedPagePdf(doc) {
+  doc.setFontSize(8);
+  doc.setTextColor(160);
+  doc.text('Document généré automatiquement — Police Nationale Nova Life', 14, 290);
+}
+
+function ecrireParagraphe(doc, texte, x, y, maxWidth, lineHeight = 6) {
+  const lignes = doc.splitTextToSize(texte, maxWidth);
+  lignes.forEach(ligne => {
+    if (y > 280) { doc.addPage(); y = 20; }
+    doc.text(ligne, x, y);
+    y += lineHeight;
+  });
+  return y;
+}
+
+function genererPdfInterpellation(i) {
+  const doc = new jspdf.jsPDF();
+  let y = entetePdf(doc, "Procès-verbal d'intervention");
+
+  doc.setTextColor(0);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+  doc.text(i.citoyen ? `${i.citoyen.prenom} ${i.citoyen.nom}` : 'Citoyen supprimé', 14, y); y += 8;
+
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(90);
+  doc.text(`Agent verbalisateur : ${i.agent.prenom} ${i.agent.nom} (matricule ${i.agent.matricule})`, 14, y); y += 6;
+  doc.text(`Date : ${new Date(i.created_at).toLocaleString('fr-FR')}`, 14, y); y += 6;
+  if (i.lieu) { doc.text(`Lieu : ${i.lieu}`, 14, y); y += 6; }
+  doc.text(`Montant de l'amende : ${euros(i.montant_total)} (${i.paye ? 'payée' : 'impayée'})`, 14, y); y += 6;
+  if (i.garde_a_vue) { doc.text(`Garde à vue : Oui${i.garde_a_vue_duree ? ' — ' + i.garde_a_vue_duree : ''}`, 14, y); y += 6; }
+  y += 4;
+
+  doc.setDrawColor(210); doc.line(14, y, 196, y); y += 8;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(0);
+  doc.text('Infractions constatées :', 14, y); y += 7;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+  const titres = (i.infraction_ids || []).map(id => infractionsCache.find(f => f.id === id)?.titre).filter(Boolean);
+  titres.forEach(t => { y = ecrireParagraphe(doc, '• ' + t, 14, y, 182); });
+
+  if (i.peine_appliquee) {
+    y += 3;
+    doc.setFont('helvetica', 'bold'); doc.text('Sanctions complémentaires :', 14, y); y += 7;
+    doc.setFont('helvetica', 'normal');
+    y = ecrireParagraphe(doc, i.peine_appliquee, 14, y, 182);
+  }
+  if (i.notes) {
+    y += 3;
+    doc.setFont('helvetica', 'bold'); doc.text('Notes :', 14, y); y += 7;
+    doc.setFont('helvetica', 'normal');
+    y = ecrireParagraphe(doc, i.notes, 14, y, 182);
+  }
+
+  piedPagePdf(doc);
+  doc.save(`intervention-${slugify(i.citoyen ? i.citoyen.nom : 'citoyen')}-${dateSlug(i.created_at)}.pdf`);
+}
+
+function genererPdfRapport(r) {
+  const doc = new jspdf.jsPDF();
+  let y = entetePdf(doc, 'Rapport de service');
+
+  const catLabel = { patrouille: 'Patrouille', incident: 'Incident', autre: 'Autre' };
+  doc.setTextColor(0);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+  y = ecrireParagraphe(doc, r.titre, 14, y, 182, 7); y += 2;
+
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(90);
+  doc.text(`Catégorie : ${catLabel[r.categorie] ?? r.categorie}`, 14, y); y += 6;
+  doc.text(`Rédigé par : ${r.agent.prenom} ${r.agent.nom} (matricule ${r.agent.matricule})`, 14, y); y += 6;
+  doc.text(`Date : ${new Date(r.created_at).toLocaleString('fr-FR')}`, 14, y); y += 10;
+
+  doc.setDrawColor(210); doc.line(14, y, 196, y); y += 8;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(20);
+  y = ecrireParagraphe(doc, r.contenu, 14, y, 182);
+
+  piedPagePdf(doc);
+  doc.save(`rapport-${slugify(r.titre)}-${dateSlug(r.created_at)}.pdf`);
+}
+
+let pdfInterpellationsCache = [];
+let pdfRapportsCache = [];
+
+async function loadInterventionsPdf() {
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
+  const [{ data: interventions, error: errI }, { data: rapps, error: errR }] = await Promise.all([
+    sb.from('interpellations').select('*, citoyen:citoyen_id (nom, prenom), agent:agent_id (nom, prenom, matricule)').order('created_at', { ascending: false }).limit(40),
+    sb.from('rapports').select('*, agent:agent_id (nom, prenom, matricule)').order('created_at', { ascending: false }).limit(40),
+  ]);
+
+  pdfInterpellationsCache = interventions || [];
+  const tbodyI = $('#pdf-interpellations-tbody');
+  if (errI) { tbodyI.innerHTML = emptyState('Erreur de chargement.', 4); }
+  else if (!pdfInterpellationsCache.length) { tbodyI.innerHTML = emptyState('Aucune interpellation.', 4); }
+  else {
+    tbodyI.innerHTML = pdfInterpellationsCache.map((i, idx) => `
+      <tr>
+        <td>${i.citoyen ? `${i.citoyen.prenom} ${i.citoyen.nom}` : 'Citoyen supprimé'}</td>
+        <td>${euros(i.montant_total)}</td>
+        <td>${new Date(i.created_at).toLocaleDateString('fr-FR')}</td>
+        <td style="display:flex;gap:6px;">
+          <button class="btn btn-outline pdf-interp-btn" data-idx="${idx}">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PDF
+          </button>
+          <button class="btn btn-danger supprimer-interp-btn ${estDirection ? '' : 'locked'}" data-id="${i.id}" data-idx="${idx}">Supprimer</button>
+        </td>
+      </tr>
+    `).join('');
+    $$('.pdf-interp-btn', tbodyI).forEach(btn => btn.addEventListener('click', () => {
+      genererPdfInterpellation(pdfInterpellationsCache[btn.dataset.idx]);
+    }));
+    $$('.supprimer-interp-btn', tbodyI).forEach(btn => btn.addEventListener('click', async () => {
+      if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+      const item = pdfInterpellationsCache[btn.dataset.idx];
+      const nom = item.citoyen ? `${item.citoyen.prenom} ${item.citoyen.nom}` : 'ce citoyen';
+      const confirme = confirm(`Supprimer définitivement cette interpellation (${nom}, ${euros(item.montant_total)}) ?\n\nElle disparaîtra aussi du casier du citoyen et des statistiques. Irréversible.`);
+      if (!confirme) return;
+      const { error } = await sb.from('interpellations').delete().eq('id', btn.dataset.id);
+      if (error) return toast("Erreur lors de la suppression.");
+      toast("Interpellation supprimée.");
+      loadInterventionsPdf();
+      refreshCompteurs();
+    }));
+  }
+
+  pdfRapportsCache = rapps || [];
+  const tbodyR = $('#pdf-rapports-tbody');
+  if (errR) { tbodyR.innerHTML = emptyState('Erreur de chargement.', 3); }
+  else if (!pdfRapportsCache.length) { tbodyR.innerHTML = emptyState('Aucun rapport.', 3); }
+  else {
+    tbodyR.innerHTML = pdfRapportsCache.map((r, idx) => `
+      <tr>
+        <td>${r.titre}</td>
+        <td>${r.agent.prenom} ${r.agent.nom}</td>
+        <td>${new Date(r.created_at).toLocaleDateString('fr-FR')}</td>
+        <td style="display:flex;gap:6px;">
+          <button class="btn btn-outline pdf-rapport-btn" data-idx="${idx}">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PDF
+          </button>
+          <button class="btn btn-danger supprimer-rapport-btn ${estDirection ? '' : 'locked'}" data-id="${r.id}">Supprimer</button>
+        </td>
+      </tr>
+    `).join('');
+    $$('.pdf-rapport-btn', tbodyR).forEach(btn => btn.addEventListener('click', () => {
+      genererPdfRapport(pdfRapportsCache[btn.dataset.idx]);
+    }));
+    $$('.supprimer-rapport-btn', tbodyR).forEach(btn => btn.addEventListener('click', async () => {
+      if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+      const confirme = confirm("Supprimer définitivement ce rapport ? Irréversible.");
+      if (!confirme) return;
+      const { error } = await sb.from('rapports').delete().eq('id', btn.dataset.id);
+      if (error) return toast("Erreur lors de la suppression.");
+      toast("Rapport supprimé.");
+      loadInterventionsPdf();
+    }));
+  }
+}
+
+// ---------------- IMPORT D'IDENTITÉ DEPUIS UNE CAPTURE (OCR) ----------------
+
+// Zones des champs, en proportion de la carte recadrée (0 à 1).
+// Laisser null tant que la mise en page exacte de la carte n'est pas calibrée : la lecture
+// générique (repérage de "Nom", "Prénom", "Né(e) le" + détection de date) est alors utilisée.
+// Exemple : { nom: {x:.30, y:.25, w:.40, h:.10}, prenom: {x:.30, y:.38, w:.40, h:.10}, naissance: {x:.30, y:.52, w:.30, h:.10} }
+const CARTE_ZONES = null;
+
+// <parse-start>
+function titreCase(s) {
+  return s.toLowerCase().replace(/(^|[\s\-'’])([a-zà-öø-ÿ])/g, (m, sep, c) => sep + c.toUpperCase());
+}
+
+function nettoyerNom(s) {
+  let v = (s || '').replace(/([A-Za-zÀ-ÿ])0(?=[A-Za-zÀ-ÿ])/g, '$1O');
+  v = v.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ'’\- ]/g, ' ').replace(/\s+/g, ' ').trim();
+  v = v.replace(/^(de naissance|de famille|d['’]usage)\s*/i, '').replace(/^[\-'’ ]+|[\-'’ ]+$/g, '');
+  return v ? titreCase(v) : '';
+}
+
+const RE_DATE_CARTE = /([0-3OoIl]?[0-9OoIl])\s*[\/\-.]\s*([01OoIl]?[0-9OoIl])\s*[\/\-.]\s*([12Il][0-9OoIl]{3})/g;
+
+function chiffresDepuisOcr(s) {
+  return s.replace(/[Oo]/g, '0').replace(/[Il]/g, '1');
+}
+
+function datesDansTexte(t) {
+  const out = [];
+  for (const m of (t || '').matchAll(RE_DATE_CARTE)) {
+    const j = chiffresDepuisOcr(m[1]).padStart(2, '0');
+    const mo = chiffresDepuisOcr(m[2]).padStart(2, '0');
+    const a = chiffresDepuisOcr(m[3]);
+    if (+j >= 1 && +j <= 31 && +mo >= 1 && +mo <= 12 && +a >= 1900 && +a <= 2100) out.push(`${a}-${mo}-${j}`);
+  }
+  return out;
+}
+
+function analyserTexteCarte(texte) {
+  const lignes = (texte || '').split(/\r?\n/)
+    .map(l => l.replace(/[|_\[\]{}<>«»]/g, ' ').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  const res = { nom: '', prenom: '', naissance: '' };
+
+  // Valeur d'un champ : texte après la mention, sinon la ligne suivante.
+  const valeur = (i, re, stop) => {
+    const m = lignes[i].match(re);
+    if (!m) return null;
+    let v = (m[1] || '').replace(/^[\s:：.\-–—]+/, '').split(stop)[0].trim();
+    if (!nettoyerNom(v) && lignes[i + 1]) v = lignes[i + 1].split(stop)[0];
+    return nettoyerNom(v) || null;
+  };
+
+  lignes.forEach((l, i) => {
+    if (!res.prenom) {
+      const v = valeur(i, /(?:^|\s)pr[ée3]noms?\b(.*)$/i, /\s+nom\b/i);
+      if (v) res.prenom = v;
+    }
+    if (!res.nom) {
+      const v = valeur(i, /^nom\b(.*)$/i, /\s+pr[ée3]noms?\b/i);
+      if (v) res.nom = v;
+    }
+  });
+
+  // Date de naissance : d'abord près d'une mention "naissance" / "né(e) le", sinon la plus ancienne date lue.
+  let naiss = '';
+  for (let i = 0; i < lignes.length && !naiss; i++) {
+    if (/naiss|n[ée]\(?e?\)?\s*le/i.test(lignes[i])) {
+      naiss = datesDansTexte(lignes[i])[0] || (lignes[i + 1] ? datesDansTexte(lignes[i + 1])[0] : '') || '';
+    }
+  }
+  if (!naiss) naiss = datesDansTexte(lignes.join('\n')).sort()[0] || '';
+  res.naissance = naiss;
+  return res;
+}
+// <parse-end>
+
+// ----- Recadrage obligatoire de la carte -----
+
+let cropImg = null, cropUrl = null, cropRect = null, cropFit = 1, cropZoom = 1, cropMode = 'cadrer', cropDrag = null;
+const CROP_MIN_W = 120, CROP_MIN_H = 80;
+
+function ouvrirImportCarte(file) {
+  if (!file || !file.type || !file.type.startsWith('image/')) return toast("Choisis un fichier image (capture d'écran).");
+  if (cropUrl) URL.revokeObjectURL(cropUrl);
+  cropUrl = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    cropImg = img; cropRect = null; cropZoom = 1; cropMode = 'cadrer'; cropDrag = null;
+    $('#crop-zoom').value = 1;
+    $('#crop-ok').checked = false;
+    $('#crop-modal').style.display = 'block';
+    const dispo = Math.min($('#crop-wrap').clientWidth || 800, 940);
+    cropFit = Math.min(1, dispo / img.naturalWidth);
+    majModeCrop();
+    dessinerCrop();
+  };
+  img.onerror = () => toast("Image illisible, essaie une autre capture.");
+  img.src = cropUrl;
+}
+
+function fermerCrop() { $('#crop-modal').style.display = 'none'; }
+
+function majModeCrop() {
+  const c = $('#crop-canvas');
+  c.style.touchAction = cropMode === 'cadrer' ? 'none' : 'auto';
+  c.style.cursor = cropMode === 'cadrer' ? 'crosshair' : 'grab';
+  $('#crop-mode-btn').textContent = cropMode === 'cadrer'
+    ? 'Mode : cadrer (toucher pour déplacer la vue)'
+    : 'Mode : déplacer la vue (toucher pour cadrer)';
+}
+
+function cropValide() { return !!cropRect && cropRect.w >= CROP_MIN_W && cropRect.h >= CROP_MIN_H; }
+
+function majBoutonCrop() {
+  $('#crop-info').textContent = cropRect
+    ? `Cadre : ${Math.round(cropRect.w)} × ${Math.round(cropRect.h)} px`
+    : 'Trace un rectangle autour de la carte';
+  $('#crop-confirm').disabled = !(cropValide() && $('#crop-ok').checked);
+}
+
+function coinsImage(r) {
+  return [{ x: r.x, y: r.y }, { x: r.x + r.w, y: r.y }, { x: r.x, y: r.y + r.h }, { x: r.x + r.w, y: r.y + r.h }];
+}
+
+function rectEntre(a, b) {
+  return { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(a.x - b.x), h: Math.abs(a.y - b.y) };
+}
+
+function dessinerCrop() {
+  const c = $('#crop-canvas');
+  const s = cropFit * cropZoom;
+  c.width = Math.round(cropImg.naturalWidth * s);
+  c.height = Math.round(cropImg.naturalHeight * s);
+  c.style.width = c.width + 'px';
+  c.style.height = c.height + 'px';
+  const g = c.getContext('2d');
+  g.drawImage(cropImg, 0, 0, c.width, c.height);
+  if (cropRect) {
+    const r = { x: cropRect.x * s, y: cropRect.y * s, w: cropRect.w * s, h: cropRect.h * s };
+    g.fillStyle = 'rgba(0,0,0,.55)';
+    g.beginPath();
+    g.rect(0, 0, c.width, c.height);
+    g.rect(r.x, r.y, r.w, r.h);
+    g.fill('evenodd');
+    g.strokeStyle = '#e0bd7a';
+    g.lineWidth = 2;
+    g.strokeRect(r.x, r.y, r.w, r.h);
+    g.fillStyle = '#e0bd7a';
+    coinsImage(r).forEach(p => g.fillRect(p.x - 7, p.y - 7, 14, 14));
+  }
+  majBoutonCrop();
+}
+
+function pointeurCrop(e) {
+  const c = $('#crop-canvas');
+  const b = c.getBoundingClientRect();
+  const s = cropFit * cropZoom;
+  const x = (e.clientX - b.left) * (c.width / b.width) / s;
+  const y = (e.clientY - b.top) * (c.height / b.height) / s;
+  return {
+    x: Math.max(0, Math.min(cropImg.naturalWidth, x)),
+    y: Math.max(0, Math.min(cropImg.naturalHeight, y)),
+  };
+}
+
+$('#crop-canvas').addEventListener('pointerdown', (e) => {
+  if (cropMode !== 'cadrer' || !cropImg) return;
+  e.preventDefault();
+  const p = pointeurCrop(e);
+  const marge = 24 / (cropFit * cropZoom);
+  cropDrag = null;
+  if (cropRect) {
+    const coins = coinsImage(cropRect);
+    const i = coins.findIndex(c => Math.hypot(c.x - p.x, c.y - p.y) <= marge);
+    if (i >= 0) {
+      cropDrag = { type: 'coin', fixe: coins[3 - i] };
+    } else if (p.x >= cropRect.x && p.x <= cropRect.x + cropRect.w && p.y >= cropRect.y && p.y <= cropRect.y + cropRect.h) {
+      cropDrag = { type: 'deplacer', dx: p.x - cropRect.x, dy: p.y - cropRect.y };
+    }
+  }
+  if (!cropDrag) {
+    cropDrag = { type: 'nouveau', origine: p };
+    cropRect = { x: p.x, y: p.y, w: 0, h: 0 };
+  }
+  e.target.setPointerCapture(e.pointerId);
+});
+
+$('#crop-canvas').addEventListener('pointermove', (e) => {
+  if (!cropDrag) return;
+  const p = pointeurCrop(e);
+  if (cropDrag.type === 'nouveau') cropRect = rectEntre(cropDrag.origine, p);
+  else if (cropDrag.type === 'coin') cropRect = rectEntre(cropDrag.fixe, p);
+  else {
+    cropRect.x = Math.max(0, Math.min(cropImg.naturalWidth - cropRect.w, p.x - cropDrag.dx));
+    cropRect.y = Math.max(0, Math.min(cropImg.naturalHeight - cropRect.h, p.y - cropDrag.dy));
+  }
+  dessinerCrop();
+});
+
+function finCrop() {
+  if (!cropDrag) return;
+  cropDrag = null;
+  if (cropRect && (cropRect.w < 20 || cropRect.h < 20)) cropRect = null;
+  dessinerCrop();
+}
+$('#crop-canvas').addEventListener('pointerup', finCrop);
+$('#crop-canvas').addEventListener('pointercancel', finCrop);
+
+$('#crop-zoom').addEventListener('input', (e) => { cropZoom = parseFloat(e.target.value); dessinerCrop(); });
+$('#crop-mode-btn').addEventListener('click', () => { cropMode = cropMode === 'cadrer' ? 'deplacer' : 'cadrer'; majModeCrop(); });
+$('#crop-ok').addEventListener('change', majBoutonCrop);
+$('#crop-cancel').addEventListener('click', fermerCrop);
+$('#crop-confirm').addEventListener('click', async () => {
+  if (!cropValide() || !$('#crop-ok').checked) return;
+  const r = { ...cropRect };
+  fermerCrop();
+  await lireCarte(cropImg, r);
+});
+
+// ----- Lecture OCR (Tesseract.js, dans le navigateur) -----
+
+let ocrWorker = null;
+const OCR_ETAPES = {
+  'loading tesseract core': 'chargement du moteur',
+  'initializing tesseract': 'initialisation',
+  'initializing api': 'initialisation',
+  'loading language traineddata': 'téléchargement de la langue (1re fois seulement)',
+  'recognizing text': 'lecture du texte',
+};
+
+async function obtenirWorker() {
+  if (ocrWorker) return ocrWorker;
+  ocrWorker = await Tesseract.createWorker('fra', 1, {
+    logger: (m) => {
+      if (m.status && typeof m.progress === 'number') {
+        $('#carte-status').textContent = `Lecture en cours : ${OCR_ETAPES[m.status] || m.status} ${Math.round(m.progress * 100)} %`;
+      }
+    },
+  });
+  return ocrWorker;
+}
+
+// Niveaux de gris + étirement du contraste (sans ctx.filter, non supporté par Safari).
+function niveauxDeGris(cv) {
+  const g = cv.getContext('2d');
+  const d = g.getImageData(0, 0, cv.width, cv.height);
+  const px = d.data;
+  const hist = new Uint32Array(256);
+  for (let i = 0; i < px.length; i += 4) {
+    const v = Math.round(0.299 * px[i] + 0.587 * px[i + 1] + 0.114 * px[i + 2]);
+    px[i] = px[i + 1] = px[i + 2] = v;
+    hist[v]++;
+  }
+  const total = px.length / 4;
+  let cumul = 0, bas = 0, haut = 255;
+  for (let v = 0; v < 256; v++) { cumul += hist[v]; if (cumul >= total * 0.02) { bas = v; break; } }
+  cumul = 0;
+  for (let v = 255; v >= 0; v--) { cumul += hist[v]; if (cumul >= total * 0.02) { haut = v; break; } }
+  const plage = Math.max(1, haut - bas);
+  for (let i = 0; i < px.length; i += 4) {
+    const v = Math.max(0, Math.min(255, (px[i] - bas) * 255 / plage));
+    px[i] = px[i + 1] = px[i + 2] = v;
+  }
+  g.putImageData(d, 0, 0);
+}
+
+function inverserCanvas(cv) {
+  const c2 = document.createElement('canvas');
+  c2.width = cv.width; c2.height = cv.height;
+  const g = c2.getContext('2d');
+  g.drawImage(cv, 0, 0);
+  const d = g.getImageData(0, 0, c2.width, c2.height);
+  const px = d.data;
+  for (let i = 0; i < px.length; i += 4) { px[i] = 255 - px[i]; px[i + 1] = 255 - px[i + 1]; px[i + 2] = 255 - px[i + 2]; }
+  g.putImageData(d, 0, 0);
+  return c2;
+}
+
+async function lireParZones(worker, cv) {
+  const out = {};
+  for (const [champ, z] of Object.entries(CARTE_ZONES)) {
+    const rectangle = {
+      left: Math.round(z.x * cv.width), top: Math.round(z.y * cv.height),
+      width: Math.round(z.w * cv.width), height: Math.round(z.h * cv.height),
+    };
+    await worker.setParameters({ tessedit_char_whitelist: champ === 'naissance' ? '0123456789/-. ' : '' });
+    const { data } = await worker.recognize(cv, { rectangle });
+    out[champ] = data.text.replace(/\s+/g, ' ').trim();
+  }
+  await worker.setParameters({ tessedit_char_whitelist: '' });
+  return out;
+}
+
+async function lireCarte(img, r) {
+  const status = $('#carte-status');
+  $('#carte-doublon').innerHTML = '';
+  $('#carte-texte-brut').style.display = 'none';
+  if (typeof Tesseract === 'undefined') {
+    status.textContent = "Module de lecture non chargé (vérifie ta connexion). Saisis les champs à la main.";
+    return;
+  }
+  status.textContent = "Préparation de l'image…";
+
+  // Découpe aux bords exacts du cadre + agrandissement (un texte plus grand se lit mieux).
+  const echelle = Math.min(4, Math.max(1, 1500 / r.w));
+  const cv = document.createElement('canvas');
+  cv.width = Math.round(r.w * echelle);
+  cv.height = Math.round(r.h * echelle);
+  const g = cv.getContext('2d');
+  g.imageSmoothingQuality = 'high';
+  g.drawImage(img, r.x, r.y, r.w, r.h, 0, 0, cv.width, cv.height);
+  niveauxDeGris(cv);
+
+  const resultat = { nom: '', prenom: '', naissance: '' };
+  let texteBrut = '';
+  const compte = () => [resultat.nom, resultat.prenom, resultat.naissance].filter(Boolean).length;
+
+  try {
+    const worker = await obtenirWorker();
+    for (const inverse of [false, true]) {
+      if (inverse && compte() >= 2) break; // version inversée seulement si la 1re lecture est insuffisante
+      const cvPasse = inverse ? inverserCanvas(cv) : cv;
+      let lu;
+      if (CARTE_ZONES) {
+        const z = await lireParZones(worker, cvPasse);
+        texteBrut += `${inverse ? '\n--- version inversée ---\n' : ''}Nom: ${z.nom}\nPrénom: ${z.prenom}\nNaissance: ${z.naissance}\n`;
+        lu = { nom: nettoyerNom(z.nom), prenom: nettoyerNom(z.prenom), naissance: datesDansTexte(z.naissance)[0] || '' };
+      } else {
+        const { data } = await worker.recognize(cvPasse);
+        texteBrut += `${inverse ? '\n--- version inversée ---\n' : ''}${data.text}`;
+        lu = analyserTexteCarte(data.text);
+      }
+      ['nom', 'prenom', 'naissance'].forEach(k => { if (!resultat[k] && lu[k]) resultat[k] = lu[k]; });
+    }
+  } catch (err) {
+    console.error(err);
+    status.textContent = "La lecture a échoué (connexion ou image). Réessaie, ou saisis les champs à la main.";
+    return;
+  }
+
+  if (resultat.nom) $('#nc-nom').value = resultat.nom;
+  if (resultat.prenom) $('#nc-prenom').value = resultat.prenom;
+  if (resultat.naissance) $('#nc-naissance').value = resultat.naissance;
+
+  const n = compte();
+  status.textContent = n === 3
+    ? "Lecture terminée : vérifie bien les champs ci-dessous avant de créer la fiche."
+    : n === 0
+      ? "Aucun champ reconnu. Recommence avec un cadrage plus précis, ou saisis à la main."
+      : `${n}/3 champs reconnus : vérifie-les et complète les autres à la main.`;
+  $('#carte-texte-pre').textContent = texteBrut.trim();
+  $('#carte-texte-brut').style.display = 'block';
+  verifierDoublonCarte(resultat);
+}
+
+async function verifierDoublonCarte(r) {
+  const box = $('#carte-doublon');
+  box.innerHTML = '';
+  if (!r.nom || !r.prenom) return;
+  const { data } = await sb.from('citoyens').select('id, nom, prenom').ilike('nom', r.nom).ilike('prenom', r.prenom).limit(3);
+  if (!data || !data.length) return;
+  const div = document.createElement('div');
+  div.className = 'login-error';
+  div.style.display = 'block';
+  div.style.marginTop = '10px';
+  div.textContent = `Une fiche existe déjà à ce nom : ${data.map(c => `${c.prenom} ${c.nom}`).join(', ')}. `;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn btn-outline';
+  btn.style.marginTop = '8px';
+  btn.textContent = 'Ouvrir la fiche existante';
+  btn.addEventListener('click', () => openCitoyen(data[0].id));
+  div.appendChild(document.createElement('br'));
+  div.appendChild(btn);
+  box.appendChild(div);
+}
+
+// ----- Branchements : choix de fichier, glisser-déposer, collage -----
+
+$('#carte-file').addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  e.target.value = '';
+  ouvrirImportCarte(f);
+});
+
+(function () {
+  const zone = $('#carte-import');
+  ['dragenter', 'dragover'].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.style.borderColor = 'var(--brass)'; }));
+  ['dragleave', 'drop'].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.style.borderColor = ''; }));
+  zone.addEventListener('drop', (e) => {
+    const f = e.dataTransfer && e.dataTransfer.files[0];
+    if (f) ouvrirImportCarte(f);
+  });
+})();
+
+document.addEventListener('paste', (e) => {
+  if (!$('#view-citoyens').classList.contains('active') || $('#new-citoyen-form').style.display === 'none') return;
+  const item = Array.from((e.clipboardData && e.clipboardData.items) || []).find(i => i.type.startsWith('image/'));
+  if (item) { e.preventDefault(); ouvrirImportCarte(item.getAsFile()); }
+});
+
+$('#new-citoyen-form').addEventListener('reset', () => {
+  $('#carte-status').textContent = '';
+  $('#carte-doublon').innerHTML = '';
+  $('#carte-texte-brut').style.display = 'none';
+});
+
+// ---------------- VÉHICULES PN ----------------
+
+// Véhicules des forces de l'ordre d'après le wiki officiel Nova-Life (page "Force de l'ordre").
+// "Autre véhicule…" permet de saisir un modèle propre à ton serveur.
+const MODELES_VEHICULES_PN = ['Berlingo', 'Master', 'Mégane IV', 'Master de Manifestation', '5008', 'Olympia Banalisé'];
+
+let vehiculesOuvert = false;
+let canalVehicules = null;
+let vehiculesCache = [];
+let vehiculeEnEdition = null;   // id du véhicule en cours de modification (null = création)
+let vehiculePhoto = null;       // image compressée en attente d'envoi
+let vehiculeSlider = false;     // vrai pendant qu'on déplace un curseur : évite un rafraîchissement en plein geste
+let vehiculeSliderTimer = null;
+
+function escAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
+
+// On n'affiche que des images stockées chez nous.
+function imageSure(url) { return typeof url === 'string' && url.startsWith(SUPABASE_URL + '/storage/'); }
+
+function couleurCarburant(p) { return p > 50 ? '#3fae6a' : p > 20 ? '#d99a2b' : '#c0392b'; }
+
+function ilYa(iso) {
+  const min = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (min < 1) return "à l'instant";
+  if (min < 60) return `il y a ${min} min`;
+  const h = Math.round(min / 60);
+  if (h < 24) return `il y a ${h} h`;
+  return new Date(iso).toLocaleDateString('fr-FR');
+}
+
+// Réduit la photo (1200 px max, JPEG) pour un envoi rapide et peu de stockage.
+function compresserImage(file, maxCote = 1200, qualite = 0.82) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const ech = Math.min(1, maxCote / Math.max(img.naturalWidth, img.naturalHeight));
+      const cv = document.createElement('canvas');
+      cv.width = Math.max(1, Math.round(img.naturalWidth * ech));
+      cv.height = Math.max(1, Math.round(img.naturalHeight * ech));
+      const g = cv.getContext('2d');
+      g.fillStyle = '#ffffff';
+      g.fillRect(0, 0, cv.width, cv.height);
+      g.drawImage(img, 0, 0, cv.width, cv.height);
+      URL.revokeObjectURL(url);
+      cv.toBlob((b) => (b ? resolve(b) : reject(new Error('compression'))), 'image/jpeg', qualite);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('lecture')); };
+    img.src = url;
+  });
+}
+
+(function initModelesVehicules() {
+  $('#veh-modele').innerHTML = MODELES_VEHICULES_PN
+    .map(m => `<option value="${escAttr(m)}">${escapeHtml(m)}</option>`).join('')
+    + '<option value="__autre">Autre véhicule…</option>';
+})();
+
+$('#veh-modele').addEventListener('change', () => {
+  $('#veh-modele-autre-wrap').style.display = $('#veh-modele').value === '__autre' ? 'block' : 'none';
+});
+
+function majApercuVehicule(url) {
+  const img = $('#veh-apercu');
+  if (url) { img.src = url; img.style.display = 'block'; $('#veh-drop-texte').style.display = 'none'; }
+  else { img.removeAttribute('src'); img.style.display = 'none'; $('#veh-drop-texte').style.display = 'block'; }
+}
+
+async function choisirPhotoVehicule(file) {
+  if (!file || !file.type || !file.type.startsWith('image/')) return toast("Choisis un fichier image.");
+  try {
+    vehiculePhoto = await compresserImage(file);
+    majApercuVehicule(URL.createObjectURL(vehiculePhoto));
+  } catch (e) {
+    vehiculePhoto = null;
+    toast("Image illisible, essaie un autre fichier.");
+  }
+}
+
+(function () {
+  const zone = $('#veh-drop');
+  zone.addEventListener('click', () => $('#veh-fichier').click());
+  ['dragenter', 'dragover'].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.style.borderColor = 'var(--brass)'; }));
+  ['dragleave', 'drop'].forEach(ev => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.style.borderColor = ''; }));
+  zone.addEventListener('drop', (e) => {
+    const f = e.dataTransfer && e.dataTransfer.files[0];
+    if (f) choisirPhotoVehicule(f);
+  });
+  $('#veh-fichier').addEventListener('change', (e) => {
+    const f = e.target.files[0];
+    e.target.value = '';
+    choisirPhotoVehicule(f);
+  });
+})();
+
+function ouvrirFormVehicule(v) {
+  vehiculeEnEdition = v ? v.id : null;
+  vehiculePhoto = null;
+  const connu = !!v && MODELES_VEHICULES_PN.includes(v.modele);
+  $('#vehicule-form-titre').textContent = v ? 'Modifier le véhicule' : 'Nouveau véhicule';
+  $('#vehicule-form-valider').textContent = v ? 'Enregistrer' : 'Ajouter le véhicule';
+  $('#veh-plaque').value = v ? v.plaque : '';
+  $('#veh-modele').value = v ? (connu ? v.modele : '__autre') : MODELES_VEHICULES_PN[0];
+  $('#veh-modele-autre').value = v && !connu ? v.modele : '';
+  $('#veh-modele-autre-wrap').style.display = $('#veh-modele').value === '__autre' ? 'block' : 'none';
+  majApercuVehicule(v && imageSure(v.image_url) ? v.image_url : null);
+  $('#vehicule-form').style.display = 'block';
+  $('#vehicule-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function fermerFormVehicule() {
+  $('#vehicule-form').style.display = 'none';
+  vehiculeEnEdition = null;
+  vehiculePhoto = null;
+}
+
+$('#btn-nouveau-vehicule').addEventListener('click', () => ouvrirFormVehicule(null));
+$('#vehicule-form-annuler').addEventListener('click', fermerFormVehicule);
+
+$('#vehicule-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('#vehicule-form-valider');
+  const plaque = $('#veh-plaque').value.trim().toUpperCase().replace(/\s+/g, '-');
+  let modele = $('#veh-modele').value;
+  if (modele === '__autre') modele = $('#veh-modele-autre').value.trim();
+  if (!plaque || !modele) return toast("La plaque et le modèle sont requis.");
+
+  btn.disabled = true;
+  try {
+    const ancien = vehiculeEnEdition ? vehiculesCache.find(v => v.id === vehiculeEnEdition) : null;
+    let image = {};
+    if (vehiculePhoto) {
+      const nomFichier = (crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2)) + '.jpg';
+      const { error: errEnvoi } = await sb.storage.from('vehicules').upload(nomFichier, vehiculePhoto, { contentType: 'image/jpeg', upsert: false });
+      if (errEnvoi) throw errEnvoi;
+      image = { image_path: nomFichier, image_url: sb.storage.from('vehicules').getPublicUrl(nomFichier).data.publicUrl };
+    }
+    const base = { plaque, modele, updated_by: moi.id, updated_at: new Date().toISOString(), ...image };
+    const requete = vehiculeEnEdition
+      ? sb.from('vehicules_pn').update(base).eq('id', vehiculeEnEdition)
+      : sb.from('vehicules_pn').insert({ ...base, created_by: moi.id });
+    const { error } = await requete;
+    if (error) {
+      if (image.image_path) await sb.storage.from('vehicules').remove([image.image_path]); // pas d'image orpheline
+      throw error;
+    }
+    if (ancien && ancien.image_path && image.image_path) sb.storage.from('vehicules').remove([ancien.image_path]);
+    toast(vehiculeEnEdition ? "Véhicule modifié." : "Véhicule ajouté.");
+    fermerFormVehicule();
+    loadVehicules();
+  } catch (err) {
+    console.error(err);
+    toast(err && err.code === '23505' ? "Cette plaque est déjà enregistrée." : "Erreur lors de l'enregistrement du véhicule.");
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+function carteVehicule(v) {
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
+  const carb = Math.max(0, Math.min(100, Number(v.carburant) || 0));
+  const voyants = [['aucun', 'Aucun'], ['fixe', 'Fixe'], ['clignotant', 'Clignotant']];
+  const image = imageSure(v.image_url)
+    ? `<img src="${escAttr(v.image_url)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;${v.hors_service ? 'filter:grayscale(1);opacity:.6;' : ''}">`
+    : `<div class="veh-placeholder"><svg class="icon" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></div>`;
+  return `
+    <div class="card veh-card${v.hors_service ? ' veh-hs' : ''}" data-id="${escAttr(v.id)}" style="padding:0;overflow:hidden;">
+      <div class="veh-img">${image}${v.hors_service ? '<div class="veh-hs-banner">HORS SERVICE</div>' : ''}</div>
+      <div style="padding:14px 16px 16px;">
+        <span class="veh-plaque mono">${escapeHtml(v.plaque)}</span>
+        <div style="font-size:.86rem;color:var(--ink-soft);margin:6px 0 12px;">${escapeHtml(v.modele)}</div>
+
+        <div class="veh-label"><span>Carburant</span><span class="veh-carb-val">${carb} %</span></div>
+        <div class="veh-bar"><div class="veh-bar-fill" style="width:${carb}%;background:${couleurCarburant(carb)};"></div></div>
+        <input type="range" class="veh-fuel" min="0" max="100" step="5" value="${carb}" aria-label="Carburant">
+
+        <div class="veh-label" style="margin-top:12px;"><span>Voyant moteur</span></div>
+        <div class="veh-seg">
+          ${voyants.map(([val, lab]) => `<button type="button" class="veh-seg-btn veh-v-${val}${v.voyant_moteur === val ? ' actif' : ''}" data-voyant="${val}">${lab}</button>`).join('')}
+        </div>
+
+        <button type="button" class="btn ${v.hors_service ? 'btn-brass' : 'btn-outline'} btn-full veh-hs-btn" style="margin-top:12px;">
+          ${v.hors_service ? 'Remettre en service' : 'Déclarer hors service'}
+        </button>
+        <div class="veh-meta">Mis à jour ${ilYa(v.updated_at)}${v.maj ? ' par ' + escapeHtml(`${v.maj.prenom} ${v.maj.nom}`) : ''}</div>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button type="button" class="btn btn-outline veh-edit-btn" style="flex:1;">Modifier</button>
+          <button type="button" class="btn btn-danger veh-del-btn${estDirection ? '' : ' locked'}" style="flex:1;">Supprimer</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function majVehicule(id, champs) {
+  const { error } = await sb.from('vehicules_pn')
+    .update({ ...champs, updated_by: moi.id, updated_at: new Date().toISOString() })
+    .eq('id', id);
+  if (error) toast("Erreur lors de la mise à jour du véhicule.");
+  await loadVehicules();
+}
+
+async function supprimerVehicule(v) {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return toast("Réservé à la Direction (Commissaire et +).");
+  if (!confirm(`Supprimer définitivement le véhicule ${v.plaque} (${v.modele}) ? Irréversible.`)) return;
+  const { error } = await sb.from('vehicules_pn').delete().eq('id', v.id);
+  if (error) return toast("Erreur lors de la suppression.");
+  if (v.image_path) sb.storage.from('vehicules').remove([v.image_path]);
+  toast("Véhicule supprimé.");
+  loadVehicules();
+}
+
+function brancherCartesVehicules(grid) {
+  $$('.veh-card', grid).forEach(carte => {
+    const id = carte.dataset.id;
+    const courant = () => vehiculesCache.find(x => x.id === id);
+    const fuel = carte.querySelector('.veh-fuel');
+
+    fuel.addEventListener('input', () => {
+      vehiculeSlider = true;
+      clearTimeout(vehiculeSliderTimer);
+      vehiculeSliderTimer = setTimeout(() => { vehiculeSlider = false; }, 3000);
+      const p = Number(fuel.value);
+      carte.querySelector('.veh-carb-val').textContent = `${p} %`;
+      const fill = carte.querySelector('.veh-bar-fill');
+      fill.style.width = p + '%';
+      fill.style.background = couleurCarburant(p);
+    });
+    fuel.addEventListener('change', async () => {
+      clearTimeout(vehiculeSliderTimer);
+      await majVehicule(id, { carburant: Number(fuel.value) });
+      vehiculeSlider = false;
+    });
+
+    $$('.veh-seg-btn', carte).forEach(b => b.addEventListener('click', () => majVehicule(id, { voyant_moteur: b.dataset.voyant })));
+    carte.querySelector('.veh-hs-btn').addEventListener('click', () => majVehicule(id, { hors_service: !courant().hors_service }));
+    carte.querySelector('.veh-edit-btn').addEventListener('click', () => ouvrirFormVehicule(courant()));
+    carte.querySelector('.veh-del-btn').addEventListener('click', () => supprimerVehicule(courant()));
+  });
+}
+
+async function loadVehicules() {
+  const grid = $('#vehicules-grid');
+  const { data, error } = await sb.from('vehicules_pn')
+    .select('*, maj:updated_by (nom, prenom)')
+    .order('hors_service')
+    .order('plaque');
+  if (error) { grid.innerHTML = `<div style="grid-column:1/-1;">${emptyState('Erreur de chargement (la migration v14 est-elle exécutée ?).')}</div>`; return; }
+  vehiculesCache = data || [];
+  if (!vehiculesCache.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;">${emptyState("Aucun véhicule enregistré. Ajoute le premier avec le bouton ci-dessus.")}</div>`;
+    return;
+  }
+  grid.innerHTML = vehiculesCache.map(carteVehicule).join('');
+  brancherCartesVehicules(grid);
+}
+
+function demarrerCanalVehicules() {
+  if (canalVehicules) return;
+  let minuterie = null;
+  canalVehicules = sb.channel('vehicules-pn')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'vehicules_pn' }, () => {
+      if (!vehiculesOuvert) return;
+      clearTimeout(minuterie);
+      minuterie = setTimeout(() => { if (!vehiculeSlider) loadVehicules(); }, 300);
+    })
+    .subscribe();
+}
+
+// ---------------- WEBHOOK DISCORD ----------------
+
+async function envoyerWebhookDiscord(embed) {
+  if (!DISCORD_WEBHOOK_URL) return; // non configuré, on ne fait rien
+  try {
+    await fetch(DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: 'Police Nationale — Nova Life',
+        embeds: [{ color: 0xb68a3d, timestamp: new Date().toISOString(), ...embed }],
+      }),
+    });
+  } catch (e) {
+    // Jamais bloquant : si Discord est injoignable, le site continue de fonctionner normalement.
+  }
+}
+
+// ---------------- CHAT INTERNE ----------------
+
+let chatAgentsCache = null;
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+async function loadChat() {
+  if (!chatAgentsCache) {
+    const { data } = await sb.from('agents').select('id, nom, prenom');
+    chatAgentsCache = {};
+    (data || []).forEach(a => { chatAgentsCache[a.id] = `${a.prenom} ${a.nom}`; });
+  }
+  const { data, error } = await sb.from('messages_chat').select('*').order('created_at', { ascending: true }).limit(100);
+  const box = $('#chat-messages');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  box.innerHTML = '';
+  (data || []).forEach(m => ajouterMessageChat(m, m.agent_id === moi.id, false));
+  box.scrollTop = box.scrollHeight;
+}
+
+function ajouterMessageChat(m, estMoi, scroll = true) {
+  const box = $('#chat-messages');
+  if (!box) return;
+  const nom = estMoi ? 'Toi' : (chatAgentsCache?.[m.agent_id] ?? 'Agent');
+  const div = document.createElement('div');
+  div.className = 'chat-bubble' + (estMoi ? ' mine' : '');
+  div.innerHTML = `
+    <div class="who">${escapeHtml(nom)} · ${new Date(m.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</div>
+    <div class="bulle">${escapeHtml(m.contenu)}</div>
+  `;
+  box.appendChild(div);
+  if (scroll) box.scrollTop = box.scrollHeight;
+}
+
+$('#chat-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = $('#chat-input');
+  const contenu = input.value.trim();
+  if (!contenu) return;
+  input.value = '';
+  const { error } = await sb.from('messages_chat').insert({ agent_id: moi.id, contenu });
+  if (error) toast("Erreur lors de l'envoi du message.");
+  // Pas besoin de recharger : le canal temps réel affiche le message automatiquement.
+});
+
+// ---------------- INDICATIFS RADIO ----------------
+
+const statutLabel = { disponible: 'Disponible', intervention: 'En intervention', pause: 'En pause', 'hors-service': 'Hors service' };
+const statutOrdre = { disponible: 0, intervention: 1, pause: 2, 'hors-service': 3 };
+
+async function chargerAgentsInfo() {
+  if (agentsInfoCache) return;
+  const { data } = await sb.from('agents').select('id, nom, prenom, grade:grade_id (nom)');
+  agentsInfoCache = {};
+  (data || []).forEach(a => { agentsInfoCache[a.id] = { nom: a.nom, prenom: a.prenom, grade: a.grade?.nom ?? '' }; });
+}
+
+function demarrerCanalStatuts() {
+  if (canalStatuts) return;
+  canalStatuts = sb.channel('statuts-radio')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'statuts_radio' }, (payload) => {
+      const row = (payload.new && Object.keys(payload.new).length) ? payload.new : payload.old;
+      if (!row) return;
+      if (payload.eventType === 'DELETE') delete statutsCache[row.agent_id];
+      else statutsCache[row.agent_id] = row;
+      if (row.agent_id === moi.id) majBoutonsStatutActif(statutsCache[moi.id]?.statut);
+      if (indicatifsOuvert) renderIndicatifs();
+    })
+    .subscribe();
+}
+
+async function loadIndicatifs() {
+  await chargerAgentsInfo();
+  const { data, error } = await sb.from('statuts_radio').select('*');
+  if (!error) {
+    statutsCache = {};
+    (data || []).forEach(r => { statutsCache[r.agent_id] = r; });
+  }
+  renderIndicatifs();
+}
+
+function renderIndicatifs() {
+  const tbody = $('#indicatifs-tbody');
+  if (!tbody) return;
+  const lignes = Object.entries(statutsCache)
+    .map(([agentId, s]) => ({ agentId, ...s, info: agentsInfoCache?.[agentId] }))
+    .filter(l => l.info)
+    .sort((a, b) => (statutOrdre[a.statut] ?? 9) - (statutOrdre[b.statut] ?? 9));
+  if (!lignes.length) { tbody.innerHTML = emptyState("Personne n'a encore défini de statut.", 4); return; }
+  tbody.innerHTML = lignes.map(l => `
+    <tr>
+      <td>${l.info.prenom} ${l.info.nom}</td>
+      <td>${l.info.grade}</td>
+      <td><span class="statut-btn active" style="pointer-events:none;"><span class="dot dot-${l.statut === 'hors-service' ? 'hs' : l.statut === 'intervention' ? 'interv' : l.statut}"></span>${statutLabel[l.statut] ?? l.statut}</span></td>
+      <td style="font-size:.8rem;color:var(--ink-soft);">${new Date(l.updated_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</td>
+    </tr>
+  `).join('');
+}
+
+function majBoutonsStatutActif(statut) {
+  $$('.statut-btn').forEach(b => b.classList.toggle('active', b.dataset.statut === statut));
+}
+
+$$('.statut-btn').forEach(btn => btn.addEventListener('click', async () => {
+  const statut = btn.dataset.statut;
+  majBoutonsStatutActif(statut);
+  const { error } = await sb.from('statuts_radio').upsert({ agent_id: moi.id, statut, updated_at: new Date().toISOString() });
+  if (error) toast("Erreur lors de la mise à jour du statut.");
+}));
+
+// ---------------- RAPPORTS DE SERVICE ----------------
+
+$('#new-rapport-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    agent_id: moi.id,
+    titre: $('#rap-titre').value.trim(),
+    categorie: $('#rap-categorie').value,
+    contenu: $('#rap-contenu').value.trim(),
+  };
+  if (!payload.titre || !payload.contenu) return;
+  const { error } = await sb.from('rapports').insert(payload);
+  if (error) return toast("Erreur lors de la publication.");
+  toast("Rapport publié.");
+  $('#new-rapport-form').reset();
+  loadRapports();
+});
+
+async function loadRapports() {
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
+  const { data, error } = await sb
+    .from('rapports')
+    .select('*, agent:agent_id (nom, prenom, matricule)')
+    .order('created_at', { ascending: false })
+    .limit(50);
+  const box = $('#rapports-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Aucun rapport pour le moment.'); return; }
+  const catLabel = { patrouille: 'Patrouille', incident: 'Incident', autre: 'Autre' };
+  box.innerHTML = data.map(r => `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:.98rem;">${r.titre}</h3>
+          <div style="font-size:.78rem;color:var(--ink-soft);">
+            ${catLabel[r.categorie] ?? r.categorie} · ${r.agent.prenom} ${r.agent.nom} (${r.agent.matricule}) · ${new Date(r.created_at).toLocaleString('fr-FR')}
+          </div>
+        </div>
+        <button class="btn btn-danger supprimer-rapport-inline-btn ${estDirection ? '' : 'locked'}" data-id="${r.id}" style="flex-shrink:0;">Supprimer</button>
+      </div>
+      <p style="font-size:.88rem;margin:12px 0 0;white-space:pre-wrap;">${r.contenu}</p>
+    </div>
+  `).join('');
+  $$('.supprimer-rapport-inline-btn', box).forEach(btn => btn.addEventListener('click', async () => {
+    if (!estDirection) return toast("Réservé à la Direction (Commissaire et +).");
+    const confirme = confirm("Supprimer définitivement ce rapport ? Irréversible.");
+    if (!confirme) return;
+    const { error } = await sb.from('rapports').delete().eq('id', btn.dataset.id);
+    if (error) return toast("Erreur lors de la suppression.");
+    toast("Rapport supprimé.");
+    loadRapports();
+  }));
+}
+
+// ---------------- MANDATS DE RECHERCHE ----------------
+
+let mandatCitoyen = null;
+
+function resetMandatForm() {
+  mandatCitoyen = null;
+  $('#mandat-citoyen-search').value = '';
+  $('#mandat-citoyen-results').innerHTML = '';
+  $('#mandat-citoyen-choisi').innerHTML = '';
+  $('#mandat-motif').value = '';
+  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) $('#new-mandat-card').classList.add('locked');
+}
+
+$('#mandat-citoyen-search').addEventListener('input', debounce(async () => {
+  const q = $('#mandat-citoyen-search').value.trim();
+  const box = $('#mandat-citoyen-results');
+  if (!q) { box.innerHTML = ''; return; }
+  const { data } = await sb.from('citoyens').select('*').or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`).limit(8);
+  box.innerHTML = (data || []).map(c =>
+    `<div class="nav-item" data-id="${c.id}" style="color:var(--ink);">${c.prenom} ${c.nom}</div>`
+  ).join('') || emptyState('Aucun résultat.');
+  $$('.nav-item', box).forEach(el => el.addEventListener('click', () => {
+    mandatCitoyen = data.find(c => c.id === el.dataset.id);
+    box.innerHTML = '';
+    $('#mandat-citoyen-search').value = '';
+    $('#mandat-citoyen-choisi').innerHTML = `<div class="badge badge-ok">${mandatCitoyen.prenom} ${mandatCitoyen.nom}</div>`;
+  }));
+}, 250));
+
+$('#new-mandat-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) return toast("Réservé au Commandement et +.");
+  if (!mandatCitoyen) return toast("Sélectionne d'abord un citoyen.");
+  const motif = $('#mandat-motif').value.trim();
+  if (!motif) return;
+  const { error } = await sb.from('mandats').insert({
+    citoyen_id: mandatCitoyen.id,
+    motif,
+    created_by: moi.id,
+  });
+  if (error) return toast("Erreur lors de l'émission du mandat.");
+  toast("Mandat émis.");
+  envoyerWebhookDiscord({
+    title: '🚨 Mandat de recherche émis',
+    color: 0xa5342f,
+    fields: [
+      { name: 'Citoyen', value: `${mandatCitoyen.prenom} ${mandatCitoyen.nom}`, inline: true },
+      { name: 'Émis par', value: `${moi.prenom} ${moi.nom} (${moi.matricule})`, inline: true },
+      { name: 'Motif', value: motif },
+    ],
+  });
+  resetMandatForm();
+  loadMandats();
+});
+
+async function loadMandats() {
+  const { data, error } = await sb
+    .from('mandats')
+    .select('*, citoyen:citoyen_id (nom, prenom)')
+    .eq('actif', true)
+    .order('created_at', { ascending: false });
+  const box = $('#mandats-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Aucun mandat actif.'); return; }
+  const estCommandement = moi.grade.niveau >= NIVEAU_COMMANDEMENT;
+  box.innerHTML = data.map(m => `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+        <div>
+          <strong>${m.citoyen ? `${m.citoyen.prenom} ${m.citoyen.nom}` : 'Citoyen supprimé'}</strong>
+          <div style="font-size:.85rem;color:var(--ink-soft);margin-top:2px;">${m.motif}</div>
+          <div style="font-size:.76rem;color:var(--ink-faint);margin-top:2px;">Émis le ${new Date(m.created_at).toLocaleDateString('fr-FR')}</div>
+        </div>
+        <button class="btn btn-outline lever-mandat-btn ${estCommandement ? '' : 'locked'}" data-id="${m.id}">Lever le mandat</button>
+      </div>
+    </div>
+  `).join('');
+  $$('.lever-mandat-btn', box).forEach(btn => btn.addEventListener('click', async () => {
+    if (!estCommandement) return toast("Réservé au Commandement et +.");
+    const { error } = await sb.from('mandats').update({ actif: false, leve_le: new Date().toISOString() }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur.");
+    toast("Mandat levé.");
+    loadMandats();
+  }));
+}
+
+// ---------------- PERQUISITIONS ----------------
+
+let perquisitionCitoyen = null;
+
+function resetPerquisitionForm() {
+  perquisitionCitoyen = null;
+  $('#perq-citoyen-search').value = '';
+  $('#perq-citoyen-results').innerHTML = '';
+  $('#perq-citoyen-choisi').innerHTML = '';
+  $('#new-perquisition-form').reset();
+}
+
+$('#perq-citoyen-search').addEventListener('input', debounce(async () => {
+  const q = $('#perq-citoyen-search').value.trim();
+  const box = $('#perq-citoyen-results');
+  if (!q) { box.innerHTML = ''; return; }
+  const { data } = await sb.from('citoyens').select('*').or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`).limit(8);
+  box.innerHTML = (data || []).map(c =>
+    `<div class="nav-item" data-id="${c.id}" style="color:var(--ink);">${c.prenom} ${c.nom}</div>`
+  ).join('') || emptyState('Aucun résultat.');
+  $$('.nav-item', box).forEach(el => el.addEventListener('click', () => {
+    perquisitionCitoyen = data.find(c => c.id === el.dataset.id);
+    box.innerHTML = '';
+    $('#perq-citoyen-search').value = '';
+    $('#perq-citoyen-choisi').innerHTML = `<div class="badge badge-ok">${perquisitionCitoyen.prenom} ${perquisitionCitoyen.nom}</div>`;
+    if (perquisitionCitoyen.adresse && !$('#perq-lieu').value) $('#perq-lieu').value = perquisitionCitoyen.adresse;
+  }));
+}, 250));
+
+$('#new-perquisition-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (moi.grade.niveau < NIVEAU_COMMANDEMENT) return toast("Réservé au Commandement et +.");
+  const { error } = await sb.from('perquisitions').insert({
+    citoyen_id: perquisitionCitoyen ? perquisitionCitoyen.id : null,
+    agent_id: moi.id,
+    lieu: $('#perq-lieu').value.trim(),
+    motif: $('#perq-motif').value.trim(),
+    resultat: $('#perq-resultat').value.trim() || null,
+  });
+  if (error) return toast("Erreur lors de l'enregistrement.");
+  toast("Perquisition enregistrée.");
+  envoyerWebhookDiscord({
+    title: '🔍 Nouvelle perquisition',
+    fields: [
+      { name: 'Lieu', value: $('#perq-lieu').value.trim(), inline: true },
+      { name: 'Citoyen', value: perquisitionCitoyen ? `${perquisitionCitoyen.prenom} ${perquisitionCitoyen.nom}` : 'Non précisé', inline: true },
+      { name: 'Agent', value: `${moi.prenom} ${moi.nom} (${moi.matricule})`, inline: true },
+      { name: 'Motif', value: $('#perq-motif').value.trim() },
+      { name: 'Résultat', value: $('#perq-resultat').value.trim() || 'Non renseigné' },
+    ],
+  });
+  resetPerquisitionForm();
+  loadPerquisitions();
+});
+
+async function loadPerquisitions() {
+  const { data, error } = await sb
+    .from('perquisitions')
+    .select('*, citoyen:citoyen_id (nom, prenom), agent:agent_id (nom, prenom)')
+    .order('created_at', { ascending: false })
+    .limit(50);
+  const box = $('#perquisitions-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  if (!data.length) { box.innerHTML = emptyState('Aucune perquisition enregistrée.'); return; }
+  box.innerHTML = data.map(p => `
+    <div class="card">
+      <div style="font-weight:600;">${p.lieu} ${p.citoyen ? `— ${p.citoyen.prenom} ${p.citoyen.nom}` : ''}</div>
+      <div style="font-size:.85rem;color:var(--ink-soft);margin-top:2px;">${p.motif}</div>
+      ${p.resultat ? `<div style="font-size:.85rem;margin-top:6px;">${p.resultat}</div>` : ''}
+      <div style="font-size:.76rem;color:var(--ink-faint);margin-top:6px;">
+        ${p.agent.prenom} ${p.agent.nom} · ${new Date(p.created_at).toLocaleString('fr-FR')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ---------------- STATISTIQUES (admin) ----------------
+
+async function loadStatistiques() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, agent:agent_id (nom, prenom, matricule)');
+  if (error) return;
+
+  const totalInterpellations = data.length;
+  const totalGenere = data.reduce((s, i) => s + i.montant_total, 0);
+  const totalEncaisse = data.filter(i => i.paye).reduce((s, i) => s + i.montant_total, 0);
+  const totalAttente = totalGenere - totalEncaisse;
+
+  $('#stats-resume').innerHTML = `
+    <div><div style="font-size:.78rem;color:var(--ink-soft);">Interpellations</div><div style="font-size:1.3rem;font-weight:700;">${totalInterpellations}</div></div>
+    <div><div style="font-size:.78rem;color:var(--ink-soft);">Total généré</div><div style="font-size:1.3rem;font-weight:700;">${euros(totalGenere)}</div></div>
+    <div><div style="font-size:.78rem;color:var(--ink-soft);">Encaissé</div><div style="font-size:1.3rem;font-weight:700;color:var(--green);">${euros(totalEncaisse)}</div></div>
+    <div><div style="font-size:.78rem;color:var(--ink-soft);">En attente</div><div style="font-size:1.3rem;font-weight:700;color:var(--red);">${euros(totalAttente)}</div></div>
+  `;
+
+  const parAgent = {};
+  data.forEach(i => {
+    const key = i.agent_id;
+    if (!parAgent[key]) parAgent[key] = { nom: `${i.agent.prenom} ${i.agent.nom}`, count: 0, total: 0 };
+    parAgent[key].count++;
+    parAgent[key].total += i.montant_total;
+  });
+  const agentsTries = Object.values(parAgent).sort((a, b) => b.count - a.count).slice(0, 15);
+  $('#stats-agents-tbody').innerHTML = agentsTries.length
+    ? agentsTries.map(a => `<tr><td>${a.nom}</td><td>${a.count}</td><td>${euros(a.total)}</td></tr>`).join('')
+    : emptyState('Aucune donnée.', 3);
+
+  const parInfraction = {};
+  data.forEach(i => {
+    (i.infraction_ids || []).forEach(id => { parInfraction[id] = (parInfraction[id] || 0) + 1; });
+  });
+  const infractionsTriees = Object.entries(parInfraction)
+    .map(([id, count]) => ({ titre: infractionsCache.find(f => f.id == id)?.titre ?? 'Inconnue', count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 15);
+  $('#stats-infractions-tbody').innerHTML = infractionsTriees.length
+    ? infractionsTriees.map(i => `<tr><td>${i.titre}</td><td>${i.count}</td></tr>`).join('')
+    : emptyState('Aucune donnée.', 2);
+}
+
+// ---------------- ESPACE CITOYEN ----------------
+
+async function loadMonIdentite() {
+  const c = monCitoyen;
+  const box = $('#mon-identite-card');
+  box.innerHTML = `
+    <h3 style="margin-top:0;">${c.prenom} ${c.nom} ${c.fiche_s ? '<span class="badge badge-s">FICHÉ S</span>' : ''}</h3>
+    <div class="grid-2" style="margin-top:16px;">
+      <div><div style="font-size:.78rem;color:var(--ink-soft);">Date de naissance</div><div style="font-weight:600;">${c.date_naissance ?? 'Non renseignée'}</div></div>
+      <div><div style="font-size:.78rem;color:var(--ink-soft);">Téléphone</div><div style="font-weight:600;">${c.telephone ?? 'Non renseigné'}</div></div>
+      <div style="grid-column:1/-1;"><div style="font-size:.78rem;color:var(--ink-soft);">Adresse</div><div style="font-weight:600;">${c.adresse ?? 'Non renseignée'}</div></div>
+    </div>
+    <p style="font-size:.8rem;color:var(--ink-soft);margin-top:18px;">Ces informations sont gérées par la Police Nationale. Pour une correction, contacte un policier.</p>
+  `;
+}
+
+async function loadMonCasier() {
+  const { data, error } = await sb
+    .from('interpellations')
+    .select('*, agent:agent_id (nom, prenom, matricule)')
+    .eq('citoyen_id', monCitoyen.id)
+    .order('created_at', { ascending: false });
+
+  const totalBox = $('#mon-casier-total');
+  const listBox = $('#mon-casier-list');
+
+  if (error) { listBox.innerHTML = emptyState('Erreur de chargement.'); totalBox.innerHTML = ''; return; }
+
+  const impayees = data.filter(i => !i.paye && i.statut !== 'annulee');
+  const totalDu = impayees.reduce((s, i) => s + i.montant_total, 0);
+
+  totalBox.innerHTML = totalDu > 0
+    ? `<div class="total-box" style="margin-top:0;"><div>
+         <div style="font-size:.85rem;color:var(--brass-light);">Amendes impayées : ${impayees.length}</div>
+       </div><div class="amount">${euros(totalDu)}</div></div>`
+    : `<div style="display:flex;align-items:center;gap:10px;color:var(--green);font-weight:600;">
+         <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+         Aucune amende en attente de paiement.
+       </div>`;
+
+  if (!data.length) { listBox.innerHTML = emptyState('Casier vierge.'); return; }
+
+  listBox.innerHTML = data.map(i => {
+    const titres = i.infraction_ids
+      .map(id => infractionsCache.find(f => f.id === id)?.titre)
+      .filter(Boolean)
+      .join(', ');
+    const date = new Date(i.created_at).toLocaleDateString('fr-FR');
+    const statutBadge = i.statut === 'annulee'
+      ? '<span class="badge badge-s">ANNULÉE</span>'
+      : i.paye
+        ? '<span class="badge badge-ok">PAYÉE</span>'
+        : '<span class="badge badge-s">IMPAYÉE</span>';
+    return `
+      <div style="border-bottom:1px solid var(--paper-dim);padding:12px 0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <strong style="font-size:.9rem;">${date} — ${euros(i.montant_total)}</strong>
+          ${statutBadge}
+        </div>
+        <div style="font-size:.85rem;margin-top:4px;">${titres}</div>
+        <div style="font-size:.78rem;color:var(--ink-soft);margin-top:2px;">
+          ${i.lieu ? i.lieu + ' · ' : ''}Agent ${i.agent.prenom} ${i.agent.nom}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ---------------- BOOT ----------------
+
+(async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) await bootAfterLogin();
+  else showLogin();
+})();
+
 </script>
 </body>
 </html>
