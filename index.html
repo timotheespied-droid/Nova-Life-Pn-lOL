@@ -582,6 +582,10 @@ tbody tr:hover td:first-child{color:var(--brass);}
       <span>Chat interne</span>
       <span class="nav-count" id="count-chat" style="display:none;"></span>
     </div>
+    <div class="nav-item role-police" data-view="plaintes">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 12v3"/><path d="M12 18h.01"/></svg>
+      <span>Plaintes</span>
+    </div>
     <div class="nav-item role-police" data-view="rapports">
       <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
       <span>Rapports</span>
@@ -801,6 +805,21 @@ tbody tr:hover td:first-child{color:var(--brass);}
       </div>
 
       <div class="card">
+        <div class="card-head"><h3>Grades & hiérarchie</h3></div>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;line-height:1.5;">
+          Crée tes propres grades et place-les dans l'ordre voulu avec les flèches (le plus haut en premier).
+          Le <strong>niveau de droits</strong> est indépendant de la position : <em>Agent</em> (accès de base), <em>Commandement</em> (fichés S, mandats, perquisitions, modification des fiches) ou <em>Direction</em> (administration complète).
+        </p>
+        <form id="new-grade-form" class="grid-2" style="margin:14px 0;">
+          <div class="field-inline"><label>Nom du grade</label><input id="new-grade-nom" required maxlength="50" autocomplete="off"></div>
+          <div class="field-inline"><label>Niveau de droits</label><select id="new-grade-perm"></select></div>
+          <div class="field-inline"><label>Position</label><select id="new-grade-pos"></select></div>
+          <div style="align-self:end;"><button type="submit" class="btn btn-brass btn-full">Créer le grade</button></div>
+        </form>
+        <div id="grades-list"></div>
+      </div>
+
+      <div class="card">
         <div class="card-head"><h3>Agents</h3></div>
         <p style="font-size:.85rem;color:var(--ink-soft);margin-top:-8px;">Les nouveaux policiers s'inscrivent eux-mêmes via "Créer un compte" avec un code d'accès. Tu peux ici ajuster leur grade ou les désactiver.</p>
         <table>
@@ -847,8 +866,29 @@ tbody tr:hover td:first-child{color:var(--brass);}
 
       <div class="card">
         <div class="card-head"><h3>Référentiel des infractions</h3></div>
+        <form id="new-infraction-form" class="grid-2" style="margin:14px 0 20px;padding-bottom:18px;border-bottom:1px solid var(--paper-dim);">
+          <div class="field-inline"><label>Intitulé de l'infraction</label><input id="ni-titre" required maxlength="90" autocomplete="off"></div>
+          <div class="field-inline"><label>Catégorie</label>
+            <select id="ni-cat">
+              <option value="comportement">Titre I — Attitudes envers les forces de l'ordre</option>
+              <option value="route">Titre II — Code de la route</option>
+              <option value="delit" selected>Titre III — Délits</option>
+            </select></div>
+          <div class="field-inline"><label>Amende minimum (€)</label><input type="number" id="ni-min" min="0" value="0" required></div>
+          <div class="field-inline"><label>Amende maximum (€)</label><input type="number" id="ni-max" min="0" value="0" required></div>
+          <div class="field-inline"><label>Points de permis retirés</label><input type="number" id="ni-points" min="0" max="12" value="0"></div>
+          <div class="field-inline"><label>Sanction complémentaire (facultatif)</label><input id="ni-peine" maxlength="160" autocomplete="off"></div>
+          <div style="grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.84rem;">
+            <label style="display:flex;gap:6px;align-items:center;cursor:pointer;"><input type="checkbox" id="ni-gav" style="accent-color:var(--brass);"> Garde à vue possible</label>
+            <label style="display:flex;gap:6px;align-items:center;cursor:pointer;"><input type="checkbox" id="ni-susp" style="accent-color:var(--brass);"> Suspension du permis</label>
+            <label style="display:flex;gap:6px;align-items:center;cursor:pointer;"><input type="checkbox" id="ni-conf" style="accent-color:var(--brass);"> Confiscation</label>
+            <label style="display:flex;gap:6px;align-items:center;cursor:pointer;"><input type="checkbox" id="ni-prison" style="accent-color:var(--brass);"> Prison RP possible</label>
+          </div>
+          <div style="grid-column:1/-1;"><button type="submit" class="btn btn-brass">Ajouter l'infraction</button></div>
+        </form>
+
         <table>
-          <thead><tr><th>Infraction</th><th>Amende min</th><th>Amende max</th><th>Points</th></tr></thead>
+          <thead><tr><th>Infraction</th><th>Amende min</th><th>Amende max</th><th>Points</th><th></th></tr></thead>
           <tbody id="infractions-tbody"></tbody>
         </table>
       </div>
@@ -968,6 +1008,137 @@ tbody tr:hover td:first-child{color:var(--brass);}
           <input type="text" id="chat-input" placeholder="Écrire un message…" class="field-inline" style="flex:1;padding:9px 12px;border:1px solid var(--paper-line);border-radius:4px;" autocomplete="off">
           <button type="submit" class="btn btn-brass">Envoyer</button>
         </form>
+      </div>
+    </section>
+
+    <!-- ---------- VUE PLAINTES ---------- -->
+    <section class="view" id="view-plaintes">
+      <div class="page-head">
+        <div>
+          <h2>Plaintes</h2>
+          <p>Fiche de dépôt de plainte, ouverte à tous les policiers. Chaque plainte s'enregistre et se télécharge en PDF.</p>
+        </div>
+        <div class="page-head-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 12v3"/><path d="M12 18h.01"/></svg></div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <button type="button" class="btn btn-brass" id="btn-nouvelle-plainte">+ Nouvelle plainte</button>
+      </div>
+
+      <form id="plainte-form" style="display:none;margin-bottom:18px;">
+        <div class="card">
+          <div class="card-head"><h3 id="plainte-form-titre">Nouvelle plainte</h3><span class="mono" id="plainte-form-numero" style="font-size:.8rem;color:var(--ink-soft);"></span></div>
+          <div class="field-inline">
+            <label>Pré-remplir depuis une fiche citoyen (facultatif)</label>
+            <div class="search-input-wrap">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="pl-citoyen-search" placeholder="Rechercher un citoyen…" autocomplete="off">
+            </div>
+            <div id="pl-citoyen-results" style="margin-top:6px;"></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><h3>Identité du plaignant</h3></div>
+            <div class="field-inline"><label>Nom</label><input data-k="plaignant.nom" maxlength="60" autocomplete="off"></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Prénom</label><input data-k="plaignant.prenom" maxlength="60" autocomplete="off"></div>
+            <div class="grid-2" style="margin-top:10px;">
+              <div class="field-inline"><label>Âge</label><input data-k="plaignant.age" maxlength="10" autocomplete="off"></div>
+              <div class="field-inline"><label>Nationalité</label><input data-k="plaignant.nationalite" maxlength="40" autocomplete="off"></div>
+            </div>
+            <div class="field-inline" style="margin-top:10px;"><label>Profession</label><input data-k="plaignant.profession" maxlength="60" autocomplete="off"></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Domicile</label><input data-k="plaignant.domicile" maxlength="120" autocomplete="off"></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Téléphone</label><input data-k="plaignant.telephone" maxlength="30" autocomplete="off"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Informations importantes</h3></div>
+            <div class="field-inline"><label>Nature</label>
+              <select data-k="infos.nature"><option>Vol</option><option>Agression</option><option>Cambriolage</option><option>Dégradation</option><option>Menaces</option><option>Escroquerie</option><option>Autre</option></select></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Plainte contre</label>
+              <select data-k="infos.contre"><option>X (auteur inconnu)</option><option>Personne identifiée</option></select></div>
+            <div class="grid-2" style="margin-top:10px;">
+              <div class="field-inline"><label>Gravité</label>
+                <select data-k="infos.gravite"><option>Faible</option><option>Modérée</option><option>Élevée</option></select></div>
+              <div class="field-inline"><label>Blessures</label>
+                <select data-k="infos.blessures"><option>Aucune</option><option>Légères</option><option>Graves</option></select></div>
+            </div>
+            <div class="grid-2" style="margin-top:10px;">
+              <div class="field-inline"><label>Arme utilisée</label>
+                <select data-k="infos.arme"><option>Non</option><option>Oui</option><option>Inconnu</option></select></div>
+              <div class="field-inline"><label>Suite donnée</label>
+                <select data-k="infos.suite"><option>Enquête ouverte</option><option>Main courante</option><option>Transmise au parquet</option></select></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-head"><h3>Circonstances des faits</h3></div>
+            <div class="grid-2">
+              <div class="field-inline"><label>Date</label><input type="date" data-k="faits.date"></div>
+              <div class="field-inline"><label>Heure</label><input type="time" data-k="faits.heure"></div>
+            </div>
+            <div class="field-inline" style="margin-top:10px;"><label>Lieu</label><input data-k="faits.lieu" maxlength="120" autocomplete="off"></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Témoins</label><input data-k="faits.temoins" maxlength="120" autocomplete="off"></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Caméras</label>
+              <select data-k="faits.cameras"><option>Non</option><option>Oui</option><option>À vérifier</option></select></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Mis en cause</h3></div>
+            <div class="field-inline"><label>Nom</label><input data-k="suspect.nom" maxlength="80" autocomplete="off"></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Signalement</label><input data-k="suspect.signalement" maxlength="160" autocomplete="off"></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Tenue</label><input data-k="suspect.tenue" maxlength="120" autocomplete="off"></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Véhicule</label><input data-k="suspect.vehicule" maxlength="80" autocomplete="off"></div>
+            <div class="field-inline" style="margin-top:10px;"><label>Direction de fuite</label><input data-k="suspect.fuite" maxlength="80" autocomplete="off"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Biens / préjudice</h3></div>
+          <div id="plainte-slots" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+            <div class="plainte-slot" data-slot="0"></div>
+            <div class="plainte-slot" data-slot="1"></div>
+            <div class="plainte-slot" data-slot="2"></div>
+          </div>
+          <div class="field-inline" style="margin-top:14px;max-width:320px;"><label>Valeur estimée</label><input data-k="valeur" maxlength="60" autocomplete="off"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Exposé des faits / observations</h3></div>
+          <div class="field-inline"><textarea data-k="expose" style="min-height:140px;" maxlength="6000" placeholder="Le plaignant déclare avoir été victime de…"></textarea></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 16px;margin-top:12px;font-size:.86rem;">
+            <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" data-k="verifs.lue" style="accent-color:var(--brass);"> Plainte lue et confirmée</label>
+            <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" data-k="verifs.preuves" style="accent-color:var(--brass);"> Photos / preuves jointes</label>
+            <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" data-k="verifs.recepisse" style="accent-color:var(--brass);"> Récépissé remis au plaignant</label>
+            <label style="display:flex;gap:8px;align-items:center;cursor:pointer;"><input type="checkbox" data-k="verifs.brigade" style="accent-color:var(--brass);"> Transmise à la brigade</label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Rédaction</h3></div>
+          <div class="grid-2">
+            <div class="field-inline"><label>Fait le</label><input data-k="pied.date" maxlength="40" autocomplete="off"></div>
+            <div class="field-inline"><label>Rédigée par</label><input data-k="pied.redacteur" maxlength="60" autocomplete="off"></div>
+            <div class="field-inline"><label>Grade</label><input data-k="pied.grade" maxlength="60" autocomplete="off"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <button type="submit" class="btn btn-brass" id="plainte-save-pdf">Enregistrer et télécharger le PDF</button>
+          <button type="button" class="btn btn-outline" id="plainte-save">Enregistrer sans PDF</button>
+          <button type="button" class="btn btn-outline" id="plainte-annuler">Annuler</button>
+        </div>
+      </form>
+
+      <div class="card">
+        <div class="card-head"><h3>Plaintes enregistrées</h3></div>
+        <table>
+          <thead><tr><th>N°</th><th>Plaignant</th><th>Nature</th><th>Gravité</th><th>Date</th><th>Rédigée par</th><th></th></tr></thead>
+          <tbody id="plaintes-tbody"></tbody>
+        </table>
       </div>
     </section>
 
@@ -1180,6 +1351,9 @@ const SUPABASE_ANON_KEY = "sb_publishable_rVKgSiKXpZebMybNTQSNIg_3zowx8II";
 // Seuils de grade utilisés côté interface (doivent correspondre au schema.sql)
 const NIVEAU_DIRECTION = 8;     // Commissaire et +
 const NIVEAU_COMMANDEMENT = 5;  // Capitaine et +
+
+// Nom du commissariat affiché sur les PDF (fiche de plainte).
+const NOM_COMMISSARIAT = "PN de Belle-Roche";
 
 // ============================================================
 // WEBHOOK DISCORD (optionnel)
@@ -1398,11 +1572,24 @@ async function bootAfterLogin() {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return showLogin();
 
-  const { data: agent } = await sb
+  let { data: agent, error: errAgent } = await sb
     .from('agents')
-    .select('id, matricule, nom, prenom, actif, grade:grade_id (nom, niveau)')
+    .select('id, matricule, nom, prenom, actif, grade_id, grade:grade_id (nom, niveau, permission)')
     .eq('id', user.id)
     .maybeSingle();
+  if (errAgent) {
+    // Base pas encore migrée (v15) : on retombe sur l'ancienne lecture.
+    ({ data: agent } = await sb
+      .from('agents')
+      .select('id, matricule, nom, prenom, actif, grade_id, grade:grade_id (nom, niveau)')
+      .eq('id', user.id)
+      .maybeSingle());
+  }
+  if (agent && agent.grade) {
+    // Les droits viennent de "permission" ; "niveau" ne sert plus qu'à classer les grades.
+    agent.grade.rang = agent.grade.niveau;
+    if (agent.grade.permission != null) agent.grade.niveau = agent.grade.permission;
+  }
 
   if (agent && agent.actif) {
     moi = agent;
@@ -1537,7 +1724,7 @@ function goToView(name) {
   if (name === 'citoyens') refreshCitoyensList();
   if (name === 'interpellation') resetInterpellationForm();
   if (name === 'fiches-s') loadFichesS();
-  if (name === 'admin') { loadAgents(); loadCodes(); loadInfractionsAdmin(); loadCandidatures(); loadRecompenses(); }
+  if (name === 'admin') { loadGrades(); loadAgents(); loadCodes(); loadInfractionsAdmin(); loadCandidatures(); loadRecompenses(); }
   if (name === 'statistiques') loadStatistiques();
   if (name === 'amendes') loadAmendes();
   if (name === 'garde-a-vue') loadGardeAVue();
@@ -1549,6 +1736,7 @@ function goToView(name) {
   if (name === 'vehicules') { vehiculesOuvert = true; loadVehicules(); }
   else { vehiculesOuvert = false; }
   if (name === 'rapports') loadRapports();
+  if (name === 'plaintes') loadPlaintes();
   if (name === 'interventions-pdf') loadInterventionsPdf();
   if (name === 'recherches') { resetMandatForm(); loadMandats(); }
   if (name === 'perquisitions') { resetPerquisitionForm(); loadPerquisitions(); }
@@ -1840,7 +2028,7 @@ function renderInfractionChecklist() {
   const cats = { comportement: 'Titre I — Attitudes envers les forces de l\'ordre', route: 'Titre II — Code de la route', delit: 'Titre III — Délits' };
   box.innerHTML = Object.entries(cats).map(([key, label]) => `
     <h4 style="margin:14px 0 6px;font-size:.85rem;color:var(--ink-soft);">${label}</h4>
-    ${infractionsCache.filter(f => f.categorie === key).map(f => `
+    ${infractionsCache.filter(f => f.categorie === key && f.actif !== false).map(f => `
       <label class="infraction-row">
         <input type="checkbox" data-id="${f.id}" class="infraction-check">
         <span>
@@ -2012,27 +2200,6 @@ $('#new-code-form').addEventListener('submit', async (e) => {
 
 // ---------------- ADMIN : infractions ----------------
 
-async function loadInfractionsAdmin() {
-  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
-  const tbody = $('#infractions-tbody');
-  tbody.innerHTML = infractionsCache.map(f => `
-    <tr>
-      <td style="max-width:220px;">${f.titre}</td>
-      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="amende_min" value="${f.amende_min}" style="width:80px;"></td>
-      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="amende_max" value="${f.amende_max}" style="width:80px;"></td>
-      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="points" value="${f.points}" style="width:60px;"></td>
-    </tr>
-  `).join('');
-  $$('.inf-edit', tbody).forEach(inp => inp.addEventListener('change', async () => {
-    const { error } = await sb.from('infractions')
-      .update({ [inp.dataset.field]: Number(inp.value) })
-      .eq('id', inp.dataset.id);
-    if (error) return toast("Erreur (droits insuffisants ?).");
-    toast("Infraction mise à jour.");
-    loadInfractions();
-  }));
-}
-
 // ---------------- AMENDES EN COURS (policiers) ----------------
 
 async function loadAmendes() {
@@ -2130,7 +2297,7 @@ async function loadCandidatures() {
 
   $$('.accepter-cand-btn', tbody).forEach(btn => btn.addEventListener('click', async () => {
     const code = genererCodeCandidature(btn.dataset.prenom, btn.dataset.nom);
-    const { data: grade } = await sb.from('grades').select('id').eq('nom', 'Gardien de la Paix').single();
+    const { data: grade } = await sb.from('grades').select('id').order('niveau').limit(1).single();
     const { error: errCode } = await sb.from('codes_acces').insert({ code, grade_id: grade.id, utilisations_max: 1 });
     if (errCode) return toast("Erreur lors de la génération du code.");
     const { error } = await sb.from('candidatures').update({
@@ -3207,6 +3374,665 @@ function demarrerCanalVehicules() {
       minuterie = setTimeout(() => { if (!vehiculeSlider) loadVehicules(); }, 300);
     })
     .subscribe();
+}
+
+// ---------------- PLAINTES ----------------
+
+// <pdf-start>
+function photoValide(p) {
+  return !!p && typeof p.d === 'string' && p.d.startsWith('data:image/jpeg;base64,') && p.w > 0 && p.h > 0;
+}
+
+function formaterDateFrPlainte(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+  if (!m) return iso || '';
+  return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function formaterHeurePlainte(h) {
+  const m = /^(\d{1,2}):(\d{2})/.exec(h || '');
+  return m ? `${+m[1]}h${m[2]}` : (h || '');
+}
+
+// Construit le PDF de la fiche de dépôt de plainte (aucune dépendance au site : JsPDF est passé en paramètre).
+function construirePdfPlainte(JsPDF, c, meta) {
+  const doc = new JsPDF({ unit: 'mm', format: 'a4' });
+  const M = 12, W = 186, BAS = 285, LAB = 30;
+  const NAVY = [15, 42, 92], NAVY2 = [27, 63, 134], LINE = [185, 198, 220], DOTS = [159, 176, 207];
+  const SOFT = [238, 242, 248], RED = [212, 32, 47], INK = [20, 35, 63], GREY = [123, 139, 168], WHITE = [255, 255, 255];
+  const commissariat = (meta && meta.commissariat) || 'PN';
+  const num = (meta && meta.numero) || '';
+  const P = c.plaignant || {}, I = c.infos || {}, FA = c.faits || {}, S = c.suspect || {};
+  const B = c.biens || [], V = c.verifs || {}, PI = c.pied || {};
+  let y = 0;
+
+  const T = (k) => doc.setTextColor(k[0], k[1], k[2]);
+  const F = (k) => doc.setFillColor(k[0], k[1], k[2]);
+  const D = (k) => doc.setDrawColor(k[0], k[1], k[2]);
+  const police = (style, size) => { doc.setFont('helvetica', style); doc.setFontSize(size); };
+  const nouvellePage = () => { doc.addPage(); y = 14; };
+  const place = (h) => { if (y + h > BAS) nouvellePage(); };
+  const pointille = (x1, x2, yy) => {
+    D(DOTS); doc.setLineWidth(0.2); doc.setLineDashPattern([0.5, 0.7], 0);
+    doc.line(x1, yy, x2, yy);
+    doc.setLineDashPattern([], 0);
+  };
+
+  // ----- En-tête + bandeau titre -----
+  F(NAVY2); D([200, 211, 232]); doc.setLineWidth(0.8); doc.circle(M + 12, 24, 12, 'FD');
+  T(WHITE); police('bold', 6.2);
+  doc.text('SÉCURITÉ', M + 12, 22.8, { align: 'center' });
+  doc.text('PUBLIQUE', M + 12, 26, { align: 'center' });
+  T(NAVY); police('bold', 25); doc.text('POLICE NATIONALE', 105, 21, { align: 'center' });
+  T(INK); police('bold', 7.4);
+  doc.text('DIRECTION DÉPARTEMENTALE DE LA SÉCURITÉ PUBLIQUE', 105, 27, { align: 'center' });
+  doc.text(commissariat.toUpperCase(), 105, 31, { align: 'center' });
+  F(NAVY2); doc.rect(55, 33.5, 33.4, 1.6, 'F');
+  F([233, 237, 245]); doc.rect(88.4, 33.5, 33.3, 1.6, 'F');
+  F(RED); doc.rect(121.7, 33.5, 33.3, 1.6, 'F');
+  T(NAVY); police('bolditalic', 9.5);
+  doc.text('Protéger', 168, 19); doc.text('Servir', 168, 24.5); doc.text('Sécuriser', 168, 30);
+  D(LINE); doc.setLineWidth(0.3); doc.line(M, 40, M + W, 40);
+
+  F(NAVY); doc.rect(M, 44, W, 16, 'F');
+  T(WHITE); police('bold', 14.5); doc.text('FICHE DE DÉPÔT DE PLAINTE', 80, 51.5, { align: 'center' });
+  police('normal', 10);
+  const nomPl = `${(P.nom || '').toUpperCase()} ${P.prenom || ''}`.trim() || '—';
+  doc.text(`Plaignant – ${doc.splitTextToSize(nomPl, 110)[0]}`, 80, 57, { align: 'center' });
+  D([127, 148, 192]); doc.setLineWidth(0.3); doc.rect(152, 46.5, 44, 11);
+  police('normal', 5.6); doc.text("N° D'IDENTIFICATION", 154, 50);
+  police('bold', 9); doc.text(num || '—', 154, 55);
+  y = 62;
+
+  // ----- Boîtes à lignes "libellé : valeur" -----
+  const mesurer = (lignes, w) => {
+    police('normal', 8.5);
+    return lignes.map(([lab, val]) => {
+      const l = doc.splitTextToSize(String(val == null ? '' : val), w - 6 - LAB);
+      return { lab, l, h: Math.max(1, l.length) * 3.5 + 1.5 };
+    });
+  };
+  const hauteurCorps = (ms) => ms.reduce((s, m) => s + m.h, 0) + 3.6;
+  const dessinerBoite = (x, y0, w, titre, ms, corpsH) => {
+    F(NAVY); doc.rect(x, y0, w, 6.2, 'F');
+    T(WHITE); police('bold', 8.5); doc.text(titre, x + 3, y0 + 4.3);
+    F(SOFT); D(LINE); doc.setLineWidth(0.25); doc.rect(x, y0 + 6.2, w, corpsH, 'FD');
+    let yy = y0 + 6.2 + 1.8;
+    ms.forEach((m) => {
+      T(INK); police('bold', 8.5); doc.text(m.lab, x + 3, yy + 3);
+      police('normal', 8.5); doc.text(m.l, x + 3 + LAB, yy + 3, { lineHeightFactor: 1.17 });
+      pointille(x + 3 + LAB, x + w - 3, yy + m.h - 1.2);
+      yy += m.h;
+    });
+  };
+  const rangee = (gauche, droite) => {
+    const wB = (W - 6) / 2;
+    const mg = mesurer(gauche.lignes, wB), md = mesurer(droite.lignes, wB);
+    const corps = Math.max(hauteurCorps(mg), hauteurCorps(md));
+    place(6.2 + corps + 6);
+    dessinerBoite(M, y, wB, gauche.titre, mg, corps);
+    dessinerBoite(M + wB + 6, y, wB, droite.titre, md, corps);
+    y += 6.2 + corps + 4;
+  };
+
+  rangee(
+    { titre: 'IDENTITÉ DU PLAIGNANT', lignes: [['Nom :', P.nom], ['Prénom :', P.prenom], ['Âge :', P.age], ['Nationalité :', P.nationalite], ['Profession :', P.profession], ['Domicile :', P.domicile], ['Téléphone :', P.telephone]] },
+    { titre: 'INFORMATIONS IMPORTANTES', lignes: [['Nature :', I.nature], ['Plainte contre :', I.contre], ['Gravité :', I.gravite], ['Blessures :', I.blessures], ['Arme utilisée :', I.arme], ['Suite donnée :', I.suite]] }
+  );
+  rangee(
+    { titre: 'CIRCONSTANCES DES FAITS', lignes: [['Date :', formaterDateFrPlainte(FA.date)], ['Heure :', formaterHeurePlainte(FA.heure)], ['Lieu :', FA.lieu], ['Témoins :', FA.temoins], ['Caméras :', FA.cameras]] },
+    { titre: 'MIS EN CAUSE', lignes: [['Nom :', S.nom], ['Signalement :', S.signalement], ['Tenue :', S.tenue], ['Véhicule :', S.vehicule], ['Direction fuite :', S.fuite]] }
+  );
+
+  // ----- Biens / préjudice (photos) -----
+  {
+    const slots = [0, 1, 2].map((i) => {
+      const b = B[i] || {};
+      return { titre: b.titre || '', description: b.description || '', photo: photoValide(b.photo) ? b.photo : null };
+    }).filter((s) => s.titre || s.description || s.photo);
+    const sw = (W - 6 - 8) / 3, sh = 26;
+    police('bold', 8.5); const tl = slots.map((s) => doc.splitTextToSize(s.titre, sw).slice(0, 2));
+    police('normal', 8); const dl = slots.map((s) => doc.splitTextToSize(s.description, sw).slice(0, 3));
+    const textesH = slots.length ? Math.max(...slots.map((s, i) => tl[i].length * 3.7 + dl[i].length * 3.4)) + 3 : 0;
+    const slotsH = slots.length ? sh + 2 + textesH + 3 : 0;
+    const corps = slotsH + 11;
+    place(6.2 + corps + 5);
+    F(NAVY); doc.rect(M, y, W, 6.2, 'F');
+    T(WHITE); police('bold', 8.5); doc.text('BIENS / PRÉJUDICE', M + 3, y + 4.3);
+    F(SOFT); D(LINE); doc.setLineWidth(0.25); doc.rect(M, y + 6.2, W, corps, 'FD');
+    const sy = y + 6.2 + 3;
+    slots.forEach((s, k) => {
+      const sx = M + 3 + k * (sw + 4);
+      F([228, 233, 242]); D(LINE); doc.rect(sx, sy, sw, sh, 'FD');
+      if (s.photo) {
+        const r = Math.min(sw / s.photo.w, sh / s.photo.h), iw = s.photo.w * r, ih = s.photo.h * r;
+        try { doc.addImage(s.photo.d, 'JPEG', sx + (sw - iw) / 2, sy + (sh - ih) / 2, iw, ih); } catch (e) { /* photo illisible : cadre vide */ }
+      } else {
+        T(GREY); police('normal', 7); doc.text('Pas de photo', sx + sw / 2, sy + sh / 2, { align: 'center' });
+      }
+      T(INK); police('bold', 8.5); doc.text(tl[k], sx + sw / 2, sy + sh + 4.2, { align: 'center', lineHeightFactor: 1.2 });
+      police('normal', 8); doc.text(dl[k], sx + sw / 2, sy + sh + 4.2 + tl[k].length * 3.7 + 0.5, { align: 'center', lineHeightFactor: 1.2 });
+    });
+    const vy = y + 6.2 + (slots.length ? slotsH : 0) + 6.5;
+    T(INK); police('bold', 8.5); doc.text('Valeur estimée :', M + 3, vy);
+    police('normal', 8.5); doc.text(doc.splitTextToSize(String(c.valeur || ''), W - 6 - LAB)[0] || '', M + 3 + LAB, vy);
+    pointille(M + 3 + LAB, M + W - 3, vy + 1.3);
+    y += 6.2 + corps + 4;
+  }
+
+  // ----- Exposé des faits (peut se poursuivre sur la page suivante) -----
+  {
+    const lh = 4.4;
+    police('normal', 9.2);
+    const lignes = doc.splitTextToSize(String(c.expose || ''), W - 8);
+    place(6.2 + lh * 2 + 6);
+    F(NAVY); doc.rect(M, y, W, 6.2, 'F');
+    T(WHITE); police('bold', 8.5); doc.text('EXPOSÉ DES FAITS / OBSERVATIONS', M + 3, y + 4.3);
+    y += 6.2;
+    let i = 0;
+    while (i < lignes.length) {
+      const dispo = Math.max(1, Math.floor((BAS - y - 6) / lh));
+      const n = Math.min(lignes.length - i, dispo);
+      const h = n * lh + 5;
+      F(SOFT); D(LINE); doc.setLineWidth(0.25); doc.rect(M, y, W, h, 'FD');
+      T(INK); police('normal', 9.2);
+      doc.text(lignes.slice(i, i + n), M + 4, y + 5, { lineHeightFactor: 1.35 });
+      y += h; i += n;
+      if (i < lignes.length) nouvellePage();
+    }
+    place(14.5);
+    F(SOFT); D(LINE); doc.setLineWidth(0.25); doc.rect(M, y, W, 12.5, 'FD');
+    const items = [['lue', 'Plainte lue et confirmée'], ['preuves', 'Photos / preuves jointes'], ['recepisse', 'Récépissé remis au plaignant'], ['brigade', 'Transmise à la brigade']];
+    items.forEach(([k, lab], idx) => {
+      const cx = M + 5 + (idx % 2) * (W / 2), cy = y + 2.5 + Math.floor(idx / 2) * 4.9;
+      D(INK); doc.setLineWidth(0.3); doc.rect(cx, cy, 3.2, 3.2);
+      if (V[k]) { doc.setLineWidth(0.55); doc.line(cx + 0.6, cy + 1.7, cx + 1.4, cy + 2.6); doc.line(cx + 1.4, cy + 2.6, cx + 2.8, cy + 0.6); }
+      T(INK); police('normal', 8.5); doc.text(lab, cx + 5, cy + 2.7);
+    });
+    y += 12.5 + 5;
+  }
+
+  // ----- Pied de fiche -----
+  place(25);
+  D(LINE); doc.setLineWidth(0.3); doc.line(M, y, M + W, y);
+  const y0 = y + 8;
+  T(NAVY); police('bold', 11); doc.text(commissariat, M, y0);
+  T(INK); police('normal', 9); doc.text(`Le ${PI.date || ''}`, M, y0 + 6);
+  police('normal', 8.5); doc.text('Rédigée par :', M + 62, y0 - 1);
+  police('bold', 9.5); doc.text(doc.splitTextToSize(String(PI.redacteur || ''), 46)[0] || '', M + 62, y0 + 4.5);
+  police('normal', 8.5); doc.text(doc.splitTextToSize(String(PI.grade || ''), 46)[0] || '', M + 62, y0 + 10);
+  D(INK); doc.setLineWidth(0.3); doc.line(M + 112, y0 + 13, M + 150, y0 + 13);
+  T(GREY); police('normal', 7); doc.text('Signature', M + 112, y0 + 11.6);
+  T(NAVY); police('bold', 11); doc.text('POLICE NATIONALE', M + W, y0, { align: 'right' });
+  T(GREY); police('bolditalic', 5.8); doc.text('PLUS PROCHE, PLUS EFFICACE', M + W, y0 + 4.5, { align: 'right' });
+
+  const pages = doc.getNumberOfPages();
+  for (let p = 1; p <= pages; p++) {
+    doc.setPage(p); T(GREY); police('normal', 7);
+    doc.text(`${num} — page ${p}/${pages}`, 105, 291, { align: 'center' });
+  }
+  return doc;
+}
+// <pdf-end>
+
+function telechargerPdfPlainte(contenu, numero) {
+  if (typeof jspdf === 'undefined') return toast("Module PDF non chargé (vérifie ta connexion).");
+  const doc = construirePdfPlainte(jspdf.jsPDF, contenu, { numero, commissariat: NOM_COMMISSARIAT });
+  doc.save(`plainte-${numero}.pdf`);
+}
+
+// ----- Formulaire -----
+
+let plaintePhotos = [null, null, null];
+let plainteEnEdition = null; // { id, numero }
+
+function isoAujourdhui() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function contenuPlainteParDefaut() {
+  return {
+    plaignant: { nom: '', prenom: '', age: '', nationalite: 'Française', profession: '', domicile: '', telephone: '' },
+    infos: { nature: 'Vol', contre: 'X (auteur inconnu)', gravite: 'Faible', blessures: 'Aucune', arme: 'Non', suite: 'Enquête ouverte' },
+    faits: { date: isoAujourdhui(), heure: '', lieu: '', temoins: 'Aucun', cameras: 'Non' },
+    suspect: { nom: 'Inconnu', signalement: '', tenue: '', vehicule: '', fuite: '' },
+    biens: [{ titre: '', description: '' }, { titre: '', description: '' }, { titre: '', description: '' }],
+    valeur: '',
+    expose: '',
+    verifs: { lue: false, preuves: false, recepisse: false, brigade: false },
+    pied: {
+      date: new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }),
+      redacteur: `${moi.prenom} ${moi.nom.toUpperCase()}`,
+      grade: moi.grade.nom,
+    },
+  };
+}
+
+function lireChemin(obj, chemin) {
+  return chemin.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
+}
+
+function ecrireChemin(obj, chemin, val) {
+  const ks = chemin.split('.');
+  const parent = ks.slice(0, -1).reduce((o, k, i) => {
+    if (o[k] == null) o[k] = /^\d+$/.test(ks[i + 1]) ? [] : {};
+    return o[k];
+  }, obj);
+  parent[ks[ks.length - 1]] = val;
+}
+
+function lirePlainte() {
+  const c = {};
+  $$('#plainte-form [data-k]').forEach((el) => {
+    ecrireChemin(c, el.dataset.k, el.type === 'checkbox' ? el.checked : el.value.trim());
+  });
+  c.biens = [0, 1, 2].map((i) => ({ ...((c.biens && c.biens[i]) || {}), photo: plaintePhotos[i] || null }));
+  return c;
+}
+
+function remplirPlainte(c) {
+  $$('#plainte-form [data-k]').forEach((el) => {
+    const v = lireChemin(c, el.dataset.k);
+    if (el.type === 'checkbox') el.checked = !!v;
+    else el.value = v == null ? '' : v;
+  });
+  plaintePhotos = [0, 1, 2].map((i) => (c.biens && c.biens[i] && photoValide(c.biens[i].photo) ? c.biens[i].photo : null));
+  [0, 1, 2].forEach(majSlotPhoto);
+}
+
+function majSlotPhoto(i) {
+  const slot = document.querySelector(`.plainte-slot[data-slot="${i}"]`);
+  if (!slot) return;
+  const p = plaintePhotos[i];
+  const img = slot.querySelector('.pl-photo-img');
+  if (p) {
+    img.src = p.d; img.style.display = 'block';
+    slot.querySelector('.pl-photo-texte').style.display = 'none';
+    slot.querySelector('.pl-photo-retirer').style.display = 'inline-flex';
+  } else {
+    img.removeAttribute('src'); img.style.display = 'none';
+    slot.querySelector('.pl-photo-texte').style.display = 'block';
+    slot.querySelector('.pl-photo-retirer').style.display = 'none';
+  }
+}
+
+// Photo réduite (900 px, JPEG) et conservée dans la plainte : pas de stockage externe.
+function compresserEnDataUrl(file, maxCote = 900, qualite = 0.68) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const ech = Math.min(1, maxCote / Math.max(img.naturalWidth, img.naturalHeight));
+      const cv = document.createElement('canvas');
+      cv.width = Math.max(1, Math.round(img.naturalWidth * ech));
+      cv.height = Math.max(1, Math.round(img.naturalHeight * ech));
+      const g = cv.getContext('2d');
+      g.fillStyle = '#ffffff';
+      g.fillRect(0, 0, cv.width, cv.height);
+      g.drawImage(img, 0, 0, cv.width, cv.height);
+      URL.revokeObjectURL(url);
+      resolve({ d: cv.toDataURL('image/jpeg', qualite), w: cv.width, h: cv.height });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('lecture')); };
+    img.src = url;
+  });
+}
+
+async function choisirPhotoPlainte(i, file) {
+  if (!file || !file.type || !file.type.startsWith('image/')) return toast("Choisis un fichier image.");
+  try {
+    plaintePhotos[i] = await compresserEnDataUrl(file);
+    majSlotPhoto(i);
+  } catch (e) {
+    toast("Image illisible, essaie un autre fichier.");
+  }
+}
+
+function initSlotsPlainte() {
+  $$('.plainte-slot').forEach((slot) => {
+    const i = Number(slot.dataset.slot);
+    slot.innerHTML = `
+      <div class="pl-photo-zone" style="border:1px dashed var(--paper-line);border-radius:8px;height:120px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--paper);overflow:hidden;">
+        <span class="pl-photo-texte" style="font-size:.78rem;color:var(--ink-soft);text-align:center;padding:6px;">Photo à ajouter<br>(touche ou glisse)</span>
+        <img class="pl-photo-img" alt="" style="display:none;width:100%;height:100%;object-fit:cover;">
+      </div>
+      <input type="file" class="pl-photo-file" accept="image/*" style="display:none;">
+      <button type="button" class="btn btn-outline pl-photo-retirer" style="display:none;padding:4px 10px;font-size:.74rem;margin-top:6px;">Retirer la photo</button>
+      <div class="field-inline" style="margin-top:8px;"><label>Objet / bien ${i + 1}</label><input data-k="biens.${i}.titre" maxlength="60" autocomplete="off"></div>
+      <div class="field-inline" style="margin-top:8px;"><label>Description</label><input data-k="biens.${i}.description" maxlength="140" autocomplete="off"></div>`;
+    const zone = slot.querySelector('.pl-photo-zone');
+    const fichier = slot.querySelector('.pl-photo-file');
+    zone.addEventListener('click', () => fichier.click());
+    ['dragenter', 'dragover'].forEach((ev) => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.style.borderColor = 'var(--brass)'; }));
+    ['dragleave', 'drop'].forEach((ev) => zone.addEventListener(ev, (e) => { e.preventDefault(); zone.style.borderColor = ''; }));
+    zone.addEventListener('drop', (e) => { const f = e.dataTransfer && e.dataTransfer.files[0]; if (f) choisirPhotoPlainte(i, f); });
+    fichier.addEventListener('change', (e) => { const f = e.target.files[0]; e.target.value = ''; choisirPhotoPlainte(i, f); });
+    slot.querySelector('.pl-photo-retirer').addEventListener('click', () => { plaintePhotos[i] = null; majSlotPhoto(i); });
+  });
+}
+initSlotsPlainte();
+
+// Pré-remplissage depuis une fiche citoyen
+function prefillPlaignant(c) {
+  const mettre = (k, v) => {
+    const el = document.querySelector(`#plainte-form [data-k="${k}"]`);
+    if (el && v) el.value = v;
+  };
+  mettre('plaignant.nom', c.nom);
+  mettre('plaignant.prenom', c.prenom);
+  mettre('plaignant.domicile', c.adresse);
+  mettre('plaignant.telephone', c.telephone);
+  if (c.date_naissance) {
+    const ans = Math.floor((Date.now() - new Date(c.date_naissance).getTime()) / 31557600000);
+    if (ans >= 0 && ans < 130) mettre('plaignant.age', `${ans} ans`);
+  }
+}
+
+$('#pl-citoyen-search').addEventListener('input', debounce(async () => {
+  const q = $('#pl-citoyen-search').value.trim();
+  const box = $('#pl-citoyen-results');
+  if (!q) { box.innerHTML = ''; return; }
+  const { data } = await sb.from('citoyens').select('*').or(`nom.ilike.%${q}%,prenom.ilike.%${q}%`).limit(6);
+  box.innerHTML = (data || []).map((c) =>
+    `<div class="nav-item" data-id="${escAttr(c.id)}" style="color:var(--ink);">${escapeHtml(c.prenom)} ${escapeHtml(c.nom)}</div>`
+  ).join('') || emptyState('Aucun résultat.');
+  $$('.nav-item', box).forEach((el) => el.addEventListener('click', () => {
+    const c = data.find((x) => x.id === el.dataset.id);
+    if (c) prefillPlaignant(c);
+    box.innerHTML = '';
+    $('#pl-citoyen-search').value = '';
+  }));
+}, 250));
+
+function ouvrirFormPlainte(plainte) {
+  plainteEnEdition = plainte ? { id: plainte.id, numero: plainte.numero } : null;
+  $('#plainte-form-titre').textContent = plainte ? 'Modifier la plainte' : 'Nouvelle plainte';
+  $('#plainte-form-numero').textContent = plainte ? plainte.numero : "N° attribué à l'enregistrement";
+  remplirPlainte(plainte ? plainte.contenu : contenuPlainteParDefaut());
+  $('#pl-citoyen-search').value = '';
+  $('#pl-citoyen-results').innerHTML = '';
+  $('#plainte-form').style.display = 'block';
+  $('#plainte-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function fermerFormPlainte() {
+  $('#plainte-form').style.display = 'none';
+  plainteEnEdition = null;
+}
+
+$('#btn-nouvelle-plainte').addEventListener('click', () => ouvrirFormPlainte(null));
+$('#plainte-annuler').addEventListener('click', fermerFormPlainte);
+
+async function enregistrerPlainte(telecharger) {
+  const contenu = lirePlainte();
+  if (!contenu.plaignant.nom || !contenu.plaignant.prenom) return toast("Le nom et le prénom du plaignant sont requis.");
+  if (!contenu.expose) return toast("L'exposé des faits est requis.");
+  const boutons = [$('#plainte-save-pdf'), $('#plainte-save')];
+  boutons.forEach((b) => { b.disabled = true; });
+  try {
+    const meta = {
+      plaignant_nom: `${contenu.plaignant.nom.toUpperCase()} ${contenu.plaignant.prenom}`,
+      nature: contenu.infos.nature || null,
+      gravite: contenu.infos.gravite || null,
+      contenu,
+      updated_at: new Date().toISOString(),
+    };
+    const requete = plainteEnEdition
+      ? sb.from('plaintes').update(meta).eq('id', plainteEnEdition.id).select('id, numero').single()
+      : sb.from('plaintes').insert({ ...meta, redacteur_id: moi.id }).select('id, numero').single();
+    const { data, error } = await requete;
+    if (error) throw error;
+    toast(`Plainte ${data.numero} enregistrée.`);
+    if (telecharger) telechargerPdfPlainte(contenu, data.numero);
+    fermerFormPlainte();
+    loadPlaintes();
+  } catch (err) {
+    console.error(err);
+    toast("Erreur lors de l'enregistrement de la plainte (la migration v15 est-elle exécutée ?).");
+  } finally {
+    boutons.forEach((b) => { b.disabled = false; });
+  }
+}
+
+$('#plainte-form').addEventListener('submit', (e) => { e.preventDefault(); enregistrerPlainte(true); });
+$('#plainte-save').addEventListener('click', () => enregistrerPlainte(false));
+
+// ----- Liste -----
+
+async function chargerPlainte(id) {
+  const { data, error } = await sb.from('plaintes').select('id, numero, contenu').eq('id', id).single();
+  if (error) { toast("Impossible de charger cette plainte."); return null; }
+  return data;
+}
+
+async function loadPlaintes() {
+  const estDirection = moi.grade.niveau >= NIVEAU_DIRECTION;
+  const { data, error } = await sb.from('plaintes')
+    .select('id, numero, plaignant_nom, nature, gravite, created_at, redacteur:redacteur_id (nom, prenom)')
+    .order('created_at', { ascending: false })
+    .limit(100);
+  const tbody = $('#plaintes-tbody');
+  if (error) { tbody.innerHTML = emptyState('Erreur de chargement (la migration v15 est-elle exécutée ?).', 7); return; }
+  if (!data.length) { tbody.innerHTML = emptyState('Aucune plainte enregistrée.', 7); return; }
+
+  tbody.innerHTML = data.map((p) => `
+    <tr>
+      <td class="mono" style="font-size:.78rem;">${escapeHtml(p.numero)}</td>
+      <td>${escapeHtml(p.plaignant_nom)}</td>
+      <td>${escapeHtml(p.nature || '—')}</td>
+      <td>${escapeHtml(p.gravite || '—')}</td>
+      <td>${new Date(p.created_at).toLocaleDateString('fr-FR')}</td>
+      <td style="font-size:.82rem;">${p.redacteur ? escapeHtml(`${p.redacteur.prenom} ${p.redacteur.nom}`) : '—'}</td>
+      <td><div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button type="button" class="btn btn-outline pl-pdf-btn" data-id="${escAttr(p.id)}">PDF</button>
+        <button type="button" class="btn btn-outline pl-edit-btn" data-id="${escAttr(p.id)}">Modifier</button>
+        <button type="button" class="btn btn-danger pl-del-btn${estDirection ? '' : ' locked'}" data-id="${escAttr(p.id)}">Supprimer</button>
+      </div></td>
+    </tr>`).join('');
+
+  $$('.pl-pdf-btn', tbody).forEach((b) => b.addEventListener('click', async () => {
+    const p = await chargerPlainte(b.dataset.id);
+    if (p) telechargerPdfPlainte(p.contenu, p.numero);
+  }));
+  $$('.pl-edit-btn', tbody).forEach((b) => b.addEventListener('click', async () => {
+    const p = await chargerPlainte(b.dataset.id);
+    if (p) ouvrirFormPlainte(p);
+  }));
+  $$('.pl-del-btn', tbody).forEach((b) => b.addEventListener('click', async () => {
+    if (moi.grade.niveau < NIVEAU_DIRECTION) return toast("Réservé à la Direction (Commissaire et +).");
+    if (!confirm("Supprimer définitivement cette plainte ? Irréversible.")) return;
+    const { error: errDel } = await sb.from('plaintes').delete().eq('id', b.dataset.id);
+    if (errDel) return toast("Erreur lors de la suppression.");
+    toast("Plainte supprimée.");
+    loadPlaintes();
+  }));
+}
+
+// ---------------- GRADES & HIÉRARCHIE (Direction) ----------------
+
+const PERMISSIONS_GRADE = [
+  { valeur: 1, label: 'Agent' },
+  { valeur: 5, label: 'Commandement' },
+  { valeur: 8, label: 'Direction' },
+];
+let gradesTries = [];        // du plus haut au plus bas
+let effectifsParGrade = {};
+
+$('#new-grade-perm').innerHTML = PERMISSIONS_GRADE.map((p) => `<option value="${p.valeur}">${p.label}</option>`).join('');
+
+function rafraichirGrades() { loadGrades(); loadAgents(); loadCodes(); }
+
+async function loadGrades() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const [{ data: grades, error }, { data: agents }] = await Promise.all([
+    sb.from('grades').select('*').order('niveau', { ascending: false }).order('id'),
+    sb.from('agents').select('grade_id'),
+  ]);
+  const box = $('#grades-list');
+  if (error) { box.innerHTML = emptyState('Erreur de chargement.'); return; }
+  gradesTries = grades;
+  effectifsParGrade = {};
+  (agents || []).forEach((a) => { effectifsParGrade[a.grade_id] = (effectifsParGrade[a.grade_id] || 0) + 1; });
+
+  $('#new-grade-pos').innerHTML = '<option value="">En bas de la hiérarchie</option>'
+    + grades.map((g) => `<option value="${g.id}">Juste au-dessus de « ${escapeHtml(g.nom)} »</option>`).join('');
+
+  box.innerHTML = grades.map((g, i) => {
+    const n = effectifsParGrade[g.id] || 0;
+    const monGrade = g.id === moi.grade_id;
+    const perm = g.permission == null ? 1 : g.permission;
+    return `
+      <div class="grade-row" data-id="${g.id}" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--paper-dim);">
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <button type="button" class="btn btn-outline grade-up" aria-label="Monter" ${i === 0 ? 'disabled' : ''} style="padding:1px 9px;font-size:.7rem;line-height:1.4;">▲</button>
+          <button type="button" class="btn btn-outline grade-down" aria-label="Descendre" ${i === grades.length - 1 ? 'disabled' : ''} style="padding:1px 9px;font-size:.7rem;line-height:1.4;">▼</button>
+        </div>
+        <span class="mono" style="min-width:24px;color:var(--ink-faint);font-size:.8rem;">${i + 1}</span>
+        <input class="grade-nom" value="${escAttr(g.nom)}" maxlength="50" style="flex:1;min-width:150px;padding:8px 10px;border:1px solid var(--paper-line);border-radius:4px;font-family:'Inter';font-size:.9rem;">
+        <select class="grade-perm" ${monGrade ? 'disabled title="C\'est ton propre grade : impossible de changer ses droits."' : ''} style="padding:8px 10px;border:1px solid var(--paper-line);border-radius:4px;font-family:'Inter';font-size:.85rem;">
+          ${PERMISSIONS_GRADE.map((p) => `<option value="${p.valeur}" ${p.valeur === perm ? 'selected' : ''}>${p.label}</option>`).join('')}
+        </select>
+        <span style="font-size:.78rem;color:var(--ink-soft);min-width:70px;">${n} agent${n > 1 ? 's' : ''}</span>
+        <button type="button" class="btn btn-danger grade-del" ${monGrade ? 'disabled' : ''}>Supprimer</button>
+      </div>`;
+  }).join('');
+
+  $$('.grade-row', box).forEach((row, i) => {
+    const id = Number(row.dataset.id);
+    row.querySelector('.grade-up').addEventListener('click', () => deplacerGrade(i, -1));
+    row.querySelector('.grade-down').addEventListener('click', () => deplacerGrade(i, 1));
+    const champNom = row.querySelector('.grade-nom');
+    champNom.addEventListener('change', async () => {
+      const g = gradesTries.find((x) => x.id === id);
+      const v = champNom.value.trim();
+      if (!v) { champNom.value = g.nom; return toast("Le nom ne peut pas être vide."); }
+      const { error: errNom } = await sb.from('grades').update({ nom: v }).eq('id', id);
+      if (errNom) { champNom.value = g.nom; return toast(errNom.code === '23505' ? "Ce nom de grade existe déjà." : "Erreur lors du renommage."); }
+      toast("Grade renommé.");
+      rafraichirGrades();
+    });
+    row.querySelector('.grade-perm').addEventListener('change', async (e) => {
+      const g = gradesTries.find((x) => x.id === id);
+      const { error: errPerm } = await sb.from('grades').update({ permission: Number(e.target.value) }).eq('id', id);
+      if (errPerm) {
+        e.target.value = g.permission == null ? 1 : g.permission;
+        return toast(errPerm.message && errPerm.message.includes('Direction') ? errPerm.message : "Erreur lors du changement de droits.");
+      }
+      toast("Droits mis à jour.");
+      rafraichirGrades();
+    });
+    row.querySelector('.grade-del').addEventListener('click', () => supprimerGrade(id));
+  });
+}
+
+async function deplacerGrade(i, delta) {
+  const j = i + delta;
+  if (j < 0 || j >= gradesTries.length) return;
+  const ordre = gradesTries.slice();
+  [ordre[i], ordre[j]] = [ordre[j], ordre[i]];
+  const ids = ordre.slice().reverse().map((g) => g.id); // du plus bas au plus haut
+  const { error } = await sb.rpc('reordonner_grades', { p_ids: ids });
+  if (error) return toast(error.message || "Erreur lors du déplacement.");
+  rafraichirGrades();
+}
+
+async function supprimerGrade(id) {
+  const g = gradesTries.find((x) => x.id === id);
+  if (!g) return;
+  const n = effectifsParGrade[id] || 0;
+  if (n > 0) return toast(`Impossible : ${n} agent${n > 1 ? 's ont' : ' a'} ce grade. Change d'abord leur grade (tableau Agents).`);
+  if (!confirm(`Supprimer le grade « ${g.nom} » ?`)) return;
+  const { error } = await sb.from('grades').delete().eq('id', id);
+  if (error) {
+    return toast(error.code === '23503'
+      ? "Ce grade est encore utilisé (codes d'accès, formations…). Retire-le d'abord de ces éléments."
+      : (error.message || "Erreur lors de la suppression."));
+  }
+  toast("Grade supprimé.");
+  rafraichirGrades();
+}
+
+$('#new-grade-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return toast("Réservé à la Direction (Commissaire et +).");
+  const nom = $('#new-grade-nom').value.trim();
+  if (!nom) return;
+  const pos = $('#new-grade-pos').value;
+  const { error } = await sb.rpc('creer_grade', {
+    p_nom: nom,
+    p_permission: Number($('#new-grade-perm').value),
+    p_au_dessus_de: pos ? Number(pos) : null,
+  });
+  if (error) return toast(error.code === '23505' ? "Ce nom de grade existe déjà." : (error.message || "Erreur lors de la création."));
+  toast(`Grade « ${nom} » créé.`);
+  $('#new-grade-form').reset();
+  rafraichirGrades();
+});
+
+// ---------------- INFRACTIONS : ajout et activation (Direction) ----------------
+
+$('#new-infraction-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return toast("Réservé à la Direction (Commissaire et +).");
+  const titre = $('#ni-titre').value.trim();
+  const min = Number($('#ni-min').value);
+  const max = Number($('#ni-max').value);
+  if (!titre) return toast("L'intitulé est requis.");
+  if (!(min >= 0) || !(max >= 0)) return toast("Les montants doivent être positifs.");
+  if (min > max) return toast("L'amende minimum ne peut pas dépasser le maximum.");
+  const code = `X-${slugify(titre).toUpperCase().slice(0, 24)}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+  const { error } = await sb.from('infractions').insert({
+    code,
+    titre,
+    categorie: $('#ni-cat').value,
+    amende_min: Math.round(min),
+    amende_max: Math.round(max),
+    points: Math.max(0, Math.round(Number($('#ni-points').value) || 0)),
+    peine: $('#ni-peine').value.trim() || null,
+    garde_a_vue: $('#ni-gav').checked,
+    suspension_permis: $('#ni-susp').checked,
+    confiscation: $('#ni-conf').checked,
+    prison_rp: $('#ni-prison').checked,
+  });
+  if (error) return toast("Erreur lors de l'ajout de l'infraction.");
+  toast(`Infraction « ${titre} » ajoutée.`);
+  $('#new-infraction-form').reset();
+  await loadInfractions();
+  loadInfractionsAdmin();
+});
+
+async function loadInfractionsAdmin() {
+  if (moi.grade.niveau < NIVEAU_DIRECTION) return;
+  const tbody = $('#infractions-tbody');
+  const titreCat = { comportement: 'Titre I', route: 'Titre II', delit: 'Titre III' };
+  tbody.innerHTML = infractionsCache.map((f) => {
+    const inactive = f.actif === false;
+    return `
+    <tr${inactive ? ' style="opacity:.55;"' : ''}>
+      <td style="max-width:240px;">${escapeHtml(f.titre)} <span style="font-size:.7rem;color:var(--ink-faint);">${titreCat[f.categorie] || ''}</span>${inactive ? ' <span class="badge badge-s">Désactivée</span>' : ''}</td>
+      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="amende_min" value="${f.amende_min}" style="width:80px;"></td>
+      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="amende_max" value="${f.amende_max}" style="width:80px;"></td>
+      <td><input type="number" class="inf-edit" data-id="${f.id}" data-field="points" value="${f.points}" style="width:60px;"></td>
+      <td><button type="button" class="btn btn-outline inf-toggle" data-id="${f.id}" data-actif="${inactive ? 'false' : 'true'}">${inactive ? 'Réactiver' : 'Désactiver'}</button></td>
+    </tr>`;
+  }).join('');
+  $$('.inf-edit', tbody).forEach((inp) => inp.addEventListener('change', async () => {
+    const { error } = await sb.from('infractions')
+      .update({ [inp.dataset.field]: Number(inp.value) })
+      .eq('id', inp.dataset.id);
+    if (error) return toast("Erreur (droits insuffisants ?).");
+    toast("Infraction mise à jour.");
+    loadInfractions();
+  }));
+  $$('.inf-toggle', tbody).forEach((btn) => btn.addEventListener('click', async () => {
+    const actif = btn.dataset.actif === 'true';
+    const { error } = await sb.from('infractions').update({ actif: !actif }).eq('id', btn.dataset.id);
+    if (error) return toast("Erreur (la migration v15 est-elle exécutée ?).");
+    toast(actif ? "Infraction désactivée : elle n'apparaît plus dans le formulaire, l'historique est conservé." : "Infraction réactivée.");
+    await loadInfractions();
+    loadInfractionsAdmin();
+  }));
 }
 
 // ---------------- WEBHOOK DISCORD ----------------
