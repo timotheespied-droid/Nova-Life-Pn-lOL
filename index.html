@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Police Nationale — Nova Life</title>
+<script>
+(function(){
+  var t = null;
+  try { t = localStorage.getItem('pn-theme'); } catch(e) {}
+  if (t !== 'light' && t !== 'dark') {
+    t = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
 
@@ -422,6 +432,44 @@ tbody tr:hover td:first-child{color:var(--brass);}
   .card{padding:18px;}
 }
 
+
+/* ---------- Mode sombre ---------- */
+[data-theme="dark"]{color-scheme:dark;}
+[data-theme="dark"] .app-shell{background:#0b1322;}
+[data-theme="dark"] .main{
+  --paper:#0f1a2e;
+  --paper-dim:#22304f;
+  --paper-line:#2c3d63;
+  --ink:#ece8dc;
+  --ink-soft:#a9b1c2;
+  --ink-faint:#7d869a;
+  --red:#d4605a;
+  --green:#5fb88a;
+  color:var(--ink);
+}
+[data-theme="dark"] .main .card,
+[data-theme="dark"] .main .page-head-icon{background:#16223b;}
+[data-theme="dark"] #carte-import{background:var(--navy-900) !important;}
+[data-theme="dark"] .main input:not([type=checkbox]):not([type=radio]):not([type=range]),
+[data-theme="dark"] .main select,
+[data-theme="dark"] .main textarea{
+  background:#0f1a2e;
+  color:var(--ink);
+  border-color:var(--paper-line);
+}
+[data-theme="dark"] .main .field-inline input:focus,
+[data-theme="dark"] .main .field-inline select:focus,
+[data-theme="dark"] .main .field-inline textarea:focus{background:#13203a;border-color:var(--brass);}
+[data-theme="dark"] .main .btn-outline{border-color:#3a4d78;}
+[data-theme="dark"] .main .btn-outline,
+[data-theme="dark"] .main .total-box,
+[data-theme="dark"] .main .chat-bubble.mine .bulle,
+[data-theme="dark"] .main .card[style*="navy-950"]{
+  --paper:#f6f3ec;
+  --paper-dim:#e7e2d3;
+}
+[data-theme="dark"] .main::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);}
+[data-theme="dark"] .main::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.28);}
 </style>
 </head>
 <body>
@@ -638,6 +686,7 @@ tbody tr:hover td:first-child{color:var(--brass);}
         <button type="button" class="statut-btn" data-statut="pause" title="En pause"><span class="dot dot-pause"></span>Pause</button>
         <button type="button" class="statut-btn" data-statut="hors-service" title="Hors service"><span class="dot dot-hs"></span>Fin</button>
       </div>
+      <button type="button" class="btn btn-outline btn-full" id="theme-btn" style="margin-bottom:8px;"></button>
       <button class="btn btn-outline btn-full" id="logout-btn">
         <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Déconnexion
@@ -4496,6 +4545,42 @@ async function loadMonCasier() {
     `;
   }).join('');
 }
+
+// ---------------- THÈME CLAIR / SOMBRE ----------------
+
+function themeActuel() {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+
+function majBoutonTheme() {
+  const btn = $('#theme-btn');
+  if (!btn) return;
+  const sombre = themeActuel() === 'dark';
+  btn.innerHTML = sombre
+    ? '<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg> Mode clair'
+    : '<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Mode sombre';
+}
+
+function appliquerTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  majBoutonTheme();
+}
+
+$('#theme-btn').addEventListener('click', () => {
+  const t = themeActuel() === 'dark' ? 'light' : 'dark';
+  appliquerTheme(t);
+  try { localStorage.setItem('pn-theme', t); } catch (e) {}
+});
+
+// Tant qu'aucun choix n'est sauvegardé, on suit le thème du navigateur en direct.
+if (window.matchMedia) {
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    let choix = null;
+    try { choix = localStorage.getItem('pn-theme'); } catch (err) {}
+    if (choix !== 'light' && choix !== 'dark') appliquerTheme(e.matches ? 'dark' : 'light');
+  });
+}
+majBoutonTheme();
 
 // ---------------- BOOT ----------------
 
